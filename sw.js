@@ -1,6 +1,6 @@
 // Service Worker: macht die App offline nutzbar.
 // Bei Änderungen an Fragen oder Code die Versionsnummer erhöhen.
-const CACHE = "sani-trainer-v3";
+const CACHE = "sani-trainer-v5";
 const ASSETS = [
   "./",
   "index.html",
@@ -22,6 +22,7 @@ const ASSETS = [
   "manifest.webmanifest",
   "assets/icon-192.png",
   "assets/logo-ov.png",
+  "assets/qr-code.png",
   "assets/icon-mark.svg",
 ];
 

@@ -82,6 +82,21 @@ python3 -m http.server 8000
 2. Nach kurzer Zeit ist die App unter `https://<benutzer>.github.io/<repository>/` erreichbar.
 3. Diesen Link oder einen QR-Code an die Teilnehmenden geben. Auf dem Handy dann „Zum Startbildschirm hinzufügen“ wählen.
 
+## Ausbilder-Bereich
+
+Der Ausbilder-Bereich ist am PC über **„Ausbilder“** in der Seitenleiste erreichbar, am Handy über **Profil → „Zum Ausbilder-Bereich“**.
+
+- **PIN:** Beim ersten Öffnen legst du auf deinem Gerät eine PIN fest. Sie schützt den Bereich und die dort gespeicherten Auswertungen.
+  - Nach 5 Fehlversuchen wird der Bereich vorübergehend gesperrt.
+  - Mit **„Sperren“** schließt du ihn sofort wieder.
+  - **„PIN vergessen?“** löscht die PIN und alle gespeicherten Auswertungen auf diesem Gerät. Die Teilnehmenden schicken dir ihre Dateien dann einfach erneut.
+  - Die PIN gilt nur für das jeweilige Gerät. Auf den Handys der Teilnehmenden liegen keine Auswertungen anderer Personen.
+- **Teilnehmende einladen:**
+  - Die Kachel zeigt QR-Code, Link und einen Einladungstext, in den du optional den Kurscode einträgst.
+  - **„Teilen“** öffnet am Handy das Teilen-Menü (WhatsApp, Signal, E-Mail …), am PC wird der Text kopiert.
+  - **„QR-Code“** lädt das Bild zum Ausdrucken oder für den Beamer herunter.
+- **Auswertung:** Importierte Exportdateien bleiben auf deinem Gerät gespeichert. Neuere Dateien ersetzen ältere Stände derselben Person.
+
 ## Ausbilder-Auswertung einrichten
 
 Ohne weitere Einrichtung exportieren die Teilnehmenden ihren Lernstand unter **Profil → Lernstand exportieren** und schicken dir die Datei.

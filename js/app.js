@@ -169,7 +169,7 @@ function profileForm(p, submitLabel) {
       <label>Dein Vorname oder Spitzname
         <input name="name" required maxlength="40" autocomplete="given-name" value="${esc(p?.name || "")}">
       </label>
-      <label>Kurscode <span class="muted">(optional – bekommst du von deinem Ausbilder)</span>
+      <label><span>Kurscode <span class="muted">(optional – bekommst du von deinem Ausbilder)</span></span>
         <input name="code" maxlength="20" autocomplete="off" autocapitalize="characters" value="${esc(p?.courseCode || "")}">
       </label>
       <p class="form-error" hidden></p>

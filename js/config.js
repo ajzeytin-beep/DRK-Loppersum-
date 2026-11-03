@@ -4,6 +4,8 @@
 export const CONFIG = {
   appName: "Sani-Trainer",
   orgName: "DRK OV Loppersum",
+  // Öffentliche Adresse der App (für Einladungstext und QR-Code)
+  appUrl: "https://ajzeytin-beep.github.io/DRK-Loppersum-/",
 
   supabaseUrl: "",
   supabaseAnonKey: "",
