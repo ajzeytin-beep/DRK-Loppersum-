@@ -7,7 +7,7 @@ export const CONFIG = {
   // Öffentliche Adresse der App (für Einladungstext und QR-Code)
   appUrl: "https://ajzeytin-beep.github.io/DRK-Loppersum-/",
 
-  supabaseUrl: "",
+  supabaseUrl: "https://jvflxckjapolxueicaib.supabase.co",
   supabaseAnonKey: "",
 
   // Ab diesem Anteil sicher beantworteter Fragen wird die nächste Stufe freigeschaltet.
