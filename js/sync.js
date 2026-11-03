@@ -11,7 +11,9 @@ async function rpc(fn, args) {
     headers: {
       "Content-Type": "application/json",
       apikey: CONFIG.supabaseAnonKey,
-      Authorization: `Bearer ${CONFIG.supabaseAnonKey}`,
+      // Alte „anon“-Schlüssel sind JWTs und gehören zusätzlich in den Authorization-Header,
+      // neue „publishable“-Schlüssel (sb_publishable_…) nur in den apikey-Header.
+      ...(CONFIG.supabaseAnonKey.startsWith("eyJ") ? { Authorization: `Bearer ${CONFIG.supabaseAnonKey}` } : {}),
     },
     body: JSON.stringify(args),
   });
