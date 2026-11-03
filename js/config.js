@@ -8,7 +8,7 @@ export const CONFIG = {
   appUrl: "https://ajzeytin-beep.github.io/DRK-Loppersum-/",
 
   supabaseUrl: "https://jvflxckjapolxueicaib.supabase.co",
-  supabaseAnonKey: "",
+  supabaseAnonKey: "sb_publishable_CVgIZwVmTOzZQyrvXimp3Q_IvUd5T4x",
 
   // Ab diesem Anteil sicher beantworteter Fragen wird die nächste Stufe freigeschaltet.
   unlockThreshold: 0.8,
