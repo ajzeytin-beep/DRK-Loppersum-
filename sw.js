@@ -1,6 +1,6 @@
 // Service Worker: macht die App offline nutzbar.
 // Bei Änderungen an Fragen oder Code die Versionsnummer erhöhen.
-const CACHE = "sani-trainer-v9";
+const CACHE = "sani-trainer-v10";
 const ASSETS = [
   "./",
   "index.html",
@@ -16,6 +16,8 @@ const ASSETS = [
   "js/vendor/qrcode.js",
   "data/meta.json",
   "data/cards.json",
+  "data/protokoll.json",
+  "js/protocol.js",
   "data/level1.json",
   "data/level2.json",
   "data/level3.json",

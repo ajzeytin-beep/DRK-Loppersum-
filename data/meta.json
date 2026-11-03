@@ -84,6 +84,11 @@
       "id": "kommunikation",
       "label": "Übergabe & Funk",
       "short": "Komm"
+    },
+    {
+      "id": "protokoll",
+      "label": "SAN-Protokoll & Dokumentation",
+      "short": "Prot"
     }
   ],
   "levels": [
@@ -115,6 +120,7 @@
   ],
   "sources": {
     "skript": "Lehrgangsskript",
-    "memo": "SAN-Memo"
+    "memo": "SAN-Memo",
+    "protokoll": "SAN-Protokoll"
   }
 }

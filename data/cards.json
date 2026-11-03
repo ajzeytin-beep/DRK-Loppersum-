@@ -127,6 +127,48 @@
       "note": "Kann je nach Ortsverband, Landkreis oder NUN-Algorithmus abweichen."
     },
     {
+      "title": "SAN-Protokoll ausfüllen",
+      "rows": [
+        [
+          "Personendaten",
+          "Name, Geburtsdatum, Anschrift – DSGVO-Infoblatt aushändigen und ankreuzen"
+        ],
+        [
+          "Einsatzdaten",
+          "Datum, Uhrzeit Aufnahme und Übergabe/Entlassung, Einsatzort, Namen und Qualifikation der Einsatzkräfte"
+        ],
+        [
+          "1. Minute",
+          "Lage/Auffindesituation, bedrohliche Blutung (mit Uhrzeit Blutstillung), Reanimation (Beginn/Ende), Atemwegssicherung"
+        ],
+        [
+          "Beobachtungen",
+          "A/B, C, D, E – je „unauffällig“ oder Befunde ankreuzen, Blutzucker-Messwert eintragen"
+        ],
+        [
+          "Messwerte",
+          "AF, Puls, RR, SpO₂, Temperatur – immer mit Uhrzeit, mehrfach messen"
+        ],
+        [
+          "Maßnahmen",
+          "O₂ (l/min, Maske/Rückatmung), Lagerung, Wärmeerhalt, Verband, Immobilisation"
+        ],
+        [
+          "Nachforderung",
+          "bei wem (Leitstelle/Einsatzleitung), Uhrzeit, welche Kräfte (RD, NA, Polizei …)"
+        ],
+        [
+          "Übergabe",
+          "an wen, Uhrzeit, Transport nach; Zustand: verbessert/unverändert/verschlechtert"
+        ],
+        [
+          "Verzicht",
+          "Aufklären, Erklärung unterschreiben lassen (Minderjährige: Erziehungsberechtigte, Verweigerung: Zeuge), Durchschlag aushändigen"
+        ]
+      ],
+      "note": "Das Protokoll ist vertraulich. Ein Exemplar geht mit dem Patienten an den Rettungsdienst, die Ablage regelt euer Verband."
+    },
+    {
       "title": "SAMPLERS-Anamnese",
       "rows": [
         [

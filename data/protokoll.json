@@ -1,0 +1,762 @@
+{
+  "form": [
+    {
+      "id": "erste",
+      "title": "1. Minute",
+      "tone": "red",
+      "groups": [
+        {
+          "label": "Blutung",
+          "boxes": [
+            [
+              "blutung",
+              "Bedrohliche Blutung"
+            ],
+            [
+              "druckverband",
+              "Druckverband"
+            ],
+            [
+              "notfallverband",
+              "Notfall-Verbandpäckchen"
+            ],
+            [
+              "tourniquet",
+              "Tourniquet"
+            ],
+            [
+              "beckenschlinge",
+              "Beckenschlinge"
+            ]
+          ],
+          "time": [
+            "t_blutstillung",
+            "Blutstillung (Uhrzeit)"
+          ]
+        },
+        {
+          "label": "Reanimation",
+          "boxes": [
+            [
+              "rea",
+              "Reanimation"
+            ],
+            [
+              "rea_aed",
+              "AED"
+            ],
+            [
+              "rea_bm",
+              "Beutel-Maske-Beatmung"
+            ],
+            [
+              "rea_sga",
+              "Beatmung über SGA"
+            ]
+          ]
+        },
+        {
+          "label": "Atemwegssicherung",
+          "boxes": [
+            [
+              "guedel",
+              "Guedel-Tubus"
+            ],
+            [
+              "wendl",
+              "Wendl-Tubus"
+            ],
+            [
+              "absaugung",
+              "Absaugung"
+            ],
+            [
+              "seitenlage",
+              "Seitenlage"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ab",
+      "title": "A/B – Airway | Breathing",
+      "tone": "blue",
+      "groups": [
+        {
+          "label": "",
+          "boxes": [
+            [
+              "ab_unauf",
+              "A/B unauffällig"
+            ],
+            [
+              "ab_zyanose",
+              "Zyanose"
+            ],
+            [
+              "ab_atemnot",
+              "Atemnot"
+            ],
+            [
+              "ab_schwellung",
+              "Schwellung im Mund/Rachen"
+            ],
+            [
+              "ab_bolus",
+              "Bolusaspiration"
+            ],
+            [
+              "ab_hypervent",
+              "Hyperventilation"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c",
+      "title": "C – Circulation",
+      "tone": "blue",
+      "groups": [
+        {
+          "label": "",
+          "boxes": [
+            [
+              "c_unauf",
+              "Unauffällig"
+            ]
+          ]
+        },
+        {
+          "label": "Rekap-Zeit > 2 s",
+          "boxes": [
+            [
+              "rekap_ja",
+              "ja"
+            ],
+            [
+              "rekap_nein",
+              "nein"
+            ]
+          ]
+        },
+        {
+          "label": "Puls",
+          "boxes": [
+            [
+              "puls_flach",
+              "flach"
+            ],
+            [
+              "puls_normal",
+              "normal"
+            ],
+            [
+              "puls_kraeftig",
+              "kräftig"
+            ],
+            [
+              "puls_regel",
+              "regelmäßig"
+            ],
+            [
+              "puls_unregel",
+              "unregelmäßig"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "boxes": [
+            [
+              "c_kreislauf",
+              "Kreislaufstörung"
+            ],
+            [
+              "c_brust",
+              "Brustschmerz"
+            ],
+            [
+              "c_schock",
+              "Schockzeichen"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d",
+      "title": "D – Disability",
+      "tone": "blue",
+      "groups": [
+        {
+          "label": "",
+          "boxes": [
+            [
+              "d_unauf",
+              "Unauffällig"
+            ]
+          ]
+        },
+        {
+          "label": "WASB",
+          "boxes": [
+            [
+              "wasb_w",
+              "Wach"
+            ],
+            [
+              "wasb_a",
+              "Ansprache"
+            ],
+            [
+              "wasb_s",
+              "Schmerzreiz"
+            ],
+            [
+              "wasb_b",
+              "Bewusstlos"
+            ]
+          ]
+        },
+        {
+          "label": "FAST: Beeinträchtigung von",
+          "boxes": [
+            [
+              "fast_face",
+              "Face"
+            ],
+            [
+              "fast_arm",
+              "Arm"
+            ],
+            [
+              "fast_speech",
+              "Speech"
+            ]
+          ]
+        },
+        {
+          "label": "",
+          "boxes": [
+            [
+              "d_desor",
+              "Desorientiert"
+            ],
+            [
+              "d_vergift",
+              "Verdacht auf Vergiftung"
+            ],
+            [
+              "d_hypo",
+              "Unterzuckerung"
+            ]
+          ],
+          "number": [
+            "bz",
+            "Messwert Blutzucker (mg/dl)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "e",
+      "title": "E – Exposure | Environment",
+      "tone": "blue",
+      "groups": [
+        {
+          "label": "",
+          "boxes": [
+            [
+              "e_unauf",
+              "Unauffällig"
+            ],
+            [
+              "e_befund",
+              "Befund Ganzkörperuntersuchung (Verletzungen, DMS)"
+            ],
+            [
+              "e_sample",
+              "Befund SAMPLE"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "massnahmen",
+      "title": "Maßnahmen",
+      "tone": "blue",
+      "groups": [
+        {
+          "label": "Sauerstoff",
+          "boxes": [
+            [
+              "o2",
+              "O₂-Gabe"
+            ],
+            [
+              "o2_rueck",
+              "Rückatmung"
+            ],
+            [
+              "o2_maske",
+              "mit Maske"
+            ]
+          ],
+          "number": [
+            "o2_lmin",
+            "l/min"
+          ]
+        },
+        {
+          "label": "Lagerung",
+          "boxes": [
+            [
+              "lag_flach",
+              "Flachlagerung"
+            ],
+            [
+              "lag_okh",
+              "Oberkörper-Hochlagerung"
+            ],
+            [
+              "lag_schock",
+              "Schocklagerung"
+            ],
+            [
+              "lag_beine",
+              "Lagerung mit angezogenen Beinen"
+            ],
+            [
+              "lag_andere",
+              "Andere Lagerung"
+            ]
+          ]
+        },
+        {
+          "label": "Versorgung",
+          "boxes": [
+            [
+              "waerme",
+              "Wärmeerhalt"
+            ],
+            [
+              "wunde",
+              "Wundversorgung/Verband"
+            ]
+          ]
+        },
+        {
+          "label": "Immobilisation",
+          "boxes": [
+            [
+              "hws",
+              "HWS-Stützkragen"
+            ],
+            [
+              "spineboard",
+              "Spineboard"
+            ],
+            [
+              "vakuummatratze",
+              "Vakuummatratze"
+            ],
+            [
+              "schaufeltrage",
+              "Schaufeltrage"
+            ],
+            [
+              "vs_arm",
+              "Vakuumschiene Arm"
+            ],
+            [
+              "vs_bein",
+              "Vakuumschiene Bein"
+            ],
+            [
+              "alu",
+              "Alu-Polster-Schiene"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nachforderung",
+      "title": "Nachforderung",
+      "tone": "yellow",
+      "groups": [
+        {
+          "label": "Nachgefordert bei",
+          "boxes": [
+            [
+              "nf_leitstelle",
+              "Leitstelle"
+            ],
+            [
+              "nf_einsatzleitung",
+              "Einsatzleitung"
+            ],
+            [
+              "nf_andere",
+              "Andere"
+            ]
+          ]
+        },
+        {
+          "label": "Nachgeforderte Kräfte",
+          "boxes": [
+            [
+              "k_transport",
+              "Transporttrupp"
+            ],
+            [
+              "k_rd",
+              "Rettungsdienst"
+            ],
+            [
+              "k_na",
+              "Notarzt/Notärztin"
+            ],
+            [
+              "k_polizei",
+              "Polizei"
+            ],
+            [
+              "k_nfs",
+              "Notfallseelsorge"
+            ],
+            [
+              "k_andere",
+              "Andere"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "uebergabe",
+      "title": "Übergabe",
+      "tone": "yellow",
+      "groups": [
+        {
+          "label": "Transport",
+          "boxes": [
+            [
+              "kein_transport",
+              "Kein Transport"
+            ],
+            [
+              "kt_nicht_notwendig",
+              "… weil nicht notwendig"
+            ],
+            [
+              "kt_nicht_moeglich",
+              "… weil nicht möglich"
+            ]
+          ]
+        },
+        {
+          "label": "Zustand",
+          "boxes": [
+            [
+              "z_verbessert",
+              "Verbessert"
+            ],
+            [
+              "z_unveraendert",
+              "Unverändert"
+            ],
+            [
+              "z_verschlechtert",
+              "Verschlechtert"
+            ],
+            [
+              "z_verstorben",
+              "Verstorben"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "erklaerung",
+      "title": "Erklärung – Verzicht auf weitere Versorgung",
+      "tone": "grey",
+      "groups": [
+        {
+          "label": "Unterzeichnende Person",
+          "boxes": [
+            [
+              "erk_patient",
+              "Patient/-in"
+            ],
+            [
+              "erk_zeuge",
+              "Zeuge/Zeugin (bei Unterschriftsverweigerung)"
+            ],
+            [
+              "erk_erzb",
+              "Erziehungsberechtigte Person (bei Minderjährigen)"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "p-festzelt",
+      "title": "Brustschmerz im Festzelt",
+      "scenario": "Dorffest in Loppersum, 18:40 Uhr. Ein 61-jähriger Mann sitzt blass am Tresen und klagt seit 15 Minuten über starken Druck auf der Brust, der in den linken Arm ausstrahlt. Er schwitzt kalt, ist wach und voll orientiert. Atemwege frei, er bekommt gut Luft. Puls gut tastbar, normal kräftig und regelmäßig, Rekap-Zeit unter 2 Sekunden. FAST unauffällig. Keine Verletzungen. SAMPLE: bekannter Bluthochdruck, nimmt Ramipril, keine Allergien.",
+      "steps": [
+        "18:42 Uhr: AF 20/min, Puls 104/min, RR 165/95 mmHg, SpO₂ 94 %, Blutzucker 112 mg/dl.",
+        "Ihr lagert ihn mit erhöhtem Oberkörper und gebt nach eurer Regelung 4 l/min Sauerstoff über die Nasenbrille.",
+        "Über die Einsatzleitung fordert ihr Rettungsdienst und Notarzt nach.",
+        "18:52 Uhr: AF 18/min, Puls 98/min, RR 150/90 mmHg, SpO₂ 96 %.",
+        "18:58 Uhr Übergabe an RTW und Notarzt. Sein Zustand ist im Wesentlichen gleich geblieben."
+      ],
+      "required": [
+        "ab_unauf",
+        "rekap_nein",
+        "puls_normal",
+        "puls_regel",
+        "c_brust",
+        "wasb_w",
+        "e_befund",
+        "e_sample",
+        "o2",
+        "lag_okh",
+        "nf_einsatzleitung",
+        "k_rd",
+        "k_na",
+        "z_unveraendert"
+      ],
+      "optional": [
+        "d_unauf",
+        "e_unauf"
+      ],
+      "numbers": {
+        "bz": 112,
+        "o2_lmin": 4
+      },
+      "vitals": [
+        {
+          "time": "18:42",
+          "af": 20,
+          "puls": 104,
+          "rr": "165/95",
+          "spo2": 94
+        },
+        {
+          "time": "18:52",
+          "af": 18,
+          "puls": 98,
+          "rr": "150/90",
+          "spo2": 96
+        }
+      ],
+      "model": {
+        "lage": "Dorffest, Festzelt. Pat. sitzt am Tresen, blass, kaltschweißig, hält sich die Brust.",
+        "diagnose": "Verdacht auf akutes Koronarsyndrom (Brustschmerz mit Ausstrahlung in den linken Arm)",
+        "uebergabe_an": "RTW + Notarzt, 18:58 Uhr"
+      },
+      "notes": {
+        "c": "Brustschmerz ist ein C-Problem – deshalb ist C nicht „unauffällig“, auch wenn Puls und Rekap normal sind.",
+        "massnahmen": "Bei Nasenbrille werden weder „Rückatmung“ noch „mit Maske“ angekreuzt – nur O₂-Gabe mit 4 l/min.",
+        "uebergabe": "Kein „Kein Transport“ – der Patient wird vom Rettungsdienst übernommen."
+      }
+    },
+    {
+      "id": "p-kohlfahrt",
+      "title": "Kohlfahrt: Mann im Graben",
+      "scenario": "Januar, 2 °C, Nieselregen. Bei einer Kohlfahrt bei Loppersum liegt ein ca. 40-jähriger Mann im Graben. Ihr bergt ihn auf den Weg. Er reagiert nur auf Schmerzreiz, atmet normal, starker Alkoholgeruch. Die Kleidung ist durchnässt, die Haut kalt, die Rekap-Zeit über 2 Sekunden. Puls flach und regelmäßig. Bodycheck: keine Verletzungen erkennbar. SAMPLE über Freunde: viel Korn getrunken, sonst gesund.",
+      "steps": [
+        "Ihr bringt ihn in die stabile Seitenlage und schützt ihn mit Decken und Rettungsdecke vor weiterer Auskühlung.",
+        "13:15 Uhr: AF 14/min, Puls 58/min, RR 105/65 mmHg, SpO₂ 93 %, Temperatur 34,8 °C, Blutzucker 48 mg/dl.",
+        "Ihr gebt nach Lehrgang 4 l/min Sauerstoff und fordert direkt über die Leitstelle (112) Rettungsdienst und Notarzt an.",
+        "13:25 Uhr: AF 14/min, Puls 60/min, RR 110/70 mmHg, SpO₂ 95 %, Temperatur 34,9 °C.",
+        "13:31 Uhr Übergabe an RTW und Notarzt, Zustand unverändert."
+      ],
+      "required": [
+        "seitenlage",
+        "ab_unauf",
+        "rekap_ja",
+        "puls_flach",
+        "puls_regel",
+        "wasb_s",
+        "d_vergift",
+        "d_hypo",
+        "e_befund",
+        "e_sample",
+        "o2",
+        "waerme",
+        "nf_leitstelle",
+        "k_rd",
+        "k_na",
+        "z_unveraendert"
+      ],
+      "optional": [
+        "c_kreislauf",
+        "c_schock",
+        "absaugung"
+      ],
+      "numbers": {
+        "bz": 48,
+        "o2_lmin": 4
+      },
+      "vitals": [
+        {
+          "time": "13:15",
+          "af": 14,
+          "puls": 58,
+          "rr": "105/65",
+          "spo2": 93,
+          "temp": 34.8
+        },
+        {
+          "time": "13:25",
+          "af": 14,
+          "puls": 60,
+          "rr": "110/70",
+          "spo2": 95,
+          "temp": 34.9
+        }
+      ],
+      "model": {
+        "lage": "Feldweg bei Loppersum, Kohlfahrt. Pat. liegt im wassergefüllten Graben, durchnässt, Alkoholgeruch.",
+        "diagnose": "Bewusstseinsstörung bei Unterzuckerung, Alkoholintoxikation und Unterkühlung",
+        "uebergabe_an": "RTW + Notarzt, 13:31 Uhr"
+      },
+      "notes": {
+        "erste": "Die stabile Seitenlage gehört im Protokoll zur Atemwegssicherung in der 1. Minute.",
+        "d": "WASB „Schmerzreiz“, Alkohol = Verdacht auf Vergiftung, BZ 48 mg/dl = Unterzuckerung. Den Messwert unbedingt eintragen.",
+        "nachforderung": "Bei einer Kohlfahrt gibt es meist keine Einsatzleitung – nachgefordert wird über die Leitstelle (112)."
+      }
+    },
+    {
+      "id": "p-erntefest",
+      "title": "Erntefestumzug: spritzende Blutung",
+      "scenario": "Erntefestumzug, 15:05 Uhr. Ein Helfer ist zwischen Trecker-Anhänger und Absperrgitter geraten. Tiefe Wunde am rechten Oberschenkel, hellrotes Blut spritzt pulsierend. Er ist wach und orientiert, atmet schnell, Atemwege frei. Haut blass und kaltschweißig, Puls flach und schnell, aber regelmäßig, Rekap-Zeit über 2 Sekunden.",
+      "steps": [
+        "Ihr drückt sofort ab und legt einen Druckverband an – er blutet durch. Ihr legt ein Tourniquet am Oberschenkel an. Um 15:07 Uhr steht die Blutung.",
+        "Lagerung flach, Wärmeerhalt mit Rettungsdecke. Nach Lehrgang: 15 l/min Sauerstoff über eine Maske mit Reservoirbeutel.",
+        "Über die Einsatzleitung werden Rettungsdienst und Notarzt nachgefordert.",
+        "15:10 Uhr: AF 26/min, Puls 128/min, RR 95/60 mmHg, SpO₂ 95 %.",
+        "15:18 Uhr: AF 22/min, Puls 116/min, RR 105/65 mmHg, SpO₂ 98 %. Bodycheck: keine weiteren Verletzungen, DMS am Fuß vor Tourniquet unauffällig. SAMPLE erhoben.",
+        "15:22 Uhr Übergabe an RTW und Notarzt. Der Zustand hat sich leicht gebessert."
+      ],
+      "required": [
+        "blutung",
+        "druckverband",
+        "tourniquet",
+        "ab_unauf",
+        "rekap_ja",
+        "puls_flach",
+        "puls_regel",
+        "c_schock",
+        "wasb_w",
+        "e_befund",
+        "e_sample",
+        "o2",
+        "o2_maske",
+        "lag_flach",
+        "waerme",
+        "wunde",
+        "nf_einsatzleitung",
+        "k_rd",
+        "k_na",
+        "z_verbessert"
+      ],
+      "optional": [
+        "c_kreislauf",
+        "d_unauf",
+        "ab_atemnot",
+        "o2_rueck"
+      ],
+      "numbers": {
+        "o2_lmin": 15
+      },
+      "times": {
+        "t_blutstillung": "15:07"
+      },
+      "vitals": [
+        {
+          "time": "15:10",
+          "af": 26,
+          "puls": 128,
+          "rr": "95/60",
+          "spo2": 95
+        },
+        {
+          "time": "15:18",
+          "af": 22,
+          "puls": 116,
+          "rr": "105/65",
+          "spo2": 98
+        }
+      ],
+      "model": {
+        "lage": "Erntefestumzug, Pat. zwischen Anhänger und Absperrgitter eingeklemmt, spritzende Blutung am rechten Oberschenkel.",
+        "diagnose": "Arterielle Blutung rechter Oberschenkel mit Schockzeichen, Tourniquet seit 15:07 Uhr",
+        "uebergabe_an": "RTW + Notarzt, 15:22 Uhr"
+      },
+      "notes": {
+        "erste": "Bedrohliche Blutung, Druckverband UND Tourniquet ankreuzen – und die Uhrzeit der Blutstillung eintragen. Sie ist für die Klinik entscheidend.",
+        "massnahmen": "Bei Beinverletzung keine Schocklagerung (Beine hoch), sondern Flachlagerung. Sauerstoff: Literzahl eintragen und „mit Maske“ ankreuzen – wie ihr „Rückatmung“ verwendet, legt euer Ausbilder fest.",
+        "c": "Blass, kaltschweißig, schneller flacher Puls, Rekap > 2 s = Schockzeichen."
+      }
+    },
+    {
+      "id": "p-fussball",
+      "title": "Fußballturnier: Minderjähriger lehnt ab",
+      "scenario": "Jugend-Fußballturnier, 11:20 Uhr. Ein 16-jähriger Spieler ist umgeknickt. Das rechte Sprunggelenk ist geschwollen und druckschmerzhaft, keine offene Wunde, DMS am Fuß unauffällig. Sonst ist alles unauffällig: A/B, C und D ohne Befund. SAMPLE erhoben, keine Vorerkrankungen.",
+      "steps": [
+        "11:22 Uhr: AF 16/min, Puls 92/min, RR 125/75 mmHg, SpO₂ 99 %.",
+        "Ihr stellt das Sprunggelenk mit einer Vakuumschiene ruhig, lagert das Bein hoch und kühlt.",
+        "Ihr empfehlt eine Röntgenkontrolle mit dem Rettungsdienst. Die Mutter ist vor Ort und möchte ihren Sohn lieber selbst in die Notaufnahme fahren.",
+        "Ihr klärt beide über die Risiken auf. Die Mutter unterschreibt die Erklärung zum Verzicht auf weitere Versorgung und erhält einen Durchschlag.",
+        "11:35 Uhr Übergabe an die Mutter, Zustand unverändert. Kein Transport durch den Sanitätsdienst."
+      ],
+      "required": [
+        "ab_unauf",
+        "c_unauf",
+        "d_unauf",
+        "e_befund",
+        "e_sample",
+        "vs_bein",
+        "kein_transport",
+        "z_unveraendert",
+        "erk_erzb"
+      ],
+      "optional": [
+        "lag_andere",
+        "rekap_nein",
+        "puls_normal",
+        "puls_regel",
+        "wasb_w"
+      ],
+      "numbers": {},
+      "vitals": [
+        {
+          "time": "11:22",
+          "af": 16,
+          "puls": 92,
+          "rr": "125/75",
+          "spo2": 99
+        }
+      ],
+      "model": {
+        "lage": "Jugend-Fußballturnier, Spielfeldrand. Pat. sitzt, hält das rechte Sprunggelenk.",
+        "diagnose": "Verdacht auf Distorsion/Fraktur rechtes Sprunggelenk",
+        "uebergabe_an": "Mutter (fährt selbst in die Notaufnahme), 11:35 Uhr"
+      },
+      "notes": {
+        "uebergabe": "„Kein Transport“ ankreuzen – aber weder „nicht notwendig“ (ihr empfehlt ja eine Abklärung) noch „nicht möglich“. Den Grund unter „Bemerkung“ notieren.",
+        "erklaerung": "Bei Minderjährigen unterschreibt die erziehungsberechtigte Person – und bekommt einen Durchschlag."
+      }
+    }
+  ]
+}

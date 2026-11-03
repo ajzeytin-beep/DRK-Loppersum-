@@ -19,6 +19,7 @@ Nach dem ersten Aufruf funktioniert sie auch **offline**.
 - **Karteikasten-Wiederholung:** Falsche Antworten kommen sofort wieder, richtige in wachsenden Abständen.
 - **Dashboard** mit Gesamtfortschritt, Trefferquote, fälligen Wiederholungen und den eigenen Schwachstellen. Jedes Thema lässt sich gezielt üben.
 - **Prüfungssimulation:** Zeitlimit, Bestehensgrenze, Auswertung am Ende.
+- **SAN-Protokoll üben:** Einsatz lesen, digitale Übungsversion des SAN-Protokolls ausfüllen (Kreuze, Messwerte, Zeiten), danach Vergleich mit der Musterlösung und Hinweise je Abschnitt. Dazu Fragen und eine Merkkarte zum Protokoll.
 - **Merkkarten:** erste Minute, xABCDE, Vitalwerte, Sauerstoffgabe, SAMPLERS, ZOPS & GIRL, Bodycheck, Tourniquet, Beckenschlinge, BE-FAST, Lagerungen, Reanimation, Neunerregel, Nummern.
 - **Ausbilder-Bereich:** automatische Übersicht über den Lernfortschritt aller Teilnehmenden, schwächste Themen, häufigste Fehler, Heatmap und CSV-Export.
 
@@ -32,6 +33,7 @@ Alle Fragen liegen als JSON im Ordner `data/`. Zum Ändern braucht es keine Prog
 | `data/level1.json` … `level3.json` | Einzelfragen |
 | `data/level4.json` | Fallbeispiele |
 | `data/cards.json` | Merkkarten |
+| `data/protokoll.json` | Protokoll-Übung: Aufbau des Bogens und Einsätze mit Musterlösung (`required` = muss angekreuzt sein, `optional` = darf angekreuzt sein) |
 
 Beispiel für eine Frage:
 

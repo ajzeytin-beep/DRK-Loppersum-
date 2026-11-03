@@ -5,6 +5,7 @@ import { renderItem, answerText, esc, shuffle } from "./quiz.js";
 import * as sync from "./sync.js";
 import { renderInstructor, isAdmin, adminLogin as adminLoginRequest, adminLogout } from "./instructor.js";
 import { icon } from "./icons.js";
+import { renderProtocolList, renderProtocolExercise } from "./protocol.js";
 
 const view = document.getElementById("view");
 let timer = null;
@@ -158,6 +159,8 @@ const ROUTES = [
   [/^#\/start(?:\/(teilnehmer|ausbilder))?$/, (m) => loginView(m[1] || "teilnehmer")],
   [/^#\/abmelden$/, () => logoutAll()],
   [/^#\/lernen\/([1-4])$/, (m) => learnLevel(Number(m[1]))],
+  [/^#\/protokoll$/, () => renderProtocolList(view)],
+  [/^#\/protokoll\/([\w-]+)$/, (m) => renderProtocolExercise(view, m[1])],
   [/^#\/thema\/([\w-]+)$/, (m) => topicTraining(m[1])],
   [/^#\/wiederholen$/, () => review()],
   [/^#\/pruefung$/, () => examIntro()],
@@ -500,7 +503,15 @@ function dashboard() {
     </section>
 
     <h2 class="section-title">Dein Lernpfad</h2>
-    <section class="levels">${DATA.levels.map(levelCard).join("")}</section>
+    <section class="levels">${DATA.levels.map(levelCard).join("")}
+      <a class="level-card protocol-card" href="#/protokoll">
+        <div class="level-num">${icon("list")}</div>
+        <div class="level-body">
+          <h3>SAN-Protokoll üben</h3><p>Einsätze lesen, Protokoll ausfüllen und mit der Musterlösung vergleichen.</p>
+          <div class="level-foot"><span>${DATA.protocol.scenarios.filter((x) => p[x.id]?.last === true).length} / ${DATA.protocol.scenarios.length} sicher</span><strong>${icon("play", "icon icon-sm")}</strong></div>
+        </div>
+      </a>
+    </section>
 
     <div class="grid-2">
       <section class="card">
@@ -737,7 +748,8 @@ function startExam() {
 
 function cardsView() {
   view.innerHTML = `
-    <div class="page-head"><h1>Merkkarten</h1><p class="muted">Die wichtigsten Werte und Schemata zum schnellen Nachschlagen.</p></div>
+    <div class="page-head"><h1>Merkkarten</h1><p class="muted">Die wichtigsten Werte und Schemata zum schnellen Nachschlagen.</p>
+      ${store.getState().profile ? `<a class="btn btn-secondary btn-sm" href="#/protokoll">${icon("list")} SAN-Protokoll üben</a>` : ""}</div>
     <section class="memo-grid">${DATA.cards.map((c) => `
       <article class="card memo">
         <h2>${esc(c.title)}</h2>

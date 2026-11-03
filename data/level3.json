@@ -1405,6 +1405,168 @@
         3
       ],
       "explanation": "Außerdem Verbände an Hand, Ellbogen und Schulter. Das Dreiecktuch ist das „Schweizer Taschenmesser“ im Sanitätsrucksack."
+    },
+    {
+      "id": "pr-tourniquet",
+      "topic": "protokoll",
+      "type": "multi",
+      "source": "protokoll",
+      "question": "Du hast ein Tourniquet angelegt. Was gehört ins SAN-Protokoll?",
+      "options": [
+        "„Bedrohliche Blutung“ und „Tourniquet“ ankreuzen",
+        "Uhrzeit der Blutstillung eintragen",
+        "Ggf. auch den vorherigen Druckverband ankreuzen",
+        "Die Uhrzeit nur mündlich weitergeben"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explanation": "Die Uhrzeit gehört zusätzlich auf das Tourniquet bzw. die Haut daneben – doppelt hält besser."
+    },
+    {
+      "id": "pr-messwerte",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Warum trägst du die Messwerte mehrfach mit Uhrzeit ein?",
+      "options": [
+        "Damit der Verlauf erkennbar ist – besser oder schlechter?",
+        "Weil das Formular sonst ungültig ist",
+        "Damit der Patient die Werte vergleichen kann",
+        "Das ist nicht nötig, ein Messwert reicht"
+      ],
+      "answer": 0,
+      "explanation": "Ein einzelner Wert ist eine Momentaufnahme. Erst die Reihe zeigt, ob deine Maßnahmen wirken oder sich der Zustand verschlechtert."
+    },
+    {
+      "id": "pr-o2",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Du gibst Sauerstoff. Was muss im SAN-Protokoll bei „O₂-Gabe“ immer stehen?",
+      "options": [
+        "Die Flussmenge in l/min und – falls verwendet – die Maske",
+        "Nur ein Kreuz bei „O₂-Gabe“",
+        "Der Füllstand der Sauerstoffflasche",
+        "Die Seriennummer des Druckminderers"
+      ],
+      "answer": 0,
+      "explanation": "Ohne Literzahl weiß der Rettungsdienst nicht, wie viel Sauerstoff der Patient bekommen hat. Wie ihr die Felder „mit Maske“ und „Rückatmung“ verwendet, legt euer Ausbilder fest."
+    },
+    {
+      "id": "pr-bz",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Du hast einen Blutzucker von 48 mg/dl gemessen. Wie dokumentierst du das?",
+      "options": [
+        "Bei D „Unterzuckerung“ ankreuzen und den Messwert eintragen",
+        "Nur „Unterzuckerung“ ankreuzen",
+        "Bei C eintragen",
+        "Nur mündlich an den Rettungsdienst weitergeben"
+      ],
+      "answer": 0,
+      "explanation": "Für den Rettungsdienst zählt der konkrete Wert – „Unterzuckerung“ allein sagt nicht, wie stark."
+    },
+    {
+      "id": "pr-nachforderung",
+      "topic": "protokoll",
+      "type": "multi",
+      "source": "protokoll",
+      "question": "Was dokumentierst du bei der Nachforderung?",
+      "options": [
+        "Bei wem nachgefordert wurde (Leitstelle, Einsatzleitung …)",
+        "Die Uhrzeit der Nachforderung",
+        "Welche Kräfte nachgefordert wurden (RD, Notarzt, Polizei …)",
+        "Wer die Nachforderung genehmigt hat"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explanation": "Damit ist später nachvollziehbar, wann Hilfe angefordert wurde – wichtig bei langen Wartezeiten."
+    },
+    {
+      "id": "pr-zustand",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Bei der Übergabe ist der Patient wacher, Puls und Blutdruck haben sich normalisiert. Was kreuzt du bei „Zustand“ an?",
+      "options": [
+        "Verbessert",
+        "Unverändert",
+        "Verschlechtert",
+        "Nichts – das beurteilt der Rettungsdienst"
+      ],
+      "answer": 0,
+      "explanation": "Der Zustand bei Übergabe zeigt, wie sich der Patient unter eurer Versorgung entwickelt hat."
+    },
+    {
+      "id": "pr-verzicht",
+      "topic": "protokoll",
+      "type": "multi",
+      "source": "protokoll",
+      "question": "Ein einsichtsfähiger Erwachsener lehnt den empfohlenen Transport ab. Was ist richtig?",
+      "options": [
+        "Über die Risiken aufklären",
+        "Die Erklärung „Verzicht auf weitere Versorgung“ unterschreiben lassen",
+        "Einen Durchschlag des Protokolls aushändigen",
+        "„Kein Transport, weil nicht notwendig“ ankreuzen"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explanation": "„Nicht notwendig“ wäre falsch – ihr habt den Transport ja empfohlen. Den Grund (Ablehnung) notierst du unter „Bemerkung“."
+    },
+    {
+      "id": "pr-verweigert",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Der Patient lehnt den Transport ab, will aber auch nichts unterschreiben. Was tust du?",
+      "options": [
+        "Eine Zeugin/einen Zeugen unterschreiben lassen und „Zeuge/Zeugin (bei Unterschriftsverweigerung)“ ankreuzen",
+        "Selbst für den Patienten unterschreiben",
+        "Das Protokoll wegwerfen",
+        "Den Patienten festhalten, bis er unterschreibt"
+      ],
+      "answer": 0,
+      "explanation": "Der Zeuge bestätigt, dass aufgeklärt wurde und der Patient abgelehnt hat. Alles sorgfältig dokumentieren."
+    },
+    {
+      "id": "pr-minderjaehrig",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Wer unterschreibt die Verzichtserklärung bei einem 15-jährigen Patienten?",
+      "options": [
+        "Eine erziehungsberechtigte bzw. erziehungsbeauftragte Person",
+        "Der 15-Jährige allein",
+        "Der Trainer ohne Rücksprache",
+        "Niemand – Minderjährige dürfen nicht ablehnen"
+      ],
+      "answer": 0,
+      "explanation": "Bei Minderjährigen entscheiden die Erziehungsberechtigten. Bei Vertretung (z. B. Trainerin mit Auftrag der Eltern) Name und Funktion ergänzen."
+    },
+    {
+      "id": "pr-fortsetzung",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Bei einem langen Einsatz reicht der Platz für die Messwerte nicht aus. Was tust du?",
+      "options": [
+        "Ein zusätzliches Protokoll nehmen und „Fortsetzung auf zusätzlichem Protokoll“ ankreuzen",
+        "Werte weglassen",
+        "Die alten Werte durchstreichen",
+        "Auf die Rückseite eines Flyers schreiben"
+      ],
+      "answer": 0,
+      "explanation": "So bleibt der ganze Verlauf zusammen und der Rettungsdienst weiß, dass es ein Folgeblatt gibt."
     }
   ]
 }

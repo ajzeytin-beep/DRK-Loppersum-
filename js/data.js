@@ -1,5 +1,5 @@
 // Lädt Themen, Stufen, Fragen und Merkkarten aus /data.
-export const DATA = { topics: [], topicMap: {}, levels: [], items: [], byId: {}, cards: [], sources: {} };
+export const DATA = { topics: [], topicMap: {}, levels: [], items: [], byId: {}, cards: [], sources: {}, protocol: { form: [], scenarios: [] } };
 
 const LEVEL_FILES = ["level1", "level2", "level3", "level4"];
 
@@ -8,11 +8,12 @@ export async function loadData() {
     if (!r.ok) throw new Error(`data/${f}.json konnte nicht geladen werden`);
     return r.json();
   });
-  const [meta, cards, ...levels] = await Promise.all([get("meta"), get("cards"), ...LEVEL_FILES.map(get)]);
+  const [meta, cards, protocol, ...levels] = await Promise.all([get("meta"), get("cards"), get("protokoll"), ...LEVEL_FILES.map(get)]);
   DATA.topics = meta.topics;
   DATA.levels = meta.levels;
   DATA.cards = cards.cards;
   DATA.sources = meta.sources || {};
+  DATA.protocol = protocol;
   meta.topics.forEach((t) => { DATA.topicMap[t.id] = t; });
   for (const lv of levels) {
     for (const item of lv.items) {

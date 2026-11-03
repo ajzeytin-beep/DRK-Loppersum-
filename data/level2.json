@@ -828,6 +828,114 @@
       ],
       "answer": 0,
       "explanation": "Beispiel: „Sauerstoff 15 l/min – CAVE: COPD“ heißt: Vorsicht bei COPD-Patienten."
+    },
+    {
+      "id": "pr-zweck",
+      "topic": "protokoll",
+      "type": "multi",
+      "source": "protokoll",
+      "question": "Wofür ist das SAN-Protokoll da?",
+      "options": [
+        "Lückenlose Übergabe an den Rettungsdienst",
+        "Rechtliche Absicherung von Patient und Einsatzkräften",
+        "Nachweis der durchgeführten Maßnahmen mit Uhrzeit",
+        "Information des Veranstalters über die Diagnose"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explanation": "Das Protokoll ist vertraulich – der Veranstalter bekommt keine Patientendaten. Was nicht dokumentiert ist, gilt als nicht gemacht."
+    },
+    {
+      "id": "pr-dsgvo",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Was kreuzt du bei den Personendaten zusätzlich an, wenn du Name und Anschrift aufnimmst?",
+      "options": [
+        "Dass das Infoblatt zum Datenschutz (DSGVO) ausgehändigt wurde",
+        "Die Blutgruppe",
+        "Ob der Patient Vereinsmitglied ist",
+        "Nichts weiter"
+      ],
+      "answer": 0,
+      "explanation": "Der Patient muss über die Verarbeitung seiner Daten informiert werden – dafür gibt es das Datenschutz-Infoblatt."
+    },
+    {
+      "id": "pr-zeiten",
+      "topic": "protokoll",
+      "type": "multi",
+      "source": "protokoll",
+      "question": "Welche Uhrzeiten werden im SAN-Protokoll dokumentiert?",
+      "options": [
+        "Aufnahme des Patienten",
+        "Übergabe bzw. Entlassung",
+        "Blutstillung (z. B. Tourniquet)",
+        "Beginn und Ende einer Reanimation",
+        "Uhrzeit des Dienstbeginns am Morgen"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "Auch jede Messung und die Nachforderung bekommen eine Uhrzeit. Zeiten sind für Klinik und Rechtssicherheit entscheidend."
+    },
+    {
+      "id": "pr-aufbau",
+      "topic": "protokoll",
+      "type": "order",
+      "source": "protokoll",
+      "question": "Bringe die Beobachtungen im SAN-Protokoll in die Reihenfolge, in der sie auf dem Bogen stehen.",
+      "items": [
+        "A/B – Airway | Breathing",
+        "C – Circulation",
+        "D – Disability",
+        "E – Exposure | Environment"
+      ],
+      "explanation": "Der Bogen folgt dem ABCDE-Schema – du kannst beim Untersuchen einfach von oben nach unten dokumentieren. Kritische Blutungen stehen vorher in der „1. Minute“."
+    },
+    {
+      "id": "pr-einsatzkraefte",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Was trägst du im Feld „Namen der Einsatzkräfte“ ein?",
+      "options": [
+        "Namen und Qualifikation aller beteiligten Einsatzkräfte",
+        "Nur den Namen des Zugführers",
+        "Die Funkrufnamen der Fahrzeuge",
+        "Nichts, das Feld ist nur für den Rettungsdienst"
+      ],
+      "answer": 0,
+      "explanation": "So ist nachvollziehbar, wer welche Maßnahme mit welcher Ausbildung durchgeführt hat (z. B. Sanitätshelfer/-in, Rettungssanitäter/-in)."
+    },
+    {
+      "id": "pr-unauffaellig",
+      "topic": "protokoll",
+      "type": "truefalse",
+      "source": "protokoll",
+      "question": "„Unauffällig“ kreuze ich in einem Abschnitt (z. B. C) nur an, wenn ich dort wirklich untersucht und nichts Auffälliges gefunden habe.",
+      "answer": true,
+      "explanation": "„Unauffällig“ ist ein Befund, keine Abkürzung. Wer nichts untersucht hat, kreuzt auch nichts an – und ein Abschnitt mit Befund ist nicht „unauffällig“."
+    },
+    {
+      "id": "pr-ssl",
+      "topic": "protokoll",
+      "type": "single",
+      "source": "protokoll",
+      "question": "Wo dokumentierst du die stabile Seitenlage eines bewusstlosen Patienten?",
+      "options": [
+        "In der „1. Minute“ unter Atemwegssicherung",
+        "Unter Maßnahmen bei „Andere Lagerung“",
+        "Bei E – Exposure",
+        "Gar nicht"
+      ],
+      "answer": 0,
+      "explanation": "Auf dem SAN-Protokoll steht die Seitenlage bei der Atemwegssicherung – zusammen mit Guedel-, Wendl-Tubus und Absaugung."
     }
   ]
 }
