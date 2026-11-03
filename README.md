@@ -76,7 +76,14 @@ python3 -m http.server 8000
 
 ## Anmeldung
 
-Die Startseite hat zwei Reiter: **Teilnehmer** und **Ausbilder**.
+| Für | Link |
+|---|---|
+| Teilnehmende | `https://ajzeytin-beep.github.io/DRK-Loppersum-/teilnehmer/?kurs=KURSCODE` |
+| Ausbilder | `https://ajzeytin-beep.github.io/DRK-Loppersum-/ausbilder/` |
+
+- Über diese Links erscheint nur die jeweils passende Anmeldung.
+- Den fertigen Teilnehmer-Link mit eurem Kurscode und den passenden QR-Code findest du nach der Anmeldung im Ausbilder-Bereich unter **„Teilnehmende einladen“**.
+- Die normale Startadresse zeigt beide Reiter, **Teilnehmer** und **Ausbilder**.
 
 - **Teilnehmer** melden sich mit Vorname und **Kurscode** an.
   - Über den Einladungslink (`…/?kurs=LOP-2026`) oder den QR-Code ist der Kurscode schon ausgefüllt.

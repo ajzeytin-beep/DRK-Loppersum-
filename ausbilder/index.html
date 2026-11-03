@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sani-Trainer · Ausbilder-Anmeldung</title>
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="icon" href="../assets/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="../assets/icon-192.png">
+  <style>body { margin: 0; background: #0a0a0b; color: #f3f4f6; font: 16px/1.5 system-ui, sans-serif; display: grid; place-items: center; min-height: 100vh; } a { color: #ff6b74; }</style>
+  <script>
+    // Weiterleitung zur App – ein eventuell mitgegebener Kurscode (?kurs=…) bleibt erhalten
+    var p = new URLSearchParams(location.search);
+    p.set("rolle", "ausbilder");
+    location.replace("../?" + p.toString() + "#/start/ausbilder");
+  </script>
+</head>
+<body>
+  <p>Weiter zur <a href="../#/start/ausbilder">Ausbilder-Anmeldung</a> …</p>
+</body>
+</html>

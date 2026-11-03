@@ -53,7 +53,9 @@ export function adminLogout() {
 
 /* ---------------- Einladen ---------------- */
 
-const inviteUrl = (code) => `${CONFIG.appUrl || `${location.origin}${location.pathname}`}?kurs=${encodeURIComponent(code)}`;
+const baseUrl = () => CONFIG.appUrl || `${location.origin}${location.pathname}`;
+const inviteUrl = (code) => `${baseUrl()}teilnehmer/?kurs=${encodeURIComponent(code)}`;
+const adminUrl = () => `${baseUrl()}ausbilder/`;
 
 function inviteText(code) {
   return `Moin! Für unseren Sanitätslehrgang beim ${CONFIG.orgName} gibt es eine Lern-App mit Fragen, Fallbeispielen und Prüfungssimulation:
@@ -118,6 +120,11 @@ function inviteCard(code) {
           <button class="btn btn-secondary" id="invite-dl">${icon("download")} QR-Code</button>
         </div>
         <p class="small invite-msg" hidden></p>
+        <div class="admin-link">
+          <span class="small muted">Link für weitere Ausbilder:</span>
+          <code>${esc(adminUrl())}</code>
+          <button class="btn btn-ghost btn-sm" id="admin-link-copy">Kopieren</button>
+        </div>
       </div>
     </section>`;
 }
@@ -140,6 +147,10 @@ async function bindInvite(root, code) {
     catch { textEl.select(); say("Bitte den markierten Text kopieren (Strg+C bzw. lange tippen)."); }
   };
   root.querySelector("#invite-copy").addEventListener("click", copy);
+  root.querySelector("#admin-link-copy").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(adminUrl()); say("Ausbilder-Link kopiert ✓ – die Kurs-PIN gibst du bitte getrennt weiter."); }
+    catch { say(adminUrl()); }
+  });
   root.querySelector("#invite-dl").addEventListener("click", async () => {
     const blob = await pngBlob();
     if (!blob) return;

@@ -262,7 +262,19 @@ function bindProfileForm(onDone) {
   });
 }
 
+// Über die festen Links …/teilnehmer/ bzw. …/ausbilder/ wird nur die passende Anmeldung gezeigt
+function fixedRole() {
+  try {
+    const p = new URLSearchParams(location.search);
+    const r = p.get("rolle");
+    if (r === "teilnehmer" || r === "ausbilder") return r;
+    return p.get("kurs") ? "teilnehmer" : null;
+  } catch { return null; }
+}
+
 function loginView(tab) {
+  const role = fixedRole();
+  if (role && tab !== role) { location.hash = `#/start/${role}`; return; }
   // Bereits angemeldet? Direkt weiter.
   if (tab === "teilnehmer" && store.getState().profile) { location.hash = "#/"; return; }
   if (tab === "ausbilder" && isAdmin()) { location.hash = "#/ausbilder"; return; }
@@ -274,7 +286,8 @@ function loginView(tab) {
         <div class="auth-logo"><img src="assets/logo-ov.png" alt="DRK OV Loppersum" onerror="this.remove()"></div>
         <h1>Sani-Trainer</h1>
         <p class="muted auth-sub">${esc(CONFIG.orgName)} · Sanitätsausbildung</p>
-        <nav class="seg" aria-label="Anmeldung als">
+        ${role ? `<p class="role-badge">${icon(role === "ausbilder" ? "shield" : "user")} ${role === "ausbilder" ? "Ausbilder-Anmeldung" : "Teilnehmer-Anmeldung"}</p>` : ""}
+        <nav class="seg" aria-label="Anmeldung als" ${role ? "hidden" : ""}>
           <a href="#/start/teilnehmer" class="${tab === "teilnehmer" ? "active" : ""}" ${tab === "teilnehmer" ? 'aria-current="page"' : ""}>${icon("user")} Teilnehmer</a>
           <a href="#/start/ausbilder" class="${tab === "ausbilder" ? "active" : ""}" ${tab === "ausbilder" ? 'aria-current="page"' : ""}>${icon("shield")} Ausbilder</a>
         </nav>
