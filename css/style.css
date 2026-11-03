@@ -63,7 +63,8 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 }
 .brand { display: flex; align-items: center; gap: 0.75rem; padding: 0 0.5rem; }
 .logos { display: flex; gap: 0.5rem; align-items: center; }
-.logo { height: 40px; width: auto; max-width: 90px; object-fit: contain; border-radius: 6px; }
+.logo { height: 48px; width: auto; max-width: 90px; object-fit: contain; border-radius: 6px; }
+.logo[src*="logo-ov"] { border-radius: 50%; width: 48px; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)); }
 .logos:not(:has(img))::before {
   content: ""; width: 40px; height: 40px; border-radius: 12px;
   background: var(--red) url("../assets/icon-mark.svg") center / 70% no-repeat;
@@ -108,7 +109,8 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0; }
     border-bottom: 1px solid var(--border);
   }
   .topbar .brand { padding: 0; }
-  .topbar .logo { height: 32px; }
+  .topbar .logo, .topbar .logo[src*="logo-ov"] { height: 38px; width: auto; }
+.topbar .logo[src*="logo-ov"] { width: 38px; }
   .view { padding: 1.25rem 16px calc(6rem + env(safe-area-inset-bottom)); }
   .bottom-nav {
     display: grid; grid-template-columns: repeat(5, 1fr);
@@ -214,7 +216,10 @@ input:focus { outline: 2px solid var(--red); outline-offset: 1px; border-color: 
 .onboarding { display: grid; place-items: center; min-height: 70vh; }
 .onboarding-card { max-width: 560px; width: 100%; }
 .onb-logos { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
-.onb-logos .logo { height: 56px; }
+.onb-logos { justify-content: center; }
+.onb-logos .logo { height: 120px; }
+.onb-logos .logo[src*="logo-ov"] { width: 120px; }
+.onboarding-card h1 { text-align: center; }
 .onb-mark { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; background: var(--red); color: #fff; box-shadow: 0 8px 24px rgba(227, 6, 19, 0.35); }
 .onb-mark .icon { width: 30px; height: 30px; }
 .onb-logos:has(.logo) .onb-mark { display: none; }
