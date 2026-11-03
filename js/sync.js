@@ -1,22 +1,28 @@
-// Optionale Übertragung des Lernstands an den Kurs-Server (Supabase).
-// Ohne Konfiguration arbeitet die App rein lokal; Ausbilder können dann Exportdateien importieren.
+// Verbindung zur Datenbank (Supabase) – alle Aufrufe laufen mit dem Konto des angemeldeten Nutzers.
 import { CONFIG } from "./config.js";
 import * as store from "./store.js";
+import { accessToken, authEnabled } from "./auth.js";
 
-export const backendEnabled = () => Boolean(CONFIG.supabaseUrl && CONFIG.supabaseAnonKey);
+export const backendEnabled = authEnabled;
 
-async function rpc(fn, args) {
-  const res = await fetch(`${CONFIG.supabaseUrl.replace(/\/$/, "")}/rest/v1/rpc/${fn}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: CONFIG.supabaseAnonKey,
-      // Alte „anon“-Schlüssel sind JWTs und gehören zusätzlich in den Authorization-Header,
-      // neue „publishable“-Schlüssel (sb_publishable_…) nur in den apikey-Header.
-      ...(CONFIG.supabaseAnonKey.startsWith("eyJ") ? { Authorization: `Bearer ${CONFIG.supabaseAnonKey}` } : {}),
-    },
-    body: JSON.stringify(args),
-  });
+async function rpc(fn, args = {}) {
+  const token = await accessToken();
+  let res;
+  try {
+    res = await fetch(`${CONFIG.supabaseUrl.replace(/\/$/, "")}/rest/v1/rpc/${fn}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: CONFIG.supabaseAnonKey,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(args),
+    });
+  } catch {
+    const e = new Error("Keine Verbindung zum Server.");
+    e.offline = true;
+    throw e;
+  }
   const text = await res.text();
   if (!res.ok) {
     let msg = text;
@@ -26,13 +32,23 @@ async function rpc(fn, args) {
   return text ? JSON.parse(text) : null;
 }
 
-export function joinCourse(code, learnerId, name) {
-  return rpc("join_course", { p_code: code, p_learner_id: learnerId, p_name: name });
-}
+/* ---------------- eigenes Konto ---------------- */
 
-export function courseStats(code, pin) {
-  return rpc("course_stats", { p_code: code, p_pin: pin });
-}
+export const myProfile = () => rpc("my_profile");
+export const updateMyProfile = (name, course) => rpc("update_my_profile", { p_name: name, p_course: course || null });
+export const myHistory = () => rpc("my_history");
+export const deleteMyAccount = () => rpc("delete_my_account");
+
+/* ---------------- Ausbilder ---------------- */
+
+export const courseStats = () => rpc("my_course_stats");
+export const pendingRegistrations = () => rpc("pending_registrations");
+export const approve = (id) => rpc("approve_registration", { p_user: id });
+export const reject = (id) => rpc("reject_registration", { p_user: id });
+export const removeLearner = (id) => rpc("remove_learner", { p_user: id });
+export const setLearnerPassword = (id, password) => rpc("learner_set_password", { p_user: id, p_password: password });
+
+/* ---------------- Lernfortschritt übertragen ---------------- */
 
 export function pendingCount() {
   const st = store.getState();
@@ -42,42 +58,49 @@ export function pendingCount() {
 let flushing = false;
 export async function flush() {
   const st = store.getState();
-  if (!backendEnabled() || !st.profile?.courseCode || flushing || !navigator.onLine) return { skipped: true };
+  const p = st.profile;
+  if (!backendEnabled() || !p || p.role !== "learner" || flushing || !navigator.onLine) return { skipped: true };
   flushing = true;
   try {
-    // Beitritt nachholen (z. B. wenn bei der Anmeldung kein Internet da war)
-    if (!st.profile.joined) {
-      const res = await joinCourse(st.profile.courseCode, st.profile.id, st.profile.name);
-      store.setProfile({ joined: true, courseName: res?.name || null });
-      st.syncedCount = 0;
-    }
     while (st.syncedCount < st.history.length) {
       const batch = st.history.slice(st.syncedCount, st.syncedCount + 500);
-      await rpc("record_progress", { p_learner_id: st.profile.id, p_attempts: batch, p_exams: [] });
+      await rpc("record_my_progress", { p_attempts: batch, p_exams: [] });
       st.syncedCount += batch.length;
       store.save();
     }
     const exams = st.exams.filter((e) => !e.synced);
     if (exams.length) {
-      await rpc("record_progress", {
-        p_learner_id: st.profile.id,
-        p_attempts: [],
-        p_exams: exams.map(({ score, total, passed, at }) => ({ score, total, passed, at })),
-      });
+      await rpc("record_my_progress", { p_attempts: [], p_exams: exams.map(({ score, total, passed, at }) => ({ score, total, passed, at })) });
       exams.forEach((e) => { e.synced = true; });
     }
     st.lastSync = Date.now();
     store.save();
     return { ok: true };
   } catch (e) {
-    // Auf dem Server unbekannt (z. B. vom Ausbilder entfernt): beim nächsten Mal neu beitreten und alles erneut senden
-    if (/Teilnehmer unbekannt/.test(e.message)) {
-      store.setProfile({ joined: false });
-      st.syncedCount = 0;
-      store.save();
-    }
     return { error: e.message };
   } finally {
     flushing = false;
   }
+}
+
+// Profil vom Server holen und den Lernstand mit dem Server-Verlauf abgleichen
+// (so geht es auf einem neuen Gerät dort weiter, wo man aufgehört hat).
+export async function refreshAccount() {
+  const prof = await myProfile();
+  const profile = {
+    id: prof.id,
+    name: prof.name,
+    email: prof.email,
+    role: prof.role,
+    courseCode: prof.course_code || prof.requested_course || null,
+    courseName: prof.course_name || null,
+  };
+  store.useAccount(profile);
+  if (prof.role === "learner") {
+    try {
+      const h = await myHistory();
+      store.mergeServerHistory(h.attempts || [], h.exams || []);
+    } catch { /* später erneut */ }
+  }
+  return profile;
 }

@@ -45,7 +45,6 @@ let state = index.current ? normalize(read(stateKey(index.current)) || {}) : fre
 if (index.current && !state.profile) { index.current = null; state = fresh(); }
 
 export const getState = () => state;
-export const listProfiles = () => [...index.profiles].sort((a, b) => (b.lastUsed || 0) - (a.lastUsed || 0));
 
 export function save() {
   if (!state.profile?.id) return;
@@ -73,11 +72,6 @@ export function switchTo(id) {
   return true;
 }
 
-export function findProfile(name, courseCode) {
-  const n = name.trim().toLowerCase();
-  return index.profiles.find((p) => p.name.trim().toLowerCase() === n && (p.courseCode || null) === (courseCode || null)) || null;
-}
-
 export function logout() {
   save();
   index.current = null;
@@ -85,11 +79,57 @@ export function logout() {
   state = fresh();
 }
 
-export function removeProfile(id) {
-  try { localStorage.removeItem(stateKey(id)); } catch { /* ignorieren */ }
-  index.profiles = index.profiles.filter((p) => p.id !== id);
-  if (index.current === id) { index.current = null; state = fresh(); }
-  saveIndex();
+// Nach der Anmeldung: lokalen Lernstand des Kontos laden (oder neu anlegen) und Profil aktualisieren
+export function useAccount(profile) {
+  if (state.profile?.id !== profile.id && !switchTo(profile.id)) state = fresh();
+  setProfile(profile);
+}
+
+// Verlauf vom Server übernehmen; noch nicht übertragene Antworten dieses Geräts bleiben erhalten
+export function mergeServerHistory(attempts, exams) {
+  const iso = (t) => { const d = new Date(t); return Number.isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString(); };
+  const unsynced = state.history.slice(state.syncedCount);
+  state.history = [
+    ...attempts.map((a) => ({ question_id: a.question_id, topic: a.topic, level: a.level, correct: !!a.correct, mode: a.mode, at: iso(a.at) })),
+    ...unsynced,
+  ];
+  state.syncedCount = attempts.length;
+  state.exams = [
+    ...exams.map((e) => ({ score: e.score, total: e.total, passed: !!e.passed, at: iso(e.at), synced: true })),
+    ...state.exams.filter((e) => !e.synced),
+  ];
+  rebuildProgress();
+  save();
+}
+
+// Karteikasten-Stand aus dem Verlauf neu berechnen (Fall-Schritte mit gleicher Uhrzeit = ein Fall)
+function rebuildProgress() {
+  const prog = {};
+  const max = CONFIG.leitnerDays.length - 1;
+  const apply = (id, correct, t) => {
+    const p = (prog[id] ||= { seen: 0, correct: 0, wrong: 0, box: 0, due: 0 });
+    p.seen++;
+    if (correct) { p.correct++; p.box = Math.min(p.box + 1, max); } else { p.wrong++; p.box = 0; }
+    p.due = t + CONFIG.leitnerDays[p.box] * DAY;
+    p.last = correct;
+    p.lastAt = t;
+  };
+  const h = state.history;
+  for (let i = 0; i < h.length;) {
+    const [id, step] = String(h[i].question_id).split("#");
+    const t = Date.parse(h[i].at) || Date.now();
+    if (step) {
+      let ok = true;
+      let j = i;
+      while (j < h.length && String(h[j].question_id).split("#")[0] === id && h[j].at === h[i].at) { ok = ok && h[j].correct; j++; }
+      apply(id, ok, t);
+      i = j;
+    } else {
+      apply(id, h[i].correct, t);
+      i++;
+    }
+  }
+  state.progress = prog;
 }
 
 export function setSetting(key, value) {

@@ -3,7 +3,8 @@ import * as store from "./store.js";
 import { DATA, loadData, topicLabel } from "./data.js";
 import { renderItem, answerText, esc, shuffle } from "./quiz.js";
 import * as sync from "./sync.js";
-import { renderInstructor, isAdmin, adminLogin as adminLoginRequest, adminLogout } from "./instructor.js";
+import { renderInstructor } from "./instructor.js";
+import * as auth from "./auth.js";
 import { icon } from "./icons.js";
 import { renderProtocolList, renderProtocolExercise } from "./protocol.js";
 
@@ -13,14 +14,6 @@ let timer = null;
 /* ---------------- Hilfsfunktionen ---------------- */
 
 const pctText = (x) => `${Math.round((x || 0) * 100)} %`;
-
-function uuid() {
-  if (crypto.randomUUID) return crypto.randomUUID();
-  const b = crypto.getRandomValues(new Uint8Array(16));
-  b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
-  const h = [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
-  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
-}
 
 export function ring(value, size = 120, label = "") {
   const r = 52;
@@ -96,67 +89,57 @@ function pickItems(pool, n) {
 /* ---------------- Navigation ---------------- */
 
 const NAV = [
+  { href: "#/ausbilder", label: "Ausbilder", icon: "users", instructorOnly: true },
   { href: "#/", label: "Dashboard", icon: "home" },
-  { href: "#/wiederholen", label: "Wiederholen", icon: "repeat" },
+  { href: "#/wiederholen", label: "Wiederholen", icon: "repeat", learnerOnly: true },
   { href: "#/pruefung", label: "Prüfung", icon: "award" },
   { href: "#/merkkarten", label: "Merkkarten", icon: "cards" },
-  { href: "#/ausbilder", label: "Ausbilder", icon: "users", desktopOnly: true, adminOnly: true },
   { href: "#/profil", label: "Profil", icon: "user" },
 ];
 
-// Ausbilder ohne Teilnehmer-Anmeldung sehen nur ihren Bereich
-const ADMIN_NAV = [
-  { href: "#/ausbilder", label: "Ausbilder", icon: "users" },
-  { href: "#/merkkarten", label: "Merkkarten", icon: "cards" },
-];
+const isAdmin = () => store.getState().profile?.role === "instructor";
 
 function renderNav() {
   const hash = location.hash || "#/";
-  const learner = Boolean(store.getState().profile);
-  const items = learner ? NAV.filter((n) => !n.adminOnly || isAdmin()) : ADMIN_NAV;
+  const admin = isAdmin();
+  const items = NAV.filter((n) => (admin ? !n.learnerOnly : !n.instructorOnly));
   const isActive = (href) =>
-    href === "#/" ? hash === "#/" || hash.startsWith("#/lernen") || hash.startsWith("#/thema") : hash.startsWith(href);
+    href === "#/" ? hash === "#/" || hash.startsWith("#/lernen") || hash.startsWith("#/thema") || hash.startsWith("#/protokoll") : hash.startsWith(href);
   const link = (n) => `<a href="${n.href}" class="${isActive(n.href) ? "active" : ""}">${icon(n.icon)}<span>${n.label}</span></a>`;
   document.getElementById("nav").innerHTML = items.map(link).join("");
-  const bottom = learner ? items.filter((n) => !n.desktopOnly) : [...items, { href: "#/abmelden", label: "Abmelden", icon: "logout" }];
+  const bottom = items.slice(0, 5);
   document.getElementById("bottom-nav").innerHTML = bottom.map(link).join("");
   document.getElementById("bottom-nav").style.gridTemplateColumns = `repeat(${bottom.length}, 1fr)`;
   renderSyncStatus();
 }
 
+const ROLE_LABEL = { learner: "Teilnehmer", instructor: "Ausbilder", pending: "wartet auf Freigabe", rejected: "gesperrt" };
+
 function renderSyncStatus() {
   const el = document.getElementById("sync-status");
   const p = store.getState().profile;
-  if (!p) {
-    el.innerHTML = isAdmin()
-      ? `<div class="me">${icon("shield")}<div><strong>Ausbilder</strong><span>angemeldet</span></div></div>
-         <a class="logout-link" href="#/abmelden">${icon("logout")} Abmelden</a>`
-      : "";
-    return;
-  }
-  let status = "";
-  if (p.courseCode && p.joined && sync.backendEnabled()) {
+  if (!p) { el.innerHTML = ""; return; }
+  let status = ROLE_LABEL[p.role] || "";
+  if (p.role === "learner") {
     const pending = sync.pendingCount();
-    status = pending ? `${pending} Antworten noch nicht übertragen` : "Fortschritt übertragen";
-  } else if (p.courseCode) {
-    status = sync.backendEnabled() ? "Verbindung wird hergestellt …" : "";
+    status = pending ? `${pending} Antworten werden noch übertragen` : "Fortschritt übertragen";
   }
   el.innerHTML = `
-    <div class="me">${icon("user")}<div><strong>${esc(p.name)}</strong>
-    ${p.courseCode ? `<span>Kurs ${esc(p.courseCode)}</span><span class="small">${status}</span>` : "<span>Teilnehmer · ohne Kurs</span>"}</div></div>
+    <div class="me">${icon(p.role === "instructor" ? "shield" : "user")}<div><strong>${esc(p.name)}</strong>
+      ${p.courseCode ? `<span>Kurs ${esc(p.courseCode)}</span>` : ""}<span class="small">${esc(status)}</span></div></div>
     <a class="logout-link" href="#/abmelden">${icon("logout")} Abmelden</a>`;
 }
 
-function logoutAll() {
-  sync.flush();
+async function logoutAll() {
+  await Promise.race([sync.flush(), new Promise((r) => setTimeout(r, 3000))]);
+  await auth.signOut();
   store.logout();
-  adminLogout();
   location.hash = "#/start";
 }
 
 const ROUTES = [
   [/^#\/?$/, () => dashboard()],
-  [/^#\/start(?:\/(teilnehmer|ausbilder))?$/, (m) => loginView(m[1] || "teilnehmer")],
+  [/^#\/start(?:\/([\w-]+))?$/, (m) => loginView(m[1] || "anmelden")],
   [/^#\/abmelden$/, () => logoutAll()],
   [/^#\/lernen\/([1-4])$/, (m) => learnLevel(Number(m[1]))],
   [/^#\/protokoll$/, () => renderProtocolList(view)],
@@ -165,21 +148,27 @@ const ROUTES = [
   [/^#\/wiederholen$/, () => review()],
   [/^#\/pruefung$/, () => examIntro()],
   [/^#\/merkkarten$/, () => cardsView()],
-  [/^#\/ausbilder$/, () => renderInstructor(view)],
+  [/^#\/ausbilder$/, () => (isAdmin() ? renderInstructor(view) : (location.hash = "#/"))],
   [/^#\/profil$/, () => profileView()],
 ];
 
-// Seiten, die ohne Teilnehmer-Anmeldung erreichbar sind
-const PUBLIC = [/^#\/start/, /^#\/abmelden$/, /^#\/ausbilder$/];
-const ADMIN_PUBLIC = [/^#\/merkkarten$/];
+// Rücksprung aus E-Mail-Link (Bestätigung oder „Passwort vergessen“) auswerten
+async function processRedirect() {
+  const redirect = await auth.handleRedirect();
+  if (!redirect) return null;
+  if (redirect.error) { loginNotice = redirect.error; location.hash = "#/start/anmelden"; return redirect; }
+  try { await sync.refreshAccount(); } catch { /* wird beim nächsten Start erneut versucht */ }
+  location.hash = redirect.type === "recovery" ? "#/start/neues-passwort" : isAdmin() ? "#/ausbilder" : "#/";
+  return redirect;
+}
 
 function route() {
   clearTimer();
   const hash = location.hash || "#/";
-  const learner = Boolean(store.getState().profile);
-  const allowed = learner || PUBLIC.some((r) => r.test(hash)) || (isAdmin() && ADMIN_PUBLIC.some((r) => r.test(hash)));
-  if (!allowed) {
-    location.hash = isAdmin() ? "#/ausbilder" : "#/start";
+  if (/access_token=|error_description=/.test(hash)) { processRedirect(); return; }
+  const loggedIn = Boolean(auth.getSession() && store.getState().profile);
+  if (!loggedIn && !/^#\/start/.test(hash)) {
+    location.hash = "#/start";
     return;
   }
   for (const [re, fn] of ROUTES) {
@@ -195,230 +184,301 @@ function route() {
   location.hash = "#/";
 }
 
-/* ---------------- Anmeldung & Profil ---------------- */
+/* ---------------- Anmeldung ---------------- */
 
-// Kurscode aus dem Einladungslink (…/?kurs=LOP-2026)
+// Kurscode aus dem Einladungslink (…/teilnehmer/?kurs=LOP-2026)
 function inviteCode() {
   try { return (new URLSearchParams(location.search).get("kurs") || "").trim().toUpperCase().slice(0, 20); } catch { return ""; }
 }
 
-function profileForm(p, submitLabel) {
-  return `
-    <form id="profile-form" class="form">
-      <label>Dein Vorname oder Spitzname
-        <input name="name" required maxlength="40" autocomplete="given-name" value="${esc(p?.name || "")}">
-      </label>
-      <label><span>Kurscode ${sync.backendEnabled() ? '<span class="muted">(steht in der Einladung deines Ausbilders)</span>' : '<span class="muted">(optional)</span>'}</span>
-        <input name="code" maxlength="20" autocomplete="off" autocapitalize="characters" ${sync.backendEnabled() ? "required" : ""} value="${esc(p?.courseCode || inviteCode())}">
-      </label>
-      <p class="form-error" hidden></p>
-      <button class="btn btn-primary btn-lg">${submitLabel}</button>
-    </form>`;
+const pwField = (name, label, auto, extra = "") => `
+  <label><span>${label}</span>
+    <span class="pw-wrap">
+      <input name="${name}" type="password" autocomplete="${auto}" required ${extra}>
+      <button type="button" class="pw-toggle" aria-label="Passwort anzeigen">${icon("eye")}</button>
+    </span>
+  </label>`;
+
+function bindPwToggles(root) {
+  root.querySelectorAll(".pw-toggle").forEach((b) => b.addEventListener("click", () => {
+    const input = b.previousElementSibling;
+    const show = input.type === "password";
+    input.type = show ? "text" : "password";
+    b.setAttribute("aria-label", show ? "Passwort verbergen" : "Passwort anzeigen");
+    b.classList.toggle("on", show);
+  }));
 }
 
-function bindProfileForm(onDone) {
-  const form = document.getElementById("profile-form");
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const err = form.querySelector(".form-error");
-    const btn = form.querySelector("button");
-    const name = form.name.value.trim();
-    const code = form.code.value.trim().toUpperCase();
-    const prev = store.getState().profile;
-    // Gleicher Name + Kurscode schon auf diesem Gerät? Dann diesen Lernstand fortsetzen.
-    if (!prev) {
-      const existing = store.findProfile(name, code || null);
-      if (existing && store.switchTo(existing.id)) {
-        sync.flush().then(renderSyncStatus);
-        onDone();
-        return;
-      }
-    }
-    const id = prev?.id || uuid();
-    let joined = false;
-    let courseName = null;
-    err.hidden = true;
-    if (code && sync.backendEnabled()) {
-      btn.disabled = true;
-      try {
-        const res = await sync.joinCourse(code, id, name);
-        joined = true;
-        courseName = res?.name || null;
-      } catch (ex) {
-        const offline = ex instanceof TypeError || !navigator.onLine;
-        if (!offline) {
-          err.textContent = /unbekannt/i.test(ex.message)
-            ? `Den Kurscode „${code}“ gibt es nicht. Bitte prüfe die Einladung deines Ausbilders.`
-            : `Kurs konnte nicht verbunden werden: ${ex.message}`;
-          err.hidden = false;
-          btn.disabled = false;
-          return;
-        }
-        // Offline: anmelden und die Verbindung später automatisch herstellen
-      }
-    }
-    const st = store.getState();
-    if (prev && prev.courseCode !== code) st.syncedCount = 0;
-    store.setProfile({ id, name, courseCode: code || null, joined, courseName });
-    sync.flush().then(renderSyncStatus);
-    onDone();
-  });
-}
+let loginNotice = null; // Meldung für die Anmeldeseite (z. B. nach E-Mail-Bestätigung)
 
-// Über die festen Links …/teilnehmer/ bzw. …/ausbilder/ wird nur die passende Anmeldung gezeigt
-function fixedRole() {
-  try {
-    const p = new URLSearchParams(location.search);
-    const r = p.get("rolle");
-    if (r === "teilnehmer" || r === "ausbilder") return r;
-    return p.get("kurs") ? "teilnehmer" : null;
-  } catch { return null; }
+// Nach erfolgreicher Anmeldung: Konto laden und passende Startseite öffnen
+async function afterLogin() {
+  const profile = await sync.refreshAccount();
+  if (profile.role === "rejected") {
+    await auth.signOut();
+    store.logout();
+    throw new Error("Dein Konto wurde nicht freigegeben. Bitte wende dich an deinen Ausbilder.");
+  }
+  sync.flush().then(renderSyncStatus);
+  location.hash = profile.role === "instructor" ? "#/ausbilder" : "#/";
 }
 
 function loginView(tab) {
-  const role = fixedRole();
-  if (role && tab !== role) { location.hash = `#/start/${role}`; return; }
-  // Bereits angemeldet? Direkt weiter.
-  if (tab === "teilnehmer" && store.getState().profile) { location.hash = "#/"; return; }
-  if (tab === "ausbilder" && isAdmin()) { location.hash = "#/ausbilder"; return; }
+  // alte Links (#/start/teilnehmer, #/start/ausbilder) weiter unterstützen
+  if (tab === "teilnehmer") tab = inviteCode() ? "registrieren" : "anmelden";
+  if (tab === "ausbilder") tab = "anmelden";
+  const loggedIn = Boolean(auth.getSession() && store.getState().profile);
+  if (loggedIn && tab !== "neues-passwort") { location.hash = isAdmin() ? "#/ausbilder" : "#/"; return; }
   document.body.classList.add("auth");
 
+  if (!sync.backendEnabled()) {
+    view.innerHTML = '<div class="auth-wrap"><div class="card auth-card"><p class="form-error">Die Anmeldung ist noch nicht eingerichtet (Supabase-Zugang fehlt in js/config.js).</p></div></div>';
+    return;
+  }
+
+  const tabs = tab === "anmelden" || tab === "registrieren";
   view.innerHTML = `
     <div class="auth-wrap">
       <div class="card auth-card">
         <div class="auth-logo"><img src="assets/logo-ov.png" alt="DRK OV Loppersum" onerror="this.remove()"></div>
         <h1>Sani-Trainer</h1>
         <p class="muted auth-sub">${esc(CONFIG.orgName)} · Sanitätsausbildung</p>
-        ${role ? `<p class="role-badge">${icon(role === "ausbilder" ? "shield" : "user")} ${role === "ausbilder" ? "Ausbilder-Anmeldung" : "Teilnehmer-Anmeldung"}</p>` : ""}
-        <nav class="seg" aria-label="Anmeldung als" ${role ? "hidden" : ""}>
-          <a href="#/start/teilnehmer" class="${tab === "teilnehmer" ? "active" : ""}" ${tab === "teilnehmer" ? 'aria-current="page"' : ""}>${icon("user")} Teilnehmer</a>
-          <a href="#/start/ausbilder" class="${tab === "ausbilder" ? "active" : ""}" ${tab === "ausbilder" ? 'aria-current="page"' : ""}>${icon("shield")} Ausbilder</a>
-        </nav>
+        ${tabs ? `
+          <nav class="seg" aria-label="Anmelden oder registrieren">
+            <a href="#/start/anmelden" class="${tab === "anmelden" ? "active" : ""}">${icon("login")} Anmelden</a>
+            <a href="#/start/registrieren" class="${tab === "registrieren" ? "active" : ""}">${icon("user")} Registrieren</a>
+          </nav>` : ""}
+        ${loginNotice ? `<p class="form-ok-box">${esc(loginNotice)}</p>` : ""}
         <div id="auth-body"></div>
       </div>
     </div>`;
+  loginNotice = null;
   const body = view.querySelector("#auth-body");
-  tab === "ausbilder" ? adminLogin(body) : learnerLogin(body);
+  ({ anmelden: signInForm, registrieren: signUpForm, passwort: forgotForm, "neues-passwort": newPasswordForm }[tab] || signInForm)(body);
+  bindPwToggles(body);
 }
 
-function learnerLogin(body) {
-  const profiles = store.listProfiles();
-  body.innerHTML = `
-    ${profiles.length ? `
-      <h2 class="auth-h">Weiterlernen</h2>
-      <ul class="profile-list">${profiles.map((p) => `
-        <li>
-          <button class="profile-pick" data-id="${esc(p.id)}">
-            <span class="avatar">${esc(p.name.trim().charAt(0).toUpperCase())}</span>
-            <span class="pp-text"><strong>${esc(p.name)}</strong><span class="small muted">${p.courseCode ? `Kurs ${esc(p.courseCode)}` : "ohne Kurs"}</span></span>
-            ${icon("login")}
-          </button>
-          <button class="profile-del" data-del="${esc(p.id)}" title="${esc(p.name)} von diesem Gerät entfernen" aria-label="${esc(p.name)} von diesem Gerät entfernen">✕</button>
-        </li>`).join("")}</ul>
-      <div class="divider"><span>oder neu anmelden</span></div>` : `
-      <p class="lead auth-lead">Moin! Vom Erste-Hilfe-Kurs zum Sanitätsdienst – lerne Schritt für Schritt alles für den Abschluss des Lehrgangs.</p>`}
-    ${profileForm(null, `${icon("login")} Anmelden`)}
-    <p class="small muted auth-note">Dein Ausbilder sieht deinen Namen, deine Antworten und Prüfungsergebnisse – damit er dich gezielt unterstützen kann. Alles wird automatisch übertragen.</p>`;
-  bindProfileForm(() => { location.hash = "#/"; });
-  body.querySelectorAll(".profile-pick").forEach((b) => b.addEventListener("click", () => {
-    if (store.switchTo(b.dataset.id)) { sync.flush(); location.hash = "#/"; }
-  }));
-  body.querySelectorAll(".profile-del").forEach((b) => b.addEventListener("click", () => {
-    const p = profiles.find((x) => x.id === b.dataset.del);
-    if (p && confirm(`${p.name} von diesem Gerät entfernen?\n\nDer Lernstand auf diesem Gerät wird gelöscht. Exportiere ihn vorher, falls du ihn noch brauchst.`)) {
-      store.removeProfile(p.id);
-      learnerLogin(body);
-    }
-  }));
-  if (!profiles.length) body.querySelector("input[name=name]").focus();
-}
-
-function adminLogin(body) {
-  if (!sync.backendEnabled()) {
-    body.innerHTML = '<p class="form-error">Die Online-Auswertung ist noch nicht eingerichtet (siehe README).</p>';
-    return;
-  }
-  let lastCode = "";
-  try { lastCode = localStorage.getItem("sani-trainer-admin-code") || ""; } catch { /* ignorieren */ }
-  body.innerHTML = `
-    <form class="form" id="admin-form">
-      <p class="muted auth-lead">Melde dich mit Kurscode und Kurs-PIN an – du siehst sofort den Lernfortschritt aller Teilnehmenden.</p>
-      <label>Kurscode<input name="code" required maxlength="20" autocomplete="username" autocapitalize="characters" value="${esc(lastCode)}"></label>
-      <label>Kurs-PIN<input name="pin" type="password" required maxlength="64" autocomplete="current-password"></label>
-      <p class="form-error" hidden></p>
-      <button class="btn btn-primary btn-lg">${icon("login")} Anmelden</button>
-    </form>
-    <p class="small muted auth-note">Die Kurs-PIN wurde beim Anlegen des Kurses in Supabase festgelegt. Neue Kurse oder PINs legt ihr dort an (siehe README).</p>`;
-  const f = body.querySelector("#admin-form");
+function formHelpers(f) {
   const err = f.querySelector(".form-error");
   const btn = f.querySelector(".btn-primary");
+  const label = btn.innerHTML;
+  return {
+    busy(on, text = "Bitte warten …") { btn.disabled = on; btn.innerHTML = on ? text : label; },
+    fail(msg) { err.textContent = msg; err.hidden = false; },
+    clear() { err.hidden = true; },
+  };
+}
+
+function signInForm(body) {
+  body.innerHTML = `
+    <form class="form" id="signin">
+      <label>E-Mail<input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+      ${pwField("password", "Passwort", "current-password")}
+      <p class="form-error" hidden></p>
+      <button class="btn btn-primary btn-lg">${icon("login")} Anmelden</button>
+      <a class="link-center" href="#/start/passwort">Passwort vergessen?</a>
+    </form>
+    <p class="small muted auth-note">Noch kein Konto? Wähle oben <strong>„Registrieren“</strong>. Ausbilder melden sich hier genauso an.</p>`;
+  const f = body.querySelector("#signin");
+  const h = formHelpers(f);
   f.addEventListener("submit", async (e) => {
     e.preventDefault();
-    err.hidden = true;
-    btn.disabled = true;
-    btn.innerHTML = `${icon("login")} Prüfe …`;
-    const res = await adminLoginRequest(f.code.value, f.pin.value);
-    btn.disabled = false;
-    btn.innerHTML = `${icon("login")} Anmelden`;
-    if (res.ok) {
-      try { localStorage.setItem("sani-trainer-admin-code", f.code.value.trim().toUpperCase()); } catch { /* ignorieren */ }
-      location.hash = "#/ausbilder";
-      return;
+    h.clear();
+    h.busy(true, "Anmelden …");
+    try {
+      await auth.signIn(f.email.value, f.password.value);
+      await afterLogin();
+    } catch (ex) {
+      h.fail(ex.message);
+      h.busy(false);
+      f.password.value = "";
+      f.password.focus();
     }
-    err.textContent = res.error;
-    err.hidden = false;
-    f.pin.value = "";
-    f.pin.focus();
   });
-  (lastCode ? f.pin : f.code).focus();
+  f.email.focus();
 }
+
+function signUpForm(body) {
+  const code = inviteCode();
+  body.innerHTML = `
+    <form class="form" id="signup">
+      <label>Vor- und Nachname<input name="name" required maxlength="40" autocomplete="name"></label>
+      <label>E-Mail<input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+      ${pwField("password", "Passwort <span class=\"muted\">(mindestens 8 Zeichen)</span>", "new-password", 'minlength="8"')}
+      <label><span>Kurscode <span class="muted">(steht in der Einladung deines Ausbilders)</span></span>
+        <input name="code" maxlength="20" autocomplete="off" autocapitalize="characters" value="${esc(code)}">
+      </label>
+      <p class="form-error" hidden></p>
+      <button class="btn btn-primary btn-lg">${icon("user")} Konto erstellen</button>
+    </form>
+    <p class="small muted auth-note">Nach der Registrierung kannst du sofort lernen. Dein Ausbilder gibt dein Konto frei – ab dann sieht er deinen Namen, deine Antworten und Prüfungsergebnisse, um dich gezielt zu unterstützen.</p>`;
+  const f = body.querySelector("#signup");
+  const h = formHelpers(f);
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    h.clear();
+    if (f.password.value.length < 8) { h.fail("Das Passwort muss mindestens 8 Zeichen haben."); return; }
+    h.busy(true, "Konto wird erstellt …");
+    try {
+      const res = await auth.signUp(f.email.value, f.password.value, f.name.value, f.code.value);
+      if (res.needsConfirmation) {
+        body.innerHTML = `
+          <div class="auth-done">
+            ${icon("check", "icon icon-xl")}
+            <h2>Fast geschafft!</h2>
+            <p class="muted">Wir haben dir eine E-Mail an <strong>${esc(f.email.value)}</strong> geschickt. Bitte klicke auf den Link darin, um dein Konto zu bestätigen. Danach kannst du dich anmelden.</p>
+            <a class="btn btn-secondary" href="#/start/anmelden">Zur Anmeldung</a>
+          </div>`;
+        return;
+      }
+      await afterLogin();
+    } catch (ex) {
+      h.fail(ex.message);
+      h.busy(false);
+    }
+  });
+  f.name.focus();
+}
+
+function forgotForm(body) {
+  body.innerHTML = `
+    <form class="form" id="forgot">
+      <h2 class="auth-h2">Passwort vergessen</h2>
+      <p class="muted auth-lead">Gib deine E-Mail-Adresse ein. Du bekommst einen Link, mit dem du ein neues Passwort festlegen kannst.</p>
+      <label>E-Mail<input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+      <p class="form-error" hidden></p>
+      <button class="btn btn-primary btn-lg">Link anfordern</button>
+      <a class="link-center" href="#/start/anmelden">Zurück zur Anmeldung</a>
+    </form>
+    <p class="small muted auth-note">Keine E-Mail bekommen? Schau im Spam-Ordner nach – oder bitte deinen Ausbilder, dir ein neues Passwort zu setzen.</p>`;
+  const f = body.querySelector("#forgot");
+  const h = formHelpers(f);
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    h.clear();
+    h.busy(true, "Wird gesendet …");
+    try {
+      await auth.requestPasswordReset(f.email.value);
+      loginNotice = `Falls ein Konto mit ${f.email.value} existiert, ist eine E-Mail unterwegs. Bitte folge dem Link darin.`;
+      location.hash = "#/start/anmelden";
+    } catch (ex) {
+      h.fail(ex.message);
+      h.busy(false);
+    }
+  });
+  f.email.focus();
+}
+
+function newPasswordForm(body) {
+  if (!auth.getSession()) { location.hash = "#/start/passwort"; return; }
+  body.innerHTML = `
+    <form class="form" id="newpw">
+      <h2 class="auth-h2">Neues Passwort festlegen</h2>
+      ${pwField("password", "Neues Passwort <span class=\"muted\">(mindestens 8 Zeichen)</span>", "new-password", 'minlength="8"')}
+      <p class="form-error" hidden></p>
+      <button class="btn btn-primary btn-lg">Passwort speichern</button>
+    </form>`;
+  const f = body.querySelector("#newpw");
+  const h = formHelpers(f);
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    h.clear();
+    if (f.password.value.length < 8) { h.fail("Das Passwort muss mindestens 8 Zeichen haben."); return; }
+    h.busy(true, "Speichern …");
+    try {
+      await auth.updatePassword(f.password.value);
+      await afterLogin();
+    } catch (ex) {
+      h.fail(ex.message);
+      h.busy(false);
+    }
+  });
+  f.password.focus();
+}
+
+/* ---------------- Profil ---------------- */
 
 function profileView() {
   const st = store.getState();
   const p = st.profile;
-  let shareInfo;
-  if (!sync.backendEnabled()) {
-    shareInfo = '<p class="muted">Dein Lernstand wird auf diesem Gerät gespeichert.</p>';
-  } else if (p?.courseCode && p.joined) {
-    shareInfo = `<p class="muted">Dein Fortschritt wird automatisch an den Kurs <strong>${esc(p.courseName || p.courseCode)}</strong> übertragen – du musst nichts weiter tun.</p>
+  let statusHtml;
+  if (p.role === "instructor") {
+    statusHtml = `<p class="muted">Du bist als <strong>Ausbilder</strong> für den Kurs <strong>${esc(p.courseName || p.courseCode || "–")}</strong> angemeldet.</p>
+      <a class="btn btn-secondary" href="#/ausbilder">${icon("users")} Zum Ausbilder-Bereich</a>`;
+  } else if (p.role === "learner") {
+    statusHtml = `<p class="muted">Dein Konto ist für den Kurs <strong>${esc(p.courseName || p.courseCode)}</strong> freigegeben. Dein Fortschritt wird automatisch übertragen – auch auf andere Geräte, wenn du dich dort anmeldest.</p>
       <button class="btn btn-secondary" id="sync-now">${icon("cloud")} Jetzt übertragen</button>
       <p class="small muted" id="sync-msg">${st.lastSync ? `Zuletzt: ${new Date(st.lastSync).toLocaleString("de-DE")}` : ""}</p>`;
-  } else if (p?.courseCode) {
-    shareInfo = `<p class="muted">Kurs <strong>${esc(p.courseCode)}</strong>: Die Verbindung wird hergestellt, sobald du online bist. Dein Fortschritt wird dann automatisch nachgeliefert.</p>
-      <button class="btn btn-secondary" id="sync-now">${icon("cloud")} Jetzt verbinden</button>
-      <p class="small muted" id="sync-msg"></p>`;
   } else {
-    shareInfo = '<p class="muted">Trag oben den Kurscode deines Lehrgangs ein, damit dein Ausbilder deinen Fortschritt sieht.</p>';
+    statusHtml = `<p class="notice">${icon("clock")} Dein Konto wartet noch auf die Freigabe durch deinen Ausbilder${p.courseCode ? ` (Kurs ${esc(p.courseCode)})` : ""}. Du kannst trotzdem schon lernen – dein Fortschritt wird nach der Freigabe automatisch übertragen.</p>
+      <button class="btn btn-secondary" id="check-status">${icon("repeat")} Status prüfen</button>`;
   }
+
   view.innerHTML = `
     <div class="page-head"><h1>Profil & Einstellungen</h1></div>
     <div class="grid-2">
       <section class="card">
-        <h2>Deine Angaben</h2>
-        ${profileForm(p, "Speichern")}
-        <p class="form-ok small" hidden>Gespeichert ✓</p>
+        <h2>Dein Konto</h2>
+        <form class="form" id="name-form">
+          <label>Vor- und Nachname<input name="name" required maxlength="40" value="${esc(p.name)}"></label>
+          ${p.role === "pending" ? `<label>Kurscode<input name="code" maxlength="20" autocapitalize="characters" value="${esc(p.courseCode || "")}"></label>` : ""}
+          <p class="small muted">E-Mail: ${esc(p.email || auth.getUser()?.email || "–")}</p>
+          <p class="form-error" hidden></p>
+          <button class="btn btn-primary">Speichern</button>
+          <p class="form-ok small" hidden>Gespeichert ✓</p>
+        </form>
+        <hr>
+        <h2>Passwort ändern</h2>
+        <form class="form" id="pw-form">
+          ${pwField("password", "Neues Passwort <span class=\"muted\">(mindestens 8 Zeichen)</span>", "new-password", 'minlength="8"')}
+          <p class="form-error" hidden></p>
+          <button class="btn btn-secondary">Passwort ändern</button>
+          <p class="form-ok small" hidden>Passwort geändert ✓</p>
+        </form>
       </section>
       <section class="card">
-        <h2>Fortschritt</h2>
-        ${shareInfo}
-        <hr>
-        <h2>Lernpfad</h2>
-        <label class="switch"><input type="checkbox" id="unlock" ${st.settings.unlockAll ? "checked" : ""}><span></span> Alle Stufen freischalten</label>
-        <p class="small muted">Normalerweise wird eine Stufe freigeschaltet, wenn du ${Math.round(CONFIG.unlockThreshold * 100)} % der vorherigen sicher beherrschst.</p>
-        <hr>
-        <h2>Zurücksetzen</h2>
-        <button class="btn btn-danger-ghost" id="reset">Lernstand löschen</button>
+        <h2>Status</h2>
+        ${statusHtml}
+        ${p.role !== "instructor" ? `
+          <hr>
+          <h2>Lernpfad</h2>
+          <label class="switch"><input type="checkbox" id="unlock" ${st.settings.unlockAll ? "checked" : ""}><span></span> Alle Stufen freischalten</label>
+          <p class="small muted">Normalerweise wird eine Stufe freigeschaltet, wenn du ${Math.round(CONFIG.unlockThreshold * 100)} % der vorherigen sicher beherrschst.</p>` : ""}
         <hr>
         <div class="invite-actions">
           <a class="btn btn-secondary" href="#/abmelden">${icon("logout")} Abmelden</a>
-          <a class="link" href="#/start/ausbilder">${icon("shield")} Ausbilder-Anmeldung</a>
+          <button class="btn btn-danger-ghost btn-sm" id="delete-account">Konto löschen</button>
         </div>
       </section>
     </div>`;
-  bindProfileForm(() => {
-    view.querySelector(".form-ok").hidden = false;
-    renderNav();
+  bindPwToggles(view);
+
+  const nameForm = view.querySelector("#name-form");
+  nameForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = nameForm.querySelector(".form-error");
+    err.hidden = true;
+    try {
+      await sync.updateMyProfile(nameForm.name.value, nameForm.code?.value || null);
+      await sync.refreshAccount();
+      nameForm.querySelector(".form-ok").hidden = false;
+      renderNav();
+    } catch (ex) { err.textContent = ex.message; err.hidden = false; }
   });
+
+  const pwForm = view.querySelector("#pw-form");
+  pwForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = pwForm.querySelector(".form-error");
+    err.hidden = true;
+    if (pwForm.password.value.length < 8) { err.textContent = "Das Passwort muss mindestens 8 Zeichen haben."; err.hidden = false; return; }
+    try {
+      await auth.updatePassword(pwForm.password.value);
+      pwForm.password.value = "";
+      pwForm.querySelector(".form-ok").hidden = false;
+    } catch (ex) { err.textContent = ex.message; err.hidden = false; }
+  });
+
   view.querySelector("#sync-now")?.addEventListener("click", async () => {
     const msg = view.querySelector("#sync-msg");
     msg.textContent = "Übertrage …";
@@ -426,12 +486,22 @@ function profileView() {
     msg.textContent = r.error ? `Fehler: ${r.error}` : r.skipped ? "Gerade nicht möglich – bist du online?" : "Alles übertragen ✓";
     renderSyncStatus();
   });
-  view.querySelector("#unlock").addEventListener("change", (e) => store.setSetting("unlockAll", e.target.checked));
-  view.querySelector("#reset").addEventListener("click", () => {
-    if (confirm("Wirklich den gesamten Lernstand auf diesem Gerät löschen?")) {
-      store.resetProgress();
-      location.hash = "#/";
-    }
+  view.querySelector("#check-status")?.addEventListener("click", async () => {
+    try { await sync.refreshAccount(); } catch { /* offline */ }
+    await sync.flush();
+    profileView();
+    renderNav();
+  });
+  view.querySelector("#unlock")?.addEventListener("change", (e) => store.setSetting("unlockAll", e.target.checked));
+  view.querySelector("#delete-account").addEventListener("click", async () => {
+    if (!confirm("Konto wirklich löschen?\n\nDein Konto und dein gesamter Lernfortschritt werden dauerhaft gelöscht.")) return;
+    try {
+      await sync.deleteMyAccount();
+      await auth.signOut();
+      store.logout();
+      loginNotice = "Dein Konto wurde gelöscht.";
+      location.hash = "#/start";
+    } catch (ex) { alert(`Löschen fehlgeschlagen: ${ex.message}`); }
   });
 }
 
@@ -479,7 +549,11 @@ function dashboard() {
       </a>`;
   };
 
+  const waiting = st.profile?.role === "pending"
+    ? `<p class="notice pending-note">${icon("clock")} <span>Dein Konto wartet noch auf die Freigabe durch deinen Ausbilder. Du kannst schon lernen – dein Fortschritt wird danach automatisch übertragen.</span></p>`
+    : "";
   view.innerHTML = `
+    ${waiting}
     <section class="hero">
       <div class="hero-text">
         <span class="eyebrow">${esc(CONFIG.orgName)} · Sanitätsausbildung</span>
@@ -770,6 +844,29 @@ async function init() {
     return;
   }
   document.body.classList.remove("loading");
+
+  // Rückkehr aus einem E-Mail-Link (Bestätigung oder Passwort vergessen)
+  const redirect = sync.backendEnabled() && /access_token=|error_description=/.test(location.hash) ? await auth.handleRedirect() : null;
+  if (redirect?.error) loginNotice = redirect.error;
+
+  // Bestehende Sitzung: Konto laden (offline mit dem zuletzt bekannten Stand weiterarbeiten)
+  if (auth.getSession()) {
+    try {
+      await sync.refreshAccount();
+      if (store.getState().profile?.role === "rejected") throw new Error("gesperrt");
+    } catch (e) {
+      const sameUser = store.getState().profile?.id === auth.getUser()?.id;
+      if (!navigator.onLine && sameUser) { /* offline weiterlernen */ }
+      else if (e.offline && sameUser) { /* Server nicht erreichbar */ }
+      else { await auth.signOut(); store.logout(); }
+    }
+  } else if (store.getState().profile) {
+    store.logout(); // Lernstand aus der Zeit vor den Konten – Anmeldung erforderlich
+  }
+
+  if (redirect?.type === "recovery") location.hash = "#/start/neues-passwort";
+  else if (redirect?.type && auth.getSession()) location.hash = isAdmin() ? "#/ausbilder" : "#/";
+
   window.addEventListener("hashchange", route);
   window.addEventListener("online", () => sync.flush().then(renderSyncStatus));
   route();

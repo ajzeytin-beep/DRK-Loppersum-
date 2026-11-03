@@ -21,7 +21,8 @@ Nach dem ersten Aufruf funktioniert sie auch **offline**.
 - **Prüfungssimulation:** Zeitlimit, Bestehensgrenze, Auswertung am Ende.
 - **SAN-Protokoll üben:** Einsatz lesen, digitale Übungsversion des SAN-Protokolls ausfüllen (Kreuze, Messwerte, Zeiten), danach Vergleich mit der Musterlösung und Hinweise je Abschnitt. Dazu Fragen und eine Merkkarte zum Protokoll.
 - **Merkkarten:** erste Minute, xABCDE, Vitalwerte, Sauerstoffgabe, SAMPLERS, ZOPS & GIRL, Bodycheck, Tourniquet, Beckenschlinge, BE-FAST, Lagerungen, Reanimation, Neunerregel, Nummern.
-- **Ausbilder-Bereich:** automatische Übersicht über den Lernfortschritt aller Teilnehmenden, schwächste Themen, häufigste Fehler, Heatmap und CSV-Export.
+- **Konten mit E-Mail und Passwort:** Selbstregistrierung, Freigabe durch Ausbilder, Lernstand auf allen Geräten.
+- **Ausbilder-Bereich:** Freigabe neuer Konten, automatische Übersicht über den Lernfortschritt aller Teilnehmenden, schwächste Themen, häufigste Fehler, Heatmap und CSV-Export.
 
 ## Inhalte bearbeiten
 
@@ -76,75 +77,89 @@ python3 -m http.server 8000
 2. Nach kurzer Zeit ist die App unter `https://<benutzer>.github.io/<repository>/` erreichbar.
 3. Diesen Link oder einen QR-Code an die Teilnehmenden geben. Auf dem Handy dann „Zum Startbildschirm hinzufügen“ wählen.
 
-## Anmeldung
+## Anmeldung (Konten mit E-Mail und Passwort)
 
 | Für | Link |
 |---|---|
-| Teilnehmende | `https://ajzeytin-beep.github.io/DRK-Loppersum-/teilnehmer/?kurs=KURSCODE` |
-| Ausbilder | `https://ajzeytin-beep.github.io/DRK-Loppersum-/ausbilder/` |
+| Teilnehmende (Registrierung) | `https://ajzeytin-beep.github.io/DRK-Loppersum-/teilnehmer/?kurs=KURSCODE` |
+| Anmeldung (alle) | `https://ajzeytin-beep.github.io/DRK-Loppersum-/ausbilder/` oder die normale Startadresse |
 
-- Über diese Links erscheint nur die jeweils passende Anmeldung.
-- Den fertigen Teilnehmer-Link mit eurem Kurscode und den passenden QR-Code findest du nach der Anmeldung im Ausbilder-Bereich unter **„Teilnehmende einladen“**.
-- Die normale Startadresse zeigt beide Reiter, **Teilnehmer** und **Ausbilder**.
-
-- **Teilnehmer** melden sich mit Vorname und **Kurscode** an.
-  - Über den Einladungslink (`…/?kurs=LOP-2026`) oder den QR-Code ist der Kurscode schon ausgefüllt.
-  - Der Lernfortschritt wird **automatisch** an den Kurs übertragen. Ohne Internet wird er gesammelt und später nachgeliefert.
-  - Mehrere Personen können dasselbe Gerät nutzen, z. B. ein Tablet im Lehrgang. Jede Person hat ihren eigenen Lernstand.
-  - Unter „Weiterlernen“ erscheinen alle Personen auf dem Gerät, ein Tipp genügt.
-  - Wer denselben Namen und Kurscode erneut eingibt, macht mit seinem bisherigen Lernstand weiter.
-  - **Abmelden** geht über die Seitenleiste oder das Profil.
-- **Ausbilder** melden sich mit **Kurscode und Kurs-PIN** an. Die PIN wird auf dem Server geprüft, das funktioniert von jedem Gerät aus.
-  - Die Anmeldung gilt, bis man sich abmeldet oder den Browser-Tab schließt.
-  - Ausbilder ohne Teilnehmer-Anmeldung sehen nur den Ausbilder-Bereich und die Merkkarten.
+- **Registrieren:** Teilnehmende legen ein Konto mit Name, E-Mail, Passwort (mindestens 8 Zeichen) und Kurscode an. Über den Einladungslink ist der Kurscode schon ausgefüllt.
+- Nach der Registrierung kann man **sofort lernen**. Der Fortschritt wird übertragen, sobald ein Ausbilder das Konto **freigegeben** hat.
+- **Anmelden:** Teilnehmende und Ausbilder melden sich gleich an. Ausbilder landen automatisch im Ausbilder-Bereich.
+- Der Lernstand liegt auf dem Server. Wer sich auf einem neuen Gerät anmeldet, macht dort weiter. Ohne Internet wird weitergelernt und später übertragen.
+- **Passwort vergessen** per E-Mail-Link (siehe Hinweis zum E-Mail-Versand unten). Alternativ setzt ein Ausbilder ein neues Passwort.
+- **Profil:** Name und Passwort ändern, abmelden, Konto löschen.
 
 ## Ausbilder-Bereich
 
-Nach der Anmeldung siehst du sofort den Stand aller Teilnehmenden. Die Ansicht aktualisiert sich jede Minute.
+Nach der Anmeldung siehst du sofort den Stand deines Kurses. Die Ansicht aktualisiert sich jede Minute.
 
+- **Neue Anmeldungen:** Registrierte Konten mit deinem Kurscode (oder ohne gültigen Kurscode) freigeben oder ablehnen. Beim Ablehnen wird das Konto gelöscht.
 - **Lernfortschritt** pro Person:
   - Fortschritt in Prozent
   - Stufen 1–4 (grün = geschafft)
   - wo die Person gerade steht
   - Trefferquote, beste Prüfung, zuletzt aktiv
-- **Schwächste Themen** und **häufigste Fehler** im Kurs, um sie im Unterricht gezielt zu wiederholen.
-- **Teilnehmende × Themen** als Übersicht mit Farben.
-- **CSV-Export** für Excel.
-- **Teilnehmende einladen:** QR-Code und Link mit eingebautem Kurscode, Einladungstext, „Teilen“ (WhatsApp, Signal, E-Mail …) und QR-Code-Download zum Ausdrucken oder für den Beamer.
+- Pro Person kannst du über 🔒 **ein neues Passwort setzen** oder sie über ✕ **entfernen** (Konto und Lernfortschritt werden gelöscht).
+- **Schwächste Themen**, **häufigste Fehler**, Übersicht **Teilnehmende × Themen**, **CSV-Export**.
+- **Teilnehmende einladen:** QR-Code und Registrierungslink mit eingebautem Kurscode, Einladungstext, „Teilen“, QR-Code-Download.
 
-## Online-Auswertung (Supabase) einrichten
+## Supabase einrichten
 
-Die Daten liegen in einer kostenlosen Supabase-Datenbank (Region Frankfurt).
+1. Ein Konto auf <https://supabase.com> anlegen und ein Projekt erstellen (Region: Frankfurt / eu-central-1).
+2. Im **SQL Editor** nacheinander ausführen:
+   1. `supabase/schema.sql`
+   2. `supabase/update-1.sql`
+   3. `supabase/update-2.sql`
 
-1. Ein Konto auf <https://supabase.com> anlegen und ein neues Projekt erstellen (Region: Frankfurt / eu-central-1).
-2. Im **SQL Editor** den Inhalt von `supabase/schema.sql` ausführen.
-3. Einen Kurs anlegen. Den Befehl dazu findest du am Ende der Datei. Kurscode und Kurs-PIN wählst du selbst, die PIN muss sicher sein.
+   Wer schon eingerichtet ist, führt nur die fehlenden Updates aus.
+3. Einen Kurs anlegen (eine PIN ist seit Update 2 nicht mehr nötig):
+
+   ```sql
+   insert into public.courses (code, name) values ('LOP-2026', 'Sanitätslehrgang OV Loppersum 2026');
+   ```
+
 4. Unter **Project Settings → API Keys** die *Project URL* und den *publishable key* in `js/config.js` eintragen.
+5. **Authentication → Sign In / Providers → Email:**
+   - Email-Anmeldung aktiv lassen.
+   - **„Confirm email“ ausschalten**, solange kein eigener E-Mail-Versand eingerichtet ist (siehe unten).
+6. **Authentication → URL Configuration:** *Site URL* und *Redirect URLs* auf `https://ajzeytin-beep.github.io/DRK-Loppersum-/` setzen.
+7. **Ausbilder eintragen:** In der App registrieren, dann im SQL Editor:
 
-**Update für bestehende Datenbanken:** Wurde `schema.sql` vor der Fortschrittsanzeige eingerichtet, einmal `supabase/update-1.sql` im SQL Editor ausführen. Bestehende Daten bleiben erhalten.
+   ```sql
+   update public.profiles set role = 'instructor', course_code = 'LOP-2026' where email = 'deine@email.de';
+   ```
+
+**E-Mail-Versand:**
+
+- Der eingebaute E-Mail-Versand von Supabase schickt nur an Adressen aus dem eigenen Supabase-Team und nur wenige Mails pro Stunde.
+- Damit „Passwort vergessen“ und E-Mail-Bestätigung für alle Teilnehmenden funktionieren, unter **Authentication → Emails → SMTP Settings** einen eigenen Mailserver eintragen, z. B. das Postfach des Ortsvereins oder einen kostenlosen Dienst wie Brevo.
+- Bis dahin setzen Ausbilder vergessene Passwörter im Ausbilder-Bereich neu.
 
 **Hinweise:**
 
 - Kostenlose Supabase-Projekte pausieren nach 7 Tagen ohne Nutzung. Im Dashboard lassen sie sich mit einem Klick reaktivieren, die Daten bleiben erhalten.
-- Weitere Kurse legt ihr mit demselben Befehl an, mit eigenem Kurscode und eigener PIN.
-- Einen Testeintrag entfernt ihr so:
+- Alte Testeinträge aus der Zeit vor den Konten entfernen:
 
   ```sql
-  delete from public.learners where course_code = 'LOP-2026' and display_name = 'Test';
+  delete from public.learners where id not in (select id from public.profiles);
   ```
 
 **Datenschutz:**
 
-- Gespeichert werden nur der Anzeigename (am besten Vorname oder Spitzname), die beantworteten Fragen mit „richtig/falsch“ und die Prüfungsergebnisse.
-- Die Teilnehmenden sollten vorher darüber informiert werden.
-- Nach dem Lehrgang den Kurs löschen. Damit werden alle zugehörigen Daten entfernt:
+- Gespeichert werden Name, E-Mail, die beantworteten Fragen mit „richtig/falsch“ und die Prüfungsergebnisse.
+- Die Teilnehmenden sollten vorher darüber informiert werden. Sie können ihr Konto im Profil selbst löschen.
+- Nach dem Lehrgang den Lernfortschritt des Kurses löschen, dabei bleiben die Konten bestehen:
 
   ```sql
-  delete from public.courses where code = 'LOP-2026';
+  delete from public.learners where course_code = 'LOP-2026';
   ```
+
+  Konten entfernt ihr unter **Authentication → Users**.
 
 ## Technik
 
 Reines HTML/CSS/JavaScript ohne Build-Schritt.
-Der Lernstand liegt im `localStorage` des Geräts und wird an Supabase übertragen. Ein Service Worker sorgt für die Offline-Nutzung.
+Konten über Supabase Auth. Der Lernstand liegt im `localStorage` des Geräts und wird mit Supabase abgeglichen. Ein Service Worker sorgt für die Offline-Nutzung.
 Für QR-Codes ist die Bibliothek [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (MIT-Lizenz, Kazuhiko Arase) unter `js/vendor/` eingebunden.

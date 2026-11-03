@@ -4,52 +4,17 @@ import { CONFIG } from "./config.js";
 import { DATA, topicLabel, findQuestion } from "./data.js";
 import { esc } from "./quiz.js";
 import * as sync from "./sync.js";
+import * as store from "./store.js";
 import { icon } from "./icons.js";
 
 const pct = (r) => (r == null ? "–" : `${Math.round(r * 100)} %`);
 const rateClass = (r) => (r == null ? "none" : r >= 0.8 ? "good" : r >= 0.6 ? "mid" : "bad");
 
-/* ---------------- Anmeldung ---------------- */
-
-const SESSION_KEY = "sani-trainer-admin-session";
-
-// Alte, nur lokal gespeicherte Ausbilder-Daten aus früheren Versionen entfernen
-try {
-  localStorage.removeItem("sani-trainer-admin");
-  localStorage.removeItem("sani-trainer-admin-data");
-  sessionStorage.removeItem("sani-trainer-admin-unlocked");
-} catch { /* ignorieren */ }
-
-function getSession() {
-  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch { return null; }
-}
-
-export const isAdmin = () => Boolean(getSession()?.code);
-
 let lastStats = null;
 let refreshTimer = null;
 
-// Prüft Kurscode + Kurs-PIN auf dem Server. Die Anmeldung gilt bis zum Abmelden
-// bzw. bis der Browser-Tab geschlossen wird.
-export async function adminLogin(code, pin) {
-  if (!sync.backendEnabled()) return { ok: false, error: "Die Online-Auswertung ist nicht eingerichtet." };
-  const c = code.trim().toUpperCase();
-  try {
-    const stats = await sync.courseStats(c, pin);
-    try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ code: c, pin })); } catch { /* ignorieren */ }
-    lastStats = stats;
-    return { ok: true };
-  } catch (e) {
-    const offline = e instanceof TypeError || !navigator.onLine;
-    return { ok: false, error: offline ? "Keine Verbindung zum Server. Bitte Internetverbindung prüfen." : e.message };
-  }
-}
-
-export function adminLogout() {
-  clearInterval(refreshTimer);
-  try { sessionStorage.removeItem(SESSION_KEY); } catch { /* ignorieren */ }
-  lastStats = null;
-}
+// Alte Ausbilder-Sitzungen (Kurscode + PIN) aus früheren Versionen entfernen
+try { sessionStorage.removeItem("sani-trainer-admin-session"); } catch { /* ignorieren */ }
 
 /* ---------------- Einladen ---------------- */
 
@@ -62,7 +27,7 @@ function inviteText(code) {
 
 ${inviteUrl(code)}
 
-Einfach öffnen und deinen Vornamen eintragen – der Kurscode ${code} ist über den Link schon ausgefüllt.
+Einfach öffnen und ein Konto mit Name, E-Mail und Passwort anlegen – der Kurscode ${code} ist über den Link schon ausgefüllt. Ich gebe dein Konto dann frei.
 Tipp: Über „Zum Home-Bildschirm“ (iPhone) bzw. „App installieren“ (Android) wird sie zur App und funktioniert auch offline.`;
 }
 
@@ -110,7 +75,7 @@ function inviteCard(code) {
       <div class="invite-qr"><canvas id="invite-qr" aria-label="QR-Code zur App mit Kurscode ${esc(code)}"></canvas></div>
       <div class="invite-body">
         <h2>${icon("users")} Teilnehmende einladen</h2>
-        <p class="muted small">Wer über diesen Link oder QR-Code kommt, hat den Kurscode <strong>${esc(code)}</strong> schon eingetragen. Der Lernfortschritt erscheint dann automatisch hier.</p>
+        <p class="muted small">Über diesen Link oder QR-Code registrieren sich die Teilnehmenden – der Kurscode <strong>${esc(code)}</strong> ist schon eingetragen. Neue Konten erscheinen oben unter „Neue Anmeldungen“ zur Freigabe.</p>
         <label>Einladungstext
           <textarea id="invite-text" rows="7">${esc(inviteText(code))}</textarea>
         </label>
@@ -121,7 +86,7 @@ function inviteCard(code) {
         </div>
         <p class="small invite-msg" hidden></p>
         <div class="admin-link">
-          <span class="small muted">Link für weitere Ausbilder:</span>
+          <span class="small muted">Anmeldung für Ausbilder (auch zum Weitergeben):</span>
           <code>${esc(adminUrl())}</code>
           <button class="btn btn-ghost btn-sm" id="admin-link-copy">Kopieren</button>
         </div>
@@ -148,7 +113,7 @@ async function bindInvite(root, code) {
   };
   root.querySelector("#invite-copy").addEventListener("click", copy);
   root.querySelector("#admin-link-copy").addEventListener("click", async () => {
-    try { await navigator.clipboard.writeText(adminUrl()); say("Ausbilder-Link kopiert ✓ – die Kurs-PIN gibst du bitte getrennt weiter."); }
+    try { await navigator.clipboard.writeText(adminUrl()); say("Ausbilder-Link kopiert ✓ – neue Ausbilder registrieren sich und werden einmalig in Supabase als Ausbilder eingetragen (siehe README)."); }
     catch { say(adminUrl()); }
   });
   root.querySelector("#invite-dl").addEventListener("click", async () => {
@@ -177,57 +142,99 @@ async function bindInvite(root, code) {
 
 export function renderInstructor(view) {
   clearInterval(refreshTimer);
-  const session = getSession();
-  if (!session?.code) { location.hash = "#/start/ausbilder"; return; }
+  const me = store.getState().profile;
+  const code = me?.courseCode;
 
   view.innerHTML = `
     <div class="page-head stats-head">
       <div>
         <span class="eyebrow">Ausbilder-Bereich</span>
-        <h1 id="course-title">Kurs ${esc(session.code)}</h1>
+        <h1 id="course-title">${esc(me?.courseName || `Kurs ${code || ""}`)}</h1>
         <p class="muted small" id="refresh-info">Lade Daten …</p>
       </div>
       <div class="head-actions">
         <button class="btn btn-secondary btn-sm" id="refresh">${icon("repeat")} Aktualisieren</button>
-        <button class="btn btn-secondary btn-sm" id="logout">${icon("logout")} Abmelden</button>
       </div>
     </div>
+    <div id="pending"></div>
     <div id="stats">${lastStats ? "" : '<div class="loader" aria-label="Lädt"></div>'}</div>
-    ${inviteCard(session.code)}`;
+    ${code ? inviteCard(code) : '<section class="card"><p class="form-error">Deinem Ausbilder-Konto ist noch kein Kurs zugeordnet (siehe README: „Ausbilder eintragen“).</p></section>'}`;
 
   const statsEl = view.querySelector("#stats");
+  const pendingEl = view.querySelector("#pending");
   const info = view.querySelector("#refresh-info");
-  bindInvite(view, session.code);
-
-  view.querySelector("#logout").addEventListener("click", () => {
-    adminLogout();
-    location.hash = "#/start/ausbilder";
-  });
+  if (code) bindInvite(view, code);
 
   const load = async () => {
     const btn = view.querySelector("#refresh");
     if (!btn || !document.body.contains(btn)) { clearInterval(refreshTimer); return; } // Seite wurde verlassen
     btn.disabled = true;
     try {
-      lastStats = await sync.courseStats(session.code, session.pin);
-      renderStats(statsEl, lastStats);
-      view.querySelector("#course-title").textContent = lastStats.course?.name || `Kurs ${session.code}`;
-      info.textContent = `Kurs ${session.code} · Stand ${new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} Uhr · aktualisiert sich jede Minute`;
+      const [stats, pending] = await Promise.all([sync.courseStats(), sync.pendingRegistrations()]);
+      lastStats = stats;
+      renderPending(pendingEl, pending, load);
+      renderStats(statsEl, stats, load);
+      info.textContent = `Kurs ${stats.course?.code || code} · Stand ${new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} Uhr · aktualisiert sich jede Minute`;
     } catch (e) {
-      if (/PIN falsch/.test(e.message)) {
-        adminLogout();
-        location.hash = "#/start/ausbilder";
-        return;
-      }
-      info.textContent = `Aktualisieren fehlgeschlagen: ${e instanceof TypeError ? "keine Verbindung" : e.message}`;
+      info.textContent = `Aktualisieren fehlgeschlagen: ${e.message}`;
     } finally {
       btn.disabled = false;
     }
   };
-  if (lastStats) renderStats(statsEl, lastStats);
+  if (lastStats) renderStats(statsEl, lastStats, load);
   view.querySelector("#refresh").addEventListener("click", load);
   load();
   refreshTimer = setInterval(() => { if (!document.hidden) load(); }, 60000);
+}
+
+/* ---------------- Neue Anmeldungen ---------------- */
+
+function renderPending(el, list, reload) {
+  if (!list?.length) { el.innerHTML = ""; return; }
+  const fmt = (d) => new Date(d).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+  el.innerHTML = `
+    <section class="card pending-card">
+      <div class="card-head"><h2>${icon("user")} Neue Anmeldungen <span class="count-badge">${list.length}</span></h2>
+        <span class="small muted">Erst nach der Freigabe erscheinen sie in deiner Übersicht</span></div>
+      <ul class="pending-list">${list.map((r) => `
+        <li data-id="${esc(r.id)}">
+          <span class="avatar">${esc((r.name || "?").trim().charAt(0).toUpperCase())}</span>
+          <div class="pp-text"><strong>${esc(r.name || "Ohne Namen")}</strong>
+            <span class="small muted">${esc(r.email || "")} · ${fmt(r.created_at)}${r.requested_course ? ` · Kurscode ${esc(r.requested_course)}` : " · ohne Kurscode"}</span></div>
+          <div class="pending-actions">
+            <button class="btn btn-primary btn-sm" data-act="approve">${icon("check")} Freigeben</button>
+            <button class="btn btn-ghost btn-sm" data-act="reject">Ablehnen</button>
+          </div>
+        </li>`).join("")}</ul>
+    </section>`;
+  el.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", async () => {
+    const li = b.closest("li");
+    const r = list.find((x) => x.id === li.dataset.id);
+    if (b.dataset.act === "reject" && !confirm(`Anmeldung von ${r.name} (${r.email}) ablehnen?\n\nDas Konto wird gelöscht.`)) return;
+    li.querySelectorAll("button").forEach((x) => { x.disabled = true; });
+    try {
+      await (b.dataset.act === "approve" ? sync.approve(r.id) : sync.reject(r.id));
+      await reload();
+    } catch (e) {
+      alert(e.message);
+      li.querySelectorAll("button").forEach((x) => { x.disabled = false; });
+    }
+  }));
+}
+
+// Teilnehmer verwalten: Passwort zurücksetzen oder aus dem Kurs entfernen
+async function manageLearner(l, action, reload) {
+  if (action === "password") {
+    const pw = prompt(`Neues Passwort für ${l.name} (mindestens 8 Zeichen):\n\nGib es der Person persönlich weiter – sie kann es danach im Profil ändern.`);
+    if (pw == null) return;
+    if (pw.length < 8) { alert("Das Passwort muss mindestens 8 Zeichen haben."); return; }
+    try { await sync.setLearnerPassword(l.id, pw); alert(`Das Passwort für ${l.name} wurde geändert.`); }
+    catch (e) { alert(e.message); }
+  } else if (action === "remove") {
+    if (!confirm(`${l.name} aus dem Kurs entfernen?\n\nDas Konto und der gesamte Lernfortschritt werden gelöscht.`)) return;
+    try { await sync.removeLearner(l.id); await reload(); }
+    catch (e) { alert(e.message); }
+  }
 }
 
 /* ---------------- Auswertung ---------------- */
@@ -249,7 +256,7 @@ function relDay(d) {
   return date.toLocaleDateString("de-DE");
 }
 
-function renderStats(el, stats) {
+function renderStats(el, stats, reload) {
   const totals = levelTotals();
   const allTotal = Object.values(totals).reduce((a, b) => a + b, 0);
 
@@ -271,8 +278,8 @@ function renderStats(el, stats) {
     el.innerHTML = `
       <section class="card empty">
         ${icon("users", "icon icon-xl")}
-        <h2>Noch niemand angemeldet</h2>
-        <p class="muted">Sobald sich Teilnehmende mit dem Kurscode <strong>${esc(stats.course?.code)}</strong> anmelden, erscheinen sie hier automatisch – lade sie unten über Link oder QR-Code ein.</p>
+        <h2>Noch keine Teilnehmenden</h2>
+        <p class="muted">Lade die Teilnehmenden unten über Link oder QR-Code ein. Neue Konten erscheinen oben unter „Neue Anmeldungen“ – nach deiner Freigabe siehst du hier ihren Lernfortschritt.</p>
       </section>`;
     return;
   }
@@ -317,7 +324,7 @@ function renderStats(el, stats) {
       </div>
       <div class="table-wrap">
         <table class="progress-table">
-          <thead><tr><th>Name</th><th>Fortschritt</th><th>Stufen</th><th>Steht bei</th><th>Trefferquote</th><th>Prüfung</th><th>Zuletzt aktiv</th></tr></thead>
+          <thead><tr><th>Name</th><th>Fortschritt</th><th>Stufen</th><th>Steht bei</th><th>Trefferquote</th><th>Prüfung</th><th>Zuletzt aktiv</th><th></th></tr></thead>
           <tbody>${byProgress.map((l) => `
             <tr>
               <th>${esc(l.name)}</th>
@@ -327,6 +334,10 @@ function renderStats(el, stats) {
               <td><span class="${rateClass(l.rate)}">${pct(l.rate)}</span> <span class="small muted">(${l.n})</span></td>
               <td>${l.best == null ? '<span class="muted">–</span>' : `<span class="tag ${l.passed ? "tag-ok" : "tag-red"}">${pct(l.best)}</span>`}</td>
               <td class="small muted">${relDay(l.last_seen)}</td>
+              <td class="row-actions">
+                <button class="btn btn-ghost btn-sm" data-learner="${esc(l.id)}" data-act="password" title="Neues Passwort setzen">${icon("lock")}</button>
+                <button class="btn btn-ghost btn-sm" data-learner="${esc(l.id)}" data-act="remove" title="Aus dem Kurs entfernen">✕</button>
+              </td>
             </tr>`).join("")}</tbody>
         </table>
       </div>
@@ -370,6 +381,11 @@ function renderStats(el, stats) {
         </table>
       </div>
     </section>`;
+
+  el.querySelectorAll("[data-learner]").forEach((b) => b.addEventListener("click", () => {
+    const l = learners.find((x) => x.id === b.dataset.learner);
+    if (l) manageLearner(l, b.dataset.act, reload);
+  }));
 
   el.querySelector("#csv").addEventListener("click", () => {
     const head = ["Name", "Fortschritt %", "Steht bei", "Antworten", "Trefferquote %", "Beste Prüfung %", "Bestanden", ...DATA.topics.map((t) => t.label), "Zuletzt aktiv"];
