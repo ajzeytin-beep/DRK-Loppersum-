@@ -1,6 +1,6 @@
 // Service Worker: macht die App offline nutzbar.
 // Bei Änderungen an Fragen oder Code die Versionsnummer erhöhen.
-const CACHE = "sani-trainer-v11";
+const CACHE = "sani-trainer-v12";
 const ASSETS = [
   "./",
   "index.html",
@@ -42,20 +42,18 @@ self.addEventListener("activate", (e) => {
   );
 });
 
-// Stale-while-revalidate: sofort aus dem Cache, im Hintergrund aktualisieren.
+// Netzwerk zuerst: online immer die neueste Version, offline aus dem Cache.
 self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET" || url.origin !== self.location.origin) return;
   e.respondWith(
-    caches.open(CACHE).then(async (cache) => {
-      const cached = await cache.match(e.request);
-      const network = fetch(e.request)
+    caches.open(CACHE).then((cache) =>
+      fetch(e.request, { cache: "no-cache" })
         .then((res) => {
           if (res.ok) cache.put(e.request, res.clone());
           return res;
         })
-        .catch(() => cached);
-      return cached || network;
-    }),
+        .catch(() => cache.match(e.request, { ignoreSearch: true }).then((r) => r || cache.match("./"))),
+    ),
   );
 });

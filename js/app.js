@@ -836,6 +836,23 @@ function cardsView() {
 
 /* ---------------- Start ---------------- */
 
+// Konto beim Server prüfen. Gibt false zurück, wenn die Anmeldung nicht mehr gilt
+// (Konto gelöscht/gesperrt, Sitzung ungültig) – dann wird sauber abgemeldet.
+async function validateAccount() {
+  try {
+    await sync.refreshAccount();
+    if (store.getState().profile?.role === "rejected") throw new Error("Dein Konto ist gesperrt.");
+    return true;
+  } catch (e) {
+    const sameUser = store.getState().profile?.id === auth.getUser()?.id;
+    if (sameUser && (!navigator.onLine || e.offline)) return true; // offline weiterlernen
+    await auth.signOut();
+    store.logout();
+    loginNotice = "Deine Anmeldung ist nicht mehr gültig. Bitte melde dich erneut an.";
+    return false;
+  }
+}
+
 async function init() {
   try {
     await loadData();
@@ -849,17 +866,9 @@ async function init() {
   const redirect = sync.backendEnabled() && /access_token=|error_description=/.test(location.hash) ? await auth.handleRedirect() : null;
   if (redirect?.error) loginNotice = redirect.error;
 
-  // Bestehende Sitzung: Konto laden (offline mit dem zuletzt bekannten Stand weiterarbeiten)
+  // Bestehende Sitzung: Konto prüfen (offline mit dem zuletzt bekannten Stand weiterarbeiten)
   if (auth.getSession()) {
-    try {
-      await sync.refreshAccount();
-      if (store.getState().profile?.role === "rejected") throw new Error("gesperrt");
-    } catch (e) {
-      const sameUser = store.getState().profile?.id === auth.getUser()?.id;
-      if (!navigator.onLine && sameUser) { /* offline weiterlernen */ }
-      else if (e.offline && sameUser) { /* Server nicht erreichbar */ }
-      else { await auth.signOut(); store.logout(); }
-    }
+    await validateAccount();
   } else if (store.getState().profile) {
     store.logout(); // Lernstand aus der Zeit vor den Konten – Anmeldung erforderlich
   }
@@ -869,6 +878,14 @@ async function init() {
 
   window.addEventListener("hashchange", route);
   window.addEventListener("online", () => sync.flush().then(renderSyncStatus));
+  // Beim Zurückwechseln in die App prüfen, ob das Konto noch gültig ist (z. B. gelöscht oder Rolle geändert)
+  document.addEventListener("visibilitychange", async () => {
+    if (document.hidden || !auth.getSession()) return;
+    const before = store.getState().profile?.role;
+    const valid = await validateAccount();
+    if (!valid) { location.hash = "#/start"; return; }
+    if (store.getState().profile?.role !== before) route();
+  });
   route();
   sync.flush().then(renderSyncStatus);
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
