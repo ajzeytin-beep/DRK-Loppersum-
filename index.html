@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sani-Trainer · DRK OV Loppersum</title>
+  <meta name="description" content="Lern-App für die Sanitätsausbildung des DRK-Ortsvereins Loppersum.">
+  <meta name="theme-color" content="#0a0a0b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="loading">
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="#/">
+        <div class="logos">
+          <img src="assets/logo-drk.png" alt="DRK" class="logo" onerror="this.remove()">
+          <img src="assets/logo-ov.png" alt="DRK OV Loppersum" class="logo" onerror="this.remove()">
+        </div>
+        <div class="brand-text"><strong>Sani-Trainer</strong><span>DRK OV Loppersum</span></div>
+      </a>
+      <nav class="nav" id="nav" aria-label="Hauptnavigation"></nav>
+      <div class="sidebar-foot" id="sync-status"></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <a class="brand" href="#/">
+          <div class="logos">
+            <img src="assets/logo-drk.png" alt="DRK" class="logo" onerror="this.remove()">
+            <img src="assets/logo-ov.png" alt="DRK OV Loppersum" class="logo" onerror="this.remove()">
+          </div>
+          <div class="brand-text"><strong>Sani-Trainer</strong><span>DRK OV Loppersum</span></div>
+        </a>
+      </header>
+      <div id="view" class="view"><div class="loader" aria-label="Lädt"></div></div>
+    </main>
+
+    <nav class="bottom-nav" id="bottom-nav" aria-label="Navigation"></nav>
+  </div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

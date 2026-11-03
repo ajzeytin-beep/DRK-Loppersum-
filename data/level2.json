@@ -1,0 +1,225 @@
+{
+  "level": 2,
+  "items": [
+    {
+      "id": "l2-af", "topic": "anatomie", "type": "single",
+      "question": "Wie hoch ist die normale Atemfrequenz eines Erwachsenen in Ruhe?",
+      "options": ["6–10 pro Minute", "12–20 pro Minute", "25–30 pro Minute", "30–40 pro Minute"],
+      "answer": 1,
+      "explanation": "12–20 Atemzüge pro Minute. Eine erhöhte Atemfrequenz ist eines der frühesten Warnzeichen für einen kritischen Patienten."
+    },
+    {
+      "id": "l2-hf", "topic": "anatomie", "type": "single",
+      "question": "Wie hoch ist die normale Herzfrequenz eines Erwachsenen in Ruhe?",
+      "options": ["40–50 pro Minute", "60–100 pro Minute", "100–140 pro Minute", "120–160 pro Minute"],
+      "answer": 1,
+      "explanation": "60–100 Schläge pro Minute. Über 100 nennt man Tachykardie, unter 60 Bradykardie (bei Sportlern kann das normal sein)."
+    },
+    {
+      "id": "l2-rr", "topic": "anatomie", "type": "single",
+      "question": "Welcher Blutdruckwert gilt bei Erwachsenen als normal?",
+      "options": ["ca. 120/80 mmHg", "ca. 90/50 mmHg", "ca. 180/110 mmHg", "ca. 80/120 mmHg"],
+      "answer": 0,
+      "explanation": "Der erste Wert ist der systolische (Herz zieht sich zusammen), der zweite der diastolische Druck (Herz erschlafft). Der systolische Wert ist immer der höhere."
+    },
+    {
+      "id": "l2-spo2", "topic": "anatomie", "type": "single",
+      "question": "In welchem Bereich liegt die Sauerstoffsättigung (SpO₂) bei Gesunden?",
+      "options": ["75–85 %", "85–90 %", "95–100 %", "Immer genau 100 %"],
+      "answer": 2,
+      "explanation": "95–100 %. Werte darunter sind abklärungsbedürftig – Messfehler (kalte Finger, Nagellack, Bewegung) aber immer mitbedenken."
+    },
+    {
+      "id": "l2-bz", "topic": "anatomie", "type": "single",
+      "question": "Wo liegt der normale Blutzuckerwert (nüchtern) ungefähr?",
+      "options": ["30–50 mg/dl", "70–100 mg/dl", "150–200 mg/dl", "250–300 mg/dl"],
+      "answer": 1,
+      "explanation": "Nüchtern ca. 70–100 mg/dl, nach dem Essen auch höher. Eine Unterzuckerung liegt meist unter 60 mg/dl vor (Grenzen je nach Lehrmeinung leicht unterschiedlich)."
+    },
+    {
+      "id": "l2-temp", "topic": "anatomie", "type": "single",
+      "question": "Wie hoch ist die normale Körperkerntemperatur?",
+      "options": ["34,0–35,0 °C", "36,5–37,5 °C", "38,0–39,0 °C", "39,5–40,5 °C"],
+      "answer": 1,
+      "explanation": "36,5–37,5 °C. Unter 35 °C spricht man von Unterkühlung, über 38 °C von Fieber."
+    },
+    {
+      "id": "l2-kreislauf", "topic": "anatomie", "type": "single",
+      "question": "Wohin pumpt die linke Herzkammer das Blut?",
+      "options": ["Über die Hauptschlagader (Aorta) in den Körperkreislauf", "In die Lunge", "In den rechten Vorhof", "Direkt in die Leber"],
+      "answer": 0,
+      "explanation": "Linkes Herz → Körperkreislauf (sauerstoffreiches Blut). Rechtes Herz → Lungenkreislauf (sauerstoffarmes Blut zur Lunge)."
+    },
+    {
+      "id": "l2-alveolen", "topic": "anatomie", "type": "single",
+      "question": "Wo findet der Gasaustausch in der Lunge statt?",
+      "options": ["In den Lungenbläschen (Alveolen)", "In der Luftröhre", "Im Kehlkopf", "In den großen Bronchien"],
+      "answer": 0,
+      "explanation": "In den Alveolen gelangt Sauerstoff ins Blut und Kohlendioxid aus dem Blut in die Atemluft."
+    },
+    {
+      "id": "l2-blutvolumen", "topic": "anatomie", "type": "single",
+      "question": "Wie viel Blut hat ein Erwachsener ungefähr?",
+      "options": ["1–2 Liter", "5–6 Liter", "8–10 Liter", "12 Liter"],
+      "answer": 1,
+      "explanation": "Etwa 7–8 % des Körpergewichts, also rund 5–6 Liter. Schon ein Verlust von ca. 1 Liter kann zum Schock führen."
+    },
+    {
+      "id": "l2-hirn", "topic": "anatomie", "type": "single",
+      "question": "Nach welcher Zeit ohne Sauerstoff drohen bleibende Hirnschäden?",
+      "options": ["Nach ca. 3–5 Minuten", "Nach ca. 30 Minuten", "Nach ca. 1 Stunde", "Erst nach mehreren Stunden"],
+      "answer": 0,
+      "explanation": "Deshalb ist die sofortige Herzdruckmassage durch Ersthelfer und Sanitäter so entscheidend – der Rettungsdienst braucht oft länger."
+    },
+    {
+      "id": "l2-pulsorte", "topic": "anatomie", "type": "multi",
+      "question": "An welchen Stellen kannst du bei Erwachsenen den Puls gut tasten?",
+      "options": ["Handgelenk (A. radialis)", "Hals (A. carotis)", "Leiste (A. femoralis)", "Ellenbogenspitze", "Kniescheibe"],
+      "answer": [0, 1, 2],
+      "explanation": "Speichenarterie, Halsschlagader, Leistenarterie. Beim Säugling tastet man an der Innenseite des Oberarms (A. brachialis)."
+    },
+    {
+      "id": "l2-rekap", "topic": "beurteilung", "type": "single",
+      "question": "Wie lange dauert die normale Rekapillarisierungszeit?",
+      "options": ["Unter 2 Sekunden", "5–8 Sekunden", "Etwa 10 Sekunden", "Über 15 Sekunden"],
+      "answer": 0,
+      "explanation": "Kurz auf Nagelbett oder Stirn drücken: Die Farbe sollte in unter 2 Sekunden zurückkehren. Länger = Hinweis auf schlechte Durchblutung (Kälte kann verfälschen)."
+    },
+    {
+      "id": "l2-abcde-order", "topic": "beurteilung", "type": "order",
+      "question": "Bringe das ABCDE-Schema in die richtige Reihenfolge.",
+      "items": ["A – Atemwege", "B – Belüftung / Atmung", "C – Kreislauf (Circulation)", "D – Neurologie (Disability)", "E – Erweiterte Untersuchung / Umgebung (Exposure)"],
+      "explanation": "Die Reihenfolge folgt dem, was am schnellsten tötet: Ein verlegter Atemweg ist gefährlicher als ein gebrochenes Bein."
+    },
+    {
+      "id": "l2-abcde-prinzip", "topic": "beurteilung", "type": "single",
+      "question": "Du findest bei „B“ ein Problem. Was ist richtig?",
+      "options": ["Das Problem sofort behandeln, dann mit dem Schema weitermachen", "Erst das ganze Schema beenden, dann behandeln", "Bei C weitermachen und B später nachholen", "Nur dokumentieren, der Rettungsdienst behandelt"],
+      "answer": 0,
+      "explanation": "„Treat first what kills first“: Probleme werden sofort behandelt. Nach jeder Maßnahme und bei Verschlechterung beginnt man wieder bei A."
+    },
+    {
+      "id": "l2-sampler-a", "topic": "beurteilung", "type": "single",
+      "question": "Wofür steht das „A“ im SAMPLER-Schema?",
+      "options": ["Allergien", "Atmung", "Alter", "Alkohol"],
+      "answer": 0,
+      "explanation": "SAMPLER: Symptome, Allergien, Medikamente, Patientengeschichte, Letzte Mahlzeit/Ausscheidung, Ereignis, Risikofaktoren."
+    },
+    {
+      "id": "l2-sampler-m", "topic": "beurteilung", "type": "single",
+      "question": "Welche Frage gehört zum „M“ im SAMPLER-Schema?",
+      "options": ["Welche Medikamente nehmen Sie ein?", "Wann haben Sie zuletzt gegessen?", "Was ist passiert?", "Wo genau tut es weh?"],
+      "answer": 0,
+      "explanation": "Medikamente geben wichtige Hinweise (z. B. Blutverdünner bei Sturz, Insulin bei Bewusstseinsstörung). Medikamentenplan oder Packungen dem Rettungsdienst mitgeben."
+    },
+    {
+      "id": "l2-wasb", "topic": "beurteilung", "type": "single",
+      "question": "Ein Patient öffnet die Augen nur bei einem Schmerzreiz. Wie stufst du ihn nach WASB ein?",
+      "options": ["W – wach", "A – reagiert auf Ansprache", "S – reagiert auf Schmerzreiz", "B – bewusstlos"],
+      "answer": 2,
+      "explanation": "WASB: Wach – reagiert auf Ansprache – reagiert auf Schmerzreiz – bewusstlos. Ab „S“ sind die Schutzreflexe oft schon eingeschränkt."
+    },
+    {
+      "id": "l2-gcs", "topic": "beurteilung", "type": "single",
+      "question": "In welchem Punktebereich liegt die Glasgow Coma Scale (GCS)?",
+      "options": ["0–10", "1–12", "3–15", "5–20"],
+      "answer": 2,
+      "explanation": "3 (tief bewusstlos) bis 15 (voll orientiert). Bewertet werden Augenöffnen, verbale und motorische Reaktion. Bei 8 und weniger sind die Atemwege gefährdet."
+    },
+    {
+      "id": "l2-ersteindruck", "topic": "beurteilung", "type": "multi",
+      "question": "Was beurteilst du beim Ersteindruck in den ersten Sekunden?",
+      "options": ["Bewusstsein / Reaktion", "Atmung (Geräusche, Anstrengung)", "Hautfarbe", "Blutzuckerwert", "Impfstatus"],
+      "answer": [0, 1, 2],
+      "explanation": "Der Ersteindruck („kritisch oder nicht kritisch?“) gelingt mit Augen und Ohren. Messwerte wie Blutzucker folgen später im ABCDE."
+    },
+    {
+      "id": "l2-desinf", "topic": "hygiene", "type": "single",
+      "question": "Wie lange muss ein übliches Händedesinfektionsmittel einwirken?",
+      "options": ["5 Sekunden", "Etwa 30 Sekunden", "5 Minuten", "Es muss nicht einwirken"],
+      "answer": 1,
+      "explanation": "Meist 30 Sekunden – Herstellerangaben beachten. Die Hände müssen die ganze Zeit über feucht sein."
+    },
+    {
+      "id": "l2-nadelstich", "topic": "hygiene", "type": "multi",
+      "question": "Du verletzt dich an einer benutzten Lanzette. Was ist richtig?",
+      "options": ["Blutung fördern (bluten lassen)", "Gründlich desinfizieren", "Vorfall sofort melden und dokumentieren", "Zeitnah einen Arzt (D-Arzt) aufsuchen", "Weiterarbeiten und den Vorfall für sich behalten"],
+      "answer": [0, 1, 2, 3],
+      "explanation": "Stich- und Schnittverletzungen sind Arbeitsunfälle – auch im Ehrenamt. Schnelles Handeln und Meldung sind wichtig, damit ggf. eine Prophylaxe begonnen werden kann."
+    },
+    {
+      "id": "l2-ffp2", "topic": "hygiene", "type": "single",
+      "question": "Patient mit Verdacht auf eine über die Luft übertragbare Infektion. Welche Maske schützt dich?",
+      "options": ["FFP2-Maske", "Einfache Stoffmaske", "Keine – Handschuhe reichen", "Beatmungsmaske"],
+      "answer": 0,
+      "explanation": "Eine FFP2-Maske schützt den Träger. Je nach Lage zusätzlich Schutzbrille und Schutzkittel – nach euren Hygienevorgaben."
+    },
+    {
+      "id": "l2-spitz", "topic": "hygiene", "type": "single",
+      "question": "Wohin gehören benutzte Lanzetten, z. B. nach dem Blutzuckermessen?",
+      "options": ["In einen durchstichsicheren Abwurfbehälter", "In den normalen Müllbeutel", "Zurück in die Verpackung", "In die Jackentasche bis zum Dienstende"],
+      "answer": 0,
+      "explanation": "Spitze und scharfe Gegenstände immer sofort in den durchstichsicheren Behälter – nie zurückstecken („Recapping“)."
+    },
+    {
+      "id": "l2-schweige", "topic": "recht", "type": "truefalse",
+      "question": "Der Veranstalter fragt nach der Diagnose eines Patienten. Du darfst sie ihm mitteilen, weil er für die Veranstaltung verantwortlich ist.",
+      "answer": false,
+      "explanation": "Du bist zur Verschwiegenheit verpflichtet – auch gegenüber Veranstalter, Presse, Freunden und in sozialen Medien. Weitergegeben wird nur, was für die Behandlung nötig ist (z. B. an den Rettungsdienst)."
+    },
+    {
+      "id": "l2-garant", "topic": "recht", "type": "single",
+      "question": "Was bedeutet es, dass du im Sanitätsdienst eine „Garantenstellung“ hast?",
+      "options": ["Durch die Übernahme des Dienstes hast du eine besondere Pflicht, Patienten zu helfen", "Du garantierst, dass jeder Patient überlebt", "Du darfst alle ärztlichen Maßnahmen durchführen", "Du haftest nie für Fehler"],
+      "answer": 0,
+      "explanation": "Wer einen Sanitätsdienst übernimmt, muss im Rahmen seiner Ausbildung handeln. Unterlassen kann hier strenger bewertet werden als bei zufällig anwesenden Laien."
+    },
+    {
+      "id": "l2-medis", "topic": "recht", "type": "truefalse",
+      "question": "Als Sanitäter darf ich einem Patienten bei Kopfschmerzen eine Schmerztablette aus dem Sanitätsrucksack geben.",
+      "answer": false,
+      "explanation": "Sanitäter verabreichen keine Medikamente. Ausnahmen gibt es nur nach eurer Regelung, z. B. Sauerstoff oder die Unterstützung bei patienteneigenen Notfallmedikamenten (Asthmaspray, Adrenalin-Autoinjektor)."
+    },
+    {
+      "id": "l2-ablehnung", "topic": "recht", "type": "multi",
+      "question": "Ein orientierter, einsichtsfähiger Patient lehnt Behandlung und Transport ab. Was tust du?",
+      "options": ["Über mögliche Folgen aufklären", "Die Ablehnung dokumentieren und möglichst unterschreiben lassen (mit Zeugen)", "Bei Zweifeln Rettungsdienst oder Notarzt hinzuziehen", "Den Patienten gegen seinen Willen festhalten", "Ihn kommentarlos gehen lassen"],
+      "answer": [0, 1, 2],
+      "explanation": "Ein einwilligungsfähiger Erwachsener darf ablehnen. Deine Pflicht ist gute Aufklärung und Dokumentation. Bei Zweifeln an der Einsichtsfähigkeit (Alkohol, Kopfverletzung, Unterzuckerung) immer Rettungsdienst/Arzt hinzuziehen."
+    },
+    {
+      "id": "l2-323c", "topic": "recht", "type": "single",
+      "question": "Was regelt § 323c des Strafgesetzbuchs?",
+      "options": ["Unterlassene Hilfeleistung", "Die Schweigepflicht", "Den Datenschutz", "Das Verhalten im Straßenverkehr"],
+      "answer": 0,
+      "explanation": "Jeder ist verpflichtet, bei Unglücksfällen zumutbare Hilfe zu leisten. Für Sanitäter im Dienst kommt die Garantenstellung hinzu."
+    },
+    {
+      "id": "l2-doku", "topic": "recht", "type": "multi",
+      "question": "Warum ist eine gute Einsatzdokumentation wichtig?",
+      "options": ["Sie sichert die Übergabe an den Rettungsdienst", "Sie dient deiner rechtlichen Absicherung", "Sie hilft bei der Qualitätssicherung und Auswertung", "Sie ist für die Presse bestimmt"],
+      "answer": [0, 1, 2],
+      "explanation": "Was nicht dokumentiert ist, gilt als nicht gemacht. Patientenprotokolle sind vertraulich und werden nach euren Vorgaben aufbewahrt."
+    },
+    {
+      "id": "l2-sd-aufgabe", "topic": "sd", "type": "single",
+      "question": "Was ist die Kernaufgabe des Sanitätsdienstes bei einer Veranstaltung?",
+      "options": ["Erstversorgung bis zum Eintreffen des Rettungsdienstes und Versorgung leichter Verletzungen", "Den Rettungsdienst vollständig zu ersetzen", "Patienten selbst ins Krankenhaus zu fahren", "Diagnosen zu stellen und Medikamente zu verordnen"],
+      "answer": 0,
+      "explanation": "Der Sanitätsdienst überbrückt die Zeit bis zum Rettungsdienst, versorgt Bagatellverletzungen und betreut Patienten. Er ersetzt weder Rettungsdienst noch Arzt."
+    },
+    {
+      "id": "l2-sd-rd", "topic": "sd", "type": "truefalse",
+      "question": "Wenn ich unsicher bin, ob ein Patient den Rettungsdienst braucht, fordere ich ihn lieber an.",
+      "answer": true,
+      "explanation": "Lieber zu früh als zu spät. Der Weg der Nachforderung (über Einsatzleitung, Sanitätswache oder direkt 112) wird vor dem Dienst festgelegt."
+    },
+    {
+      "id": "l2-sd-meldung", "topic": "sd", "type": "single",
+      "question": "Du wirst während eines Sanitätsdienstes zu einem Patienten gerufen. Was tust du, bevor du losgehst?",
+      "options": ["Kurz der Einsatzleitung bzw. Sanitätswache melden, wohin du gehst", "Nichts – sofort losrennen", "Erst das Protokoll ausfüllen", "Den Veranstalter um Erlaubnis fragen"],
+      "answer": 0,
+      "explanation": "Die Einsatzleitung muss wissen, wo ihre Kräfte sind – sonst kann sie nicht nachsteuern oder Unterstützung schicken. Das geht meist per Funk in Sekunden."
+    }
+  ]
+}

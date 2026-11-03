@@ -1,0 +1,69 @@
+// Optionale Übertragung des Lernstands an den Kurs-Server (Supabase).
+// Ohne Konfiguration arbeitet die App rein lokal; Ausbilder können dann Exportdateien importieren.
+import { CONFIG } from "./config.js";
+import * as store from "./store.js";
+
+export const backendEnabled = () => Boolean(CONFIG.supabaseUrl && CONFIG.supabaseAnonKey);
+
+async function rpc(fn, args) {
+  const res = await fetch(`${CONFIG.supabaseUrl.replace(/\/$/, "")}/rest/v1/rpc/${fn}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: CONFIG.supabaseAnonKey,
+      Authorization: `Bearer ${CONFIG.supabaseAnonKey}`,
+    },
+    body: JSON.stringify(args),
+  });
+  const text = await res.text();
+  if (!res.ok) {
+    let msg = text;
+    try { msg = JSON.parse(text).message || text; } catch { /* Text behalten */ }
+    throw new Error(msg || `Fehler ${res.status}`);
+  }
+  return text ? JSON.parse(text) : null;
+}
+
+export function joinCourse(code, learnerId, name) {
+  return rpc("join_course", { p_code: code, p_learner_id: learnerId, p_name: name });
+}
+
+export function courseStats(code, pin) {
+  return rpc("course_stats", { p_code: code, p_pin: pin });
+}
+
+export function pendingCount() {
+  const st = store.getState();
+  return st.history.length - st.syncedCount + st.exams.filter((e) => !e.synced).length;
+}
+
+let flushing = false;
+export async function flush() {
+  const st = store.getState();
+  if (!backendEnabled() || !st.profile?.joined || flushing || !navigator.onLine) return { skipped: true };
+  flushing = true;
+  try {
+    while (st.syncedCount < st.history.length) {
+      const batch = st.history.slice(st.syncedCount, st.syncedCount + 500);
+      await rpc("record_progress", { p_learner_id: st.profile.id, p_attempts: batch, p_exams: [] });
+      st.syncedCount += batch.length;
+      store.save();
+    }
+    const exams = st.exams.filter((e) => !e.synced);
+    if (exams.length) {
+      await rpc("record_progress", {
+        p_learner_id: st.profile.id,
+        p_attempts: [],
+        p_exams: exams.map(({ score, total, passed, at }) => ({ score, total, passed, at })),
+      });
+      exams.forEach((e) => { e.synced = true; });
+    }
+    st.lastSync = Date.now();
+    store.save();
+    return { ok: true };
+  } catch (e) {
+    return { error: e.message };
+  } finally {
+    flushing = false;
+  }
+}

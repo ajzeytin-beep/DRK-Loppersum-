@@ -1,0 +1,118 @@
+{
+  "cards": [
+    {
+      "title": "Vitalwerte Erwachsene",
+      "rows": [
+        ["Atemfrequenz", "12–20 / min"],
+        ["Herzfrequenz (Ruhe)", "60–100 / min"],
+        ["Blutdruck", "ca. 120/80 mmHg"],
+        ["SpO₂", "95–100 %"],
+        ["Ziel-SpO₂ bei O₂-Gabe", "94–98 % (COPD: 88–92 %)"],
+        ["Blutzucker nüchtern", "ca. 70–100 mg/dl"],
+        ["Unterzuckerung", "meist < 60 mg/dl"],
+        ["Körpertemperatur", "36,5–37,5 °C"],
+        ["Rekapillarisierung", "< 2 Sekunden"],
+        ["Schockindex", "HF ÷ RR syst. – über 1 = Warnzeichen"]
+      ]
+    },
+    {
+      "title": "Vitalwerte Kinder (Richtwerte)",
+      "rows": [
+        ["Säugling – HF", "100–160 / min"],
+        ["Säugling – AF", "30–40 / min"],
+        ["Kleinkind – HF", "90–140 / min"],
+        ["Kleinkind – AF", "20–30 / min"],
+        ["Schulkind – HF", "70–120 / min"],
+        ["Schulkind – AF", "15–25 / min"]
+      ],
+      "note": "Je nach Lehrbuch leicht unterschiedliche Grenzen – maßgeblich sind eure Lehrgangsunterlagen."
+    },
+    {
+      "title": "ABCDE-Schema",
+      "rows": [
+        ["A – Airway", "Atemwege frei? Fremdkörper, Schwellung, Geräusche"],
+        ["B – Breathing", "Atemfrequenz, Atemarbeit, SpO₂, Atemgeräusche"],
+        ["C – Circulation", "Puls, Haut, Rekapillarisierung, Blutdruck, Blutungen"],
+        ["D – Disability", "Bewusstsein (WASB/GCS), Pupillen, BZ, BE-FAST"],
+        ["E – Exposure", "Ganzkörper-Check, Temperatur, Umgebung, Wärmeerhalt"]
+      ],
+      "note": "Probleme sofort behandeln, wenn sie gefunden werden („treat first what kills first“) – danach erneut von vorne beurteilen."
+    },
+    {
+      "title": "SAMPLER-Anamnese",
+      "rows": [
+        ["S", "Symptome – was genau? seit wann?"],
+        ["A", "Allergien"],
+        ["M", "Medikamente"],
+        ["P", "Patientengeschichte / Vorerkrankungen"],
+        ["L", "Letzte Mahlzeit, Flüssigkeit, Ausscheidung"],
+        ["E", "Ereignis – was ist passiert?"],
+        ["R", "Risikofaktoren (z. B. Rauchen, Schwangerschaft)"]
+      ]
+    },
+    {
+      "title": "Schlaganfall: BE-FAST",
+      "rows": [
+        ["B – Balance", "Gleichgewichts- oder Gangstörung"],
+        ["E – Eyes", "Sehstörung, Doppelbilder"],
+        ["F – Face", "hängender Mundwinkel beim Lächeln"],
+        ["A – Arms", "Arm sinkt beim Vorhalten ab"],
+        ["S – Speech", "verwaschene Sprache, Wortfindung"],
+        ["T – Time", "Zeit notieren, sofort Notruf"]
+      ]
+    },
+    {
+      "title": "Bewusstsein: WASB",
+      "rows": [
+        ["W", "wach, orientiert"],
+        ["A", "reagiert auf Ansprache"],
+        ["S", "reagiert nur auf Schmerzreiz"],
+        ["B", "bewusstlos, keine Reaktion"]
+      ],
+      "note": "GCS: 3–15 Punkte. ≤ 8 = schwere Bewusstseinsstörung, Atemwege gefährdet."
+    },
+    {
+      "title": "Lagerungen",
+      "rows": [
+        ["Bewusstlos mit normaler Atmung", "Stabile Seitenlage"],
+        ["Atemnot / Herzproblem", "Oberkörper hoch, ggf. Kutschersitz"],
+        ["Volumenmangel-Schock", "Flach, Beine leicht hoch (wenn keine Kontraindikation)"],
+        ["Schädel-Hirn-Trauma (wach)", "Oberkörper ca. 30° hoch, Kopf gerade"],
+        ["Bauchverletzung / -schmerz", "Rückenlage mit Knierolle"],
+        ["Wirbelsäulenverdacht", "Nicht bewegen, Kopf manuell stabilisieren"],
+        ["Unterkühlung", "Schonend, horizontal"]
+      ]
+    },
+    {
+      "title": "Reanimation (BLS)",
+      "rows": [
+        ["Erwachsene", "30:2 · 5–6 cm · 100–120 / min"],
+        ["Kinder (ausgebildete Helfer)", "5 Initialbeatmungen, dann 15:2"],
+        ["Drucktiefe Kind/Säugling", "ca. ⅓ des Brustkorbs"],
+        ["Ertrinkungsunfall", "5 Initialbeatmungen, dann 30:2"],
+        ["AED", "so früh wie möglich, Pausen minimal halten"]
+      ]
+    },
+    {
+      "title": "Neunerregel (Erwachsene)",
+      "rows": [
+        ["Kopf & Hals", "9 %"],
+        ["je Arm", "9 %"],
+        ["Rumpf vorne", "18 %"],
+        ["Rumpf hinten", "18 %"],
+        ["je Bein", "18 %"],
+        ["Genitalbereich", "1 %"],
+        ["Handfläche des Patienten (inkl. Finger)", "ca. 1 %"]
+      ]
+    },
+    {
+      "title": "Wichtige Nummern",
+      "rows": [
+        ["Notruf Rettungsdienst / Feuerwehr", "112"],
+        ["Polizei", "110"],
+        ["Ärztlicher Bereitschaftsdienst", "116 117"],
+        ["Giftinformationszentrum Nord (Göttingen)", "0551 19240"]
+      ]
+    }
+  ]
+}

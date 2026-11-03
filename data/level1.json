@@ -1,0 +1,146 @@
+{
+  "level": 1,
+  "items": [
+    {
+      "id": "l1-notruf", "topic": "eh", "type": "single",
+      "question": "Welche Nummer wählst du in ganz Europa für Rettungsdienst und Feuerwehr?",
+      "options": ["110", "112", "116 117", "19222"],
+      "answer": 1,
+      "explanation": "Die 112 ist europaweit die Notrufnummer für Rettungsdienst und Feuerwehr. Die 116 117 ist der ärztliche Bereitschaftsdienst – kein Notruf."
+    },
+    {
+      "id": "l1-wo", "topic": "eh", "type": "single",
+      "question": "Welche Information ist beim Notruf am wichtigsten?",
+      "options": ["Wo ist der Notfallort?", "Wer ruft an?", "Wie alt ist der Patient?", "Bei welcher Krankenkasse ist der Patient versichert?"],
+      "answer": 0,
+      "explanation": "Ohne genauen Ort kann kein Rettungsmittel kommen. Auf dem Land helfen Zusätze wie Ortsteil (z. B. „Loppersum“ statt nur „Hinte“), Hofname, Feldweg oder Deichabschnitt. Erst auflegen, wenn die Leitstelle das Gespräch beendet."
+    },
+    {
+      "id": "l1-eigenschutz", "topic": "eh", "type": "truefalse",
+      "question": "Eigenschutz geht vor – auch im Sanitätsdienst bringe ich mich nicht selbst in Gefahr.",
+      "answer": true,
+      "explanation": "Ein verletzter Helfer kann niemandem mehr helfen. Gefahren (Verkehr, Wasser, Feuer, Strom, Gewalt, Infektion) zuerst einschätzen und absichern."
+    },
+    {
+      "id": "l1-bewusstsein", "topic": "eh", "type": "single",
+      "question": "Wie prüfst du das Bewusstsein einer am Boden liegenden Person?",
+      "options": ["Laut ansprechen und an den Schultern rütteln", "Sofort den Puls an der Halsschlagader tasten", "Mit kaltem Wasser übergießen", "Mit einer Lampe in die Augen leuchten"],
+      "answer": 0,
+      "explanation": "Laut ansprechen („Hallo, hören Sie mich?“) und an den Schultern rütteln. Reagiert die Person nicht, ist sie bewusstlos – sofort Atmung prüfen."
+    },
+    {
+      "id": "l1-atmung", "topic": "eh", "type": "single",
+      "question": "Wie prüfst du bei einem bewusstlosen Erwachsenen die Atmung?",
+      "options": ["Kopf überstrecken, Kinn anheben und höchstens 10 Sekunden sehen, hören, fühlen", "Eine Minute lang den Puls zählen", "Einen Spiegel vor den Mund halten", "Die Person aufsetzen und abwarten"],
+      "answer": 0,
+      "explanation": "Atemwege freimachen (Kopf überstrecken, Kinn anheben) und max. 10 Sekunden prüfen: Hebt und senkt sich der Brustkorb? Atemgeräusche? Luftstrom an der Wange?"
+    },
+    {
+      "id": "l1-ssl", "topic": "eh", "type": "single",
+      "question": "Ein Patient ist bewusstlos, atmet aber normal. Was tust du?",
+      "options": ["Stabile Seitenlage, Notruf, Atmung regelmäßig kontrollieren", "Sofort mit der Herzdruckmassage beginnen", "Beine hochlagern und abwarten", "Patienten aufsetzen, damit er besser atmet"],
+      "answer": 0,
+      "explanation": "Die stabile Seitenlage hält die Atemwege frei, Erbrochenes kann abfließen. Die Atmung muss laufend kontrolliert werden – sie kann jederzeit aussetzen."
+    },
+    {
+      "id": "l1-schnapp", "topic": "reanimation", "type": "truefalse",
+      "question": "Schnappatmung (vereinzelte, langsame, „schnappende“ Atemzüge) ist keine normale Atmung – es muss reanimiert werden.",
+      "answer": true,
+      "explanation": "Schnappatmung tritt häufig in den ersten Minuten eines Kreislaufstillstands auf. Sie ist kein Lebenszeichen, sondern ein Grund, sofort mit der Herzdruckmassage zu beginnen."
+    },
+    {
+      "id": "l1-tiefe", "topic": "reanimation", "type": "single",
+      "question": "Wie tief drückst du bei der Herzdruckmassage eines Erwachsenen?",
+      "options": ["2–3 cm", "5–6 cm", "8–10 cm", "So tief wie möglich"],
+      "answer": 1,
+      "explanation": "5–6 cm, danach den Brustkorb vollständig entlasten – ohne die Hände abzuheben."
+    },
+    {
+      "id": "l1-frequenz", "topic": "reanimation", "type": "single",
+      "question": "Mit welcher Frequenz drückst du bei der Herzdruckmassage?",
+      "options": ["60–80 pro Minute", "80–100 pro Minute", "100–120 pro Minute", "140–160 pro Minute"],
+      "answer": 2,
+      "explanation": "100–120 Kompressionen pro Minute. Merkhilfe: Songs wie „Stayin’ Alive“ haben ungefähr das richtige Tempo."
+    },
+    {
+      "id": "l1-verhaeltnis", "topic": "reanimation", "type": "single",
+      "question": "Welches Verhältnis von Herzdruckmassage zu Beatmung gilt beim Erwachsenen?",
+      "options": ["15:2", "30:2", "30:5", "5:1"],
+      "answer": 1,
+      "explanation": "30 Kompressionen, dann 2 Beatmungen. Wer nicht beatmen kann oder will, drückt ohne Pause durch."
+    },
+    {
+      "id": "l1-druckpunkt", "topic": "reanimation", "type": "single",
+      "question": "Wo liegt der Druckpunkt beim Erwachsenen?",
+      "options": ["Mitte des Brustkorbs (untere Hälfte des Brustbeins)", "Linke Brustseite über dem Herzen", "Oberbauch unterhalb des Brustbeins", "Oberes Drittel des Brustbeins"],
+      "answer": 0,
+      "explanation": "Handballen in die Mitte des Brustkorbs auf die untere Hälfte des Brustbeins, zweite Hand darauf, Arme gestreckt."
+    },
+    {
+      "id": "l1-aed", "topic": "reanimation", "type": "single",
+      "question": "Wann setzt du einen AED (Defibrillator) ein?",
+      "options": ["Sobald er verfügbar ist – einschalten und den Anweisungen folgen", "Erst nach 10 Minuten Herzdruckmassage", "Nur wenn ein Arzt anwesend ist", "Nur bei Kindern über 12 Jahren"],
+      "answer": 0,
+      "explanation": "Je früher defibrilliert wird, desto höher die Überlebenschance. Die Herzdruckmassage läuft weiter, bis der AED zur Analyse auffordert."
+    },
+    {
+      "id": "l1-aed-analyse", "topic": "reanimation", "type": "truefalse",
+      "question": "Während der AED den Herzrhythmus analysiert, darf niemand den Patienten berühren.",
+      "answer": true,
+      "explanation": "Berührungen und Bewegungen stören die Analyse. Beim Schock muss erst recht jeder Abstand halten („Alle weg!“)."
+    },
+    {
+      "id": "l1-blutung", "topic": "trauma", "type": "single",
+      "question": "Was ist die erste Maßnahme bei einer stark blutenden Wunde am Unterarm?",
+      "options": ["Direkten Druck auf die Wunde ausüben (mit Handschuhen)", "Die Wunde mit Wasser auswaschen", "Sofort ein Tourniquet anlegen, egal wie stark die Blutung ist", "Den Arm mit einem Gürtel abbinden"],
+      "answer": 0,
+      "explanation": "Direkter Druck und danach ein Druckverband stillen die meisten Blutungen. Ein Tourniquet ist für lebensbedrohliche Blutungen gedacht, die sich so nicht stillen lassen."
+    },
+    {
+      "id": "l1-rettungskette", "topic": "eh", "type": "order",
+      "question": "Bringe die Glieder der Rettungskette in die richtige Reihenfolge.",
+      "items": ["Sofortmaßnahmen (Absichern, Eigenschutz, lebensrettende Maßnahmen)", "Notruf", "Weitere Erste Hilfe", "Rettungsdienst", "Krankenhaus"],
+      "explanation": "Jedes Glied ist wichtig – der Sanitätsdienst stärkt vor allem die ersten drei Glieder bis zum Eintreffen des Rettungsdienstes."
+    },
+    {
+      "id": "l1-helm", "topic": "eh", "type": "truefalse",
+      "question": "Einem bewusstlosen Motorradfahrer muss der Helm abgenommen werden, um die Atemwege freizumachen.",
+      "answer": true,
+      "explanation": "Mit Helm kann man Atmung nicht sicher prüfen und keine Seitenlage oder Reanimation durchführen. Möglichst zu zweit abnehmen: einer stabilisiert den Kopf, einer zieht den Helm ab."
+    },
+    {
+      "id": "l1-verbrennung", "topic": "thermisch", "type": "single",
+      "question": "Kleinflächige Verbrennung an der Hand – was ist richtig?",
+      "options": ["Mit handwarmem, fließendem Wasser kühlen und anschließend keimfrei abdecken", "Mit Eiswürfeln direkt kühlen", "Brandsalbe oder Mehl auftragen", "Brandblasen aufstechen"],
+      "answer": 0,
+      "explanation": "Kleine Verbrennungen mit lauwarmem (nicht eiskaltem) fließendem Wasser kühlen – aktuelle Leitlinien empfehlen bis zu 20 Minuten. Keine Hausmittel, Blasen nicht öffnen. Bei großen Flächen Unterkühlung vermeiden!"
+    },
+    {
+      "id": "l1-schock", "topic": "kreislauf", "type": "multi",
+      "question": "Welche Zeichen sprechen für einen Schock?",
+      "options": ["Blasse, kalt-feuchte Haut", "Schneller, schwacher Puls", "Unruhe oder Angst", "Rote, warme Haut", "Langsamer, kräftiger Puls"],
+      "answer": [0, 1, 2],
+      "explanation": "Im Schock zentralisiert der Körper: Haut blass, kalt, schweißig; Puls schnell und schwach; der Patient ist unruhig, ängstlich, später teilnahmslos."
+    },
+    {
+      "id": "l1-rautek", "topic": "eh", "type": "single",
+      "question": "Wofür nutzt du den Rautek-Rettungsgriff?",
+      "options": ["Um einen Patienten schnell aus einem Gefahrenbereich zu retten", "Zum Lagern bei Schock", "Zur Herzdruckmassage", "Zum Tragen über längere Strecken"],
+      "answer": 0,
+      "explanation": "Der Rautek-Griff ist eine Notrettung, z. B. aus einem Fahrzeug oder einer Gefahrenzone. Für längere Strecken nutzt man Tragen."
+    },
+    {
+      "id": "l1-handschuhe", "topic": "hygiene", "type": "truefalse",
+      "question": "Einmalhandschuhe ziehe ich vor jedem Patientenkontakt an und wechsle sie zwischen zwei Patienten.",
+      "answer": true,
+      "explanation": "Handschuhe schützen dich und den Patienten. Nach dem Ausziehen Hände desinfizieren."
+    },
+    {
+      "id": "l1-fremdkoerper", "topic": "atmung", "type": "single",
+      "question": "Ein Erwachsener hat sich verschluckt, hustet aber kräftig. Was tust du?",
+      "options": ["Zum kräftigen Husten auffordern und beobachten", "Sofort 5 kräftige Schläge auf den Rücken", "Sofort Oberbauchkompressionen", "Mit den Fingern im Mund nach dem Fremdkörper suchen"],
+      "answer": 0,
+      "explanation": "Kräftiges Husten ist der beste Mechanismus. Erst wenn der Husten schwächer wird oder aufhört, kommen Rückenschläge und Oberbauchkompressionen."
+    }
+  ]
+}

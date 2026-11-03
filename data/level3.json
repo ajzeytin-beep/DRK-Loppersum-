@@ -1,0 +1,430 @@
+{
+  "level": 3,
+  "items": [
+    {
+      "id": "l3-acs-symptome", "topic": "kreislauf", "type": "multi",
+      "question": "Welche Beschwerden sind typisch für einen Herzinfarkt (akutes Koronarsyndrom)?",
+      "options": ["Druck- oder Engegefühl in der Brust", "Ausstrahlung in Arm, Kiefer, Rücken oder Oberbauch", "Atemnot, kalter Schweiß, Übelkeit", "Schmerz lässt sich durch Druck auf eine Rippe genau auslösen", "Schmerz ausschließlich nach einem Sturz"],
+      "answer": [0, 1, 2],
+      "explanation": "Typisch sind anhaltender Brustschmerz/Druck (oft > 5 Minuten), Ausstrahlung, vegetative Zeichen (Schweiß, Übelkeit) und Angst."
+    },
+    {
+      "id": "l3-acs-atypisch", "topic": "kreislauf", "type": "truefalse",
+      "question": "Frauen, ältere Menschen und Diabetiker haben beim Herzinfarkt oft untypische Beschwerden – z. B. nur Übelkeit, Oberbauchschmerz oder Atemnot.",
+      "answer": true,
+      "explanation": "Deshalb bei diesen Patienten auch ohne klassischen Brustschmerz an einen Herzinfarkt denken."
+    },
+    {
+      "id": "l3-acs-lagerung", "topic": "kreislauf", "type": "single",
+      "question": "Wie lagerst du einen wachen Patienten mit Verdacht auf Herzinfarkt?",
+      "options": ["Oberkörper hochlagern", "Flach mit erhöhten Beinen", "Bauchlage", "Stabile Seitenlage"],
+      "answer": 0,
+      "explanation": "Oberkörperhochlagerung entlastet das Herz und erleichtert die Atmung. Beine hoch würde dem Herzen zusätzlich Volumen zumuten."
+    },
+    {
+      "id": "l3-acs-mass", "topic": "kreislauf", "type": "multi",
+      "question": "Verdacht auf Herzinfarkt. Welche Maßnahmen sind richtig?",
+      "options": ["Notruf mit Notarzt veranlassen", "Patient nicht laufen lassen, körperlich schonen", "Beengende Kleidung öffnen, beruhigen", "Vitalwerte überwachen, AED bereitlegen", "Patient zum Auto begleiten, damit er selbst zum Hausarzt fährt"],
+      "answer": [0, 1, 2, 3],
+      "explanation": "Jede körperliche Belastung erhöht den Sauerstoffbedarf des Herzens. Ein Herzinfarkt kann jederzeit in einen Kreislaufstillstand übergehen – AED griffbereit!"
+    },
+    {
+      "id": "l3-schockindex", "topic": "kreislauf", "type": "single",
+      "question": "Puls 120/min, systolischer Blutdruck 90 mmHg. Wie hoch ist der Schockindex und was bedeutet er?",
+      "options": ["1,33 – Hinweis auf Schock", "0,75 – normal", "0,5 – Hinweis auf Bluthochdruck", "2,0 – Patient ist stabil"],
+      "answer": 0,
+      "explanation": "Schockindex = Herzfrequenz ÷ systolischer Blutdruck. Über 1 ist ein Warnzeichen. Achtung: Bei Kindern, älteren Menschen und unter Betablockern ist er unzuverlässig."
+    },
+    {
+      "id": "l3-schock-lagerung", "topic": "kreislauf", "type": "single",
+      "question": "Volumenmangelschock ohne Atemnot und ohne Verletzungen an Kopf, Becken oder Beinen. Wie lagerst du?",
+      "options": ["Flach lagern, Beine leicht anheben", "Oberkörper hoch", "Sitzend", "Bauchlage"],
+      "answer": 0,
+      "explanation": "Dazu Wärmeerhalt (Rettungsdecke), Beruhigung, Blutstillung und engmaschige Kontrolle der Vitalwerte."
+    },
+    {
+      "id": "l3-schock-kontra", "topic": "kreislauf", "type": "multi",
+      "question": "Wann solltest du die Beine NICHT hochlagern?",
+      "options": ["Bei Atemnot oder Verdacht auf Herzinfarkt", "Bei Verletzungen an Becken oder Beinen", "Bei Verdacht auf Schädel-Hirn-Trauma", "Bei einer Ohnmacht (Synkope) ohne Verletzungen"],
+      "answer": [0, 1, 2],
+      "explanation": "Bei der einfachen Ohnmacht hilft das Hochlagern der Beine dagegen gut."
+    },
+    {
+      "id": "l3-synkope", "topic": "kreislauf", "type": "single",
+      "question": "Eine Person ist kurz umgekippt und jetzt wieder wach. Was ist richtig?",
+      "options": ["Liegen lassen, Beine hoch, Vitalwerte und Blutzucker messen, Ursache abklären", "Sofort aufstehen und weitergehen lassen", "Kaltes Wasser über den Kopf gießen", "Einen Schnaps zur Kreislaufstärkung geben"],
+      "answer": 0,
+      "explanation": "Eine Ohnmacht kann harmlos sein – aber auch Zeichen einer Herzrhythmusstörung, Unterzuckerung oder Blutung. Auf Sturzverletzungen achten und dokumentieren."
+    },
+    {
+      "id": "l3-asthma", "topic": "atmung", "type": "multi",
+      "question": "Asthmaanfall. Was hilft dem Patienten?",
+      "options": ["Oberkörper hoch bzw. Kutschersitz", "Lippenbremse anleiten", "Beim Gebrauch seines eigenen Notfallsprays unterstützen", "Flach hinlegen", "Beruhigen"],
+      "answer": [0, 1, 2, 4],
+      "explanation": "Im Sitzen mit aufgestützten Armen kann die Atemhilfsmuskulatur besser arbeiten. Die Lippenbremse verhindert, dass die kleinen Atemwege beim Ausatmen kollabieren."
+    },
+    {
+      "id": "l3-hypervent", "topic": "atmung", "type": "single",
+      "question": "Junge Frau, aufgeregt, sehr schnelle Atmung, Kribbeln in den Händen, „Pfötchenstellung“. Was ist am wahrscheinlichsten?",
+      "options": ["Hyperventilation", "Schlaganfall", "Unterzuckerung", "Herzinfarkt"],
+      "answer": 0,
+      "explanation": "Durch die schnelle Atmung wird zu viel CO₂ abgeatmet – das führt zu Kribbeln und Verkrampfungen. Trotzdem andere Ursachen (z. B. Asthma, Unterzuckerung) ausschließen!"
+    },
+    {
+      "id": "l3-tuete", "topic": "atmung", "type": "truefalse",
+      "question": "Bei Hyperventilation lässt man den Patienten in eine Plastiktüte atmen.",
+      "answer": false,
+      "explanation": "Die Tütenrückatmung gilt als veraltet: Sie kann zu Sauerstoffmangel führen und eine andere Ursache verschleiern. Besser: beruhigen, ruhige Atmung vormachen und anleiten."
+    },
+    {
+      "id": "l3-fremdk", "topic": "atmung", "type": "order",
+      "question": "Ein Erwachsener hat sich verschluckt, kann nicht mehr wirksam husten, ist aber noch bei Bewusstsein. Bringe die Maßnahmen in die richtige Reihenfolge.",
+      "items": ["Bis zu 5 Schläge zwischen die Schulterblätter", "Bis zu 5 Oberbauchkompressionen (Heimlich-Manöver)", "Beides abwechselnd wiederholen, bis der Fremdkörper gelöst ist", "Wird der Patient bewusstlos: Notruf und Reanimation beginnen"],
+      "explanation": "Nach Oberbauchkompressionen muss der Patient immer ärztlich untersucht werden (Gefahr innerer Verletzungen). Den Notruf früh absetzen lassen."
+    },
+    {
+      "id": "l3-o2-ziel", "topic": "atmung", "type": "single",
+      "question": "Welche Sauerstoffsättigung strebst du bei den meisten Notfallpatienten mit Sauerstoffgabe an?",
+      "options": ["80–85 %", "88–92 %", "94–98 %", "Immer 100 %"],
+      "answer": 2,
+      "explanation": "Zu viel Sauerstoff kann ebenfalls schaden. Ob und wie Sanitäter bei euch Sauerstoff geben, regelt euer Verband."
+    },
+    {
+      "id": "l3-copd", "topic": "atmung", "type": "single",
+      "question": "Bei einem bekannten COPD-Patienten liegt die Zielsättigung bei …",
+      "options": ["88–92 %", "94–98 %", "100 %", "unter 85 %"],
+      "answer": 0,
+      "explanation": "Viele COPD-Patienten sind an niedrigere Werte gewöhnt. Zu viel Sauerstoff kann bei ihnen den Atemantrieb dämpfen – trotzdem nie Sauerstoff bei echtem Mangel vorenthalten."
+    },
+    {
+      "id": "l3-atemnot", "topic": "atmung", "type": "multi",
+      "question": "Welche Zeichen sprechen für eine ernste Atemnot?",
+      "options": ["Erhöhte Atemfrequenz", "Einsatz der Atemhilfsmuskulatur", "Bläuliche Lippen (Zyanose)", "Patient kann nur noch in kurzen Sätzen sprechen", "Ruhige Atmung mit 14 Zügen pro Minute"],
+      "answer": [0, 1, 2, 3],
+      "explanation": "Die Sprechdyspnoe („spricht nur in Satzfetzen“) ist ein einfaches und sehr aussagekräftiges Warnzeichen."
+    },
+    {
+      "id": "l3-befast", "topic": "neuro", "type": "single",
+      "question": "Wofür steht das „F“ in BE-FAST?",
+      "options": ["Face – Gesicht (hängender Mundwinkel)", "Fever – Fieber", "Fall – Sturz", "Fingers – Fingerbewegung"],
+      "answer": 0,
+      "explanation": "BE-FAST: Balance, Eyes (Sehen), Face (Gesicht), Arms (Arme), Speech (Sprache), Time (Zeit)."
+    },
+    {
+      "id": "l3-stroke-zeit", "topic": "neuro", "type": "single",
+      "question": "Warum notierst du beim Schlaganfall den Zeitpunkt des Symptombeginns?",
+      "options": ["Davon hängt ab, welche Therapie im Krankenhaus möglich ist", "Für die Abrechnung", "Damit der Patient weiß, wie lange er warten musste", "Das ist nicht wichtig"],
+      "answer": 0,
+      "explanation": "„Time is brain“: Gerinnsel-auflösende Therapien sind nur in einem Zeitfenster möglich. Ist der Beginn unklar, zählt der Zeitpunkt „zuletzt gesund gesehen“."
+    },
+    {
+      "id": "l3-krampf", "topic": "neuro", "type": "multi",
+      "question": "Ein Erwachsener hat einen Krampfanfall. Was ist richtig?",
+      "options": ["Gegenstände wegräumen, Kopf polstern", "Uhrzeit notieren / Dauer messen", "Nicht festhalten", "Einen Beißkeil zwischen die Zähne schieben", "Nach dem Anfall bei Bewusstlosigkeit mit normaler Atmung: stabile Seitenlage"],
+      "answer": [0, 1, 2, 4],
+      "explanation": "Nichts in den Mund stecken – Verletzungsgefahr für Patient und Helfer. Die meisten Anfälle enden nach 1–2 Minuten von selbst."
+    },
+    {
+      "id": "l3-krampf-5", "topic": "neuro", "type": "single",
+      "question": "Ab welcher Dauer gilt ein Krampfanfall als Notfall, bei dem sofort ein Notarzt kommen muss?",
+      "options": ["Ab ca. 5 Minuten", "Ab 30 Sekunden", "Ab 1 Stunde", "Krampfanfälle sind nie ein Notfall"],
+      "answer": 0,
+      "explanation": "Ein Anfall über 5 Minuten oder mehrere Anfälle ohne Aufwachen dazwischen sind ein Status epilepticus – lebensbedrohlich."
+    },
+    {
+      "id": "l3-hypo-symptome", "topic": "neuro", "type": "multi",
+      "question": "Welche Zeichen passen zu einer Unterzuckerung?",
+      "options": ["Schwitzen, Zittern, Blässe", "Unruhe, Verwirrtheit, ggf. aggressives Verhalten", "Heißhunger", "Krampfanfall oder Bewusstlosigkeit möglich", "Fruchtiger Mundgeruch und tiefe Atmung, die sich über Tage entwickelt"],
+      "answer": [0, 1, 2, 3],
+      "explanation": "Eine Unterzuckerung kann wie Betrunkenheit aussehen! Fruchtiger Mundgeruch und tiefe Atmung passen eher zu einer schweren Überzuckerung."
+    },
+    {
+      "id": "l3-hypo-wach", "topic": "neuro", "type": "single",
+      "question": "Blutzucker 45 mg/dl, der Patient ist wach und kann sicher schlucken. Was tust du?",
+      "options": ["Traubenzucker oder ein zuckerhaltiges Getränk geben", "Insulin spritzen", "Nichts zu essen oder trinken geben", "Nur hinlegen und abwarten"],
+      "answer": 0,
+      "explanation": "Schnell wirksamer Zucker (keine Light-Getränke!), nach ca. 15 Minuten erneut messen. Danach langsam wirkende Kohlenhydrate. Bei fehlender Besserung Rettungsdienst."
+    },
+    {
+      "id": "l3-hypo-bewusstlos", "topic": "neuro", "type": "truefalse",
+      "question": "Einem bewusstlosen Patienten mit Unterzuckerung flößt man vorsichtig Cola ein.",
+      "answer": false,
+      "explanation": "Bei Bewusstseinsstörung fehlen die Schutzreflexe – Aspirationsgefahr! Nichts in den Mund, Seitenlage, Notruf. Der Rettungsdienst gibt Glukose über die Vene."
+    },
+    {
+      "id": "l3-bz-immer", "topic": "neuro", "type": "truefalse",
+      "question": "Bei jeder unklaren Bewusstseinsstörung sollte der Blutzucker gemessen werden.",
+      "answer": true,
+      "explanation": "Die Unterzuckerung ist eine häufige, leicht zu erkennende und gut behandelbare Ursache – auch bei vermeintlich Betrunkenen."
+    },
+    {
+      "id": "l3-tourniquet", "topic": "trauma", "type": "single",
+      "question": "Wann legst du ein Tourniquet an?",
+      "options": ["Bei lebensbedrohlicher Blutung an Arm oder Bein, die sich durch Druck bzw. Druckverband nicht stillen lässt", "Bei jeder Schürfwunde", "Bei Nasenbluten", "Bei geschlossenen Knochenbrüchen"],
+      "answer": 0,
+      "explanation": "Auch wenn ein Druckverband nicht möglich ist (z. B. mehrere Verletzte, Gefahrenlage), kann ein Tourniquet sofort nötig sein. Anlage oberhalb der Wunde, so fest, bis die Blutung steht."
+    },
+    {
+      "id": "l3-tq-danach", "topic": "trauma", "type": "multi",
+      "question": "Was ist nach dem Anlegen eines Tourniquets wichtig?",
+      "options": ["Uhrzeit notieren und gut sichtbar dokumentieren", "Das Tourniquet nicht wieder lockern", "Rettungsdienst mit Notarzt", "Alle 5 Minuten kurz öffnen, damit das Bein durchblutet wird"],
+      "answer": [0, 1, 2],
+      "explanation": "Ein Tourniquet wird erst in der Klinik bzw. durch den Notarzt wieder geöffnet. Schmerzen sind normal – trotzdem nicht lockern."
+    },
+    {
+      "id": "l3-sht", "topic": "trauma", "type": "multi",
+      "question": "Welche Zeichen sprechen für ein Schädel-Hirn-Trauma?",
+      "options": ["Bewusstseinsstörung oder Erinnerungslücke", "Übelkeit, Erbrechen", "Unterschiedlich weite Pupillen", "Blut oder klare Flüssigkeit aus Nase oder Ohr", "Juckreiz an den Beinen"],
+      "answer": [0, 1, 2, 3],
+      "explanation": "Auch wer „nur kurz weg war“, muss ärztlich abgeklärt werden – Blutungen im Kopf können sich über Stunden entwickeln. Besonders gefährdet: Patienten mit Blutverdünnern."
+    },
+    {
+      "id": "l3-sht-lag", "topic": "trauma", "type": "single",
+      "question": "Wacher Patient mit Verdacht auf Schädel-Hirn-Trauma, kein Schock. Wie lagerst du?",
+      "options": ["Oberkörper ca. 30° hoch, Kopf gerade", "Kopf tief, Beine hoch", "Bauchlage", "Sitzend mit nach vorn gebeugtem Kopf"],
+      "answer": 0,
+      "explanation": "Die leichte Oberkörperhochlagerung verbessert den Abfluss aus dem Kopf. Bei Bewusstlosigkeit mit Atmung: Seitenlage, möglichst achsengerecht."
+    },
+    {
+      "id": "l3-ws", "topic": "trauma", "type": "single",
+      "question": "Sturz aus großer Höhe, der Patient klagt über Nackenschmerzen. Was tust du zuerst?",
+      "options": ["Kopf manuell stabilisieren und den Patienten nicht bewegen lassen", "Patienten aufsetzen, damit er besser atmet", "Den Kopf hin und her bewegen, um die Beweglichkeit zu prüfen", "Patienten zum Sanitätszelt laufen lassen"],
+      "answer": 0,
+      "explanation": "Bei Verdacht auf Wirbelsäulenverletzung jede unnötige Bewegung vermeiden. Freie Atemwege haben aber immer Vorrang!"
+    },
+    {
+      "id": "l3-fraktur-sicher", "topic": "trauma", "type": "multi",
+      "question": "Welche Zeichen sind SICHERE Frakturzeichen?",
+      "options": ["Offene Wunde mit sichtbaren Knochenteilen", "Deutliche Fehlstellung", "Abnorme Beweglichkeit", "Schmerz", "Schwellung"],
+      "answer": [0, 1, 2],
+      "explanation": "Auch Knochenreiben ist ein sicheres Zeichen – aber niemals prüfen! Schmerz, Schwellung und Funktionseinschränkung sind unsichere Zeichen."
+    },
+    {
+      "id": "l3-dms", "topic": "trauma", "type": "single",
+      "question": "Wofür steht DMS bei der Versorgung von Arm- und Beinverletzungen?",
+      "options": ["Durchblutung, Motorik, Sensibilität", "Druck, Massage, Schiene", "Desinfektion, Material, Sicherheit", "Dauer, Menge, Stärke"],
+      "answer": 0,
+      "explanation": "DMS vor und nach jeder Schienung/Lagerung prüfen: Puls und Hautfarbe, Bewegung von Fingern/Zehen, Gefühl."
+    },
+    {
+      "id": "l3-fraktur-mass", "topic": "trauma", "type": "single",
+      "question": "Wie versorgst du einen geschlossenen Unterarmbruch?",
+      "options": ["In vorgefundener Stellung ruhigstellen, DMS vor und nach der Maßnahme prüfen, kühlen", "Den Knochen gerade ziehen", "Arm hochhalten und aktiv bewegen lassen", "Fest abbinden"],
+      "answer": 0,
+      "explanation": "Sanitäter reponieren nicht. Ruhigstellen (z. B. Vakuumschiene, Dreiecktuch) lindert Schmerzen und verhindert weitere Schäden."
+    },
+    {
+      "id": "l3-bauch", "topic": "trauma", "type": "single",
+      "question": "Wie lagerst du bei Verdacht auf Bauchverletzung oder bei akuten Bauchschmerzen?",
+      "options": ["Rückenlage mit Knierolle", "Bauchlage", "Kopftieflage", "Stehend"],
+      "answer": 0,
+      "explanation": "Die Knierolle entspannt die Bauchdecke. Viele Patienten nehmen selbst eine Schonhaltung ein – die darf man ihnen lassen."
+    },
+    {
+      "id": "l3-pfaehlung", "topic": "trauma", "type": "truefalse",
+      "question": "Ein eingedrungener Fremdkörper (z. B. eine Metallstange) wird sofort herausgezogen, damit die Wunde verbunden werden kann.",
+      "answer": false,
+      "explanation": "Fremdkörper bleiben stecken – sie können eine Blutung abdichten. Rundherum abpolstern und fixieren."
+    },
+    {
+      "id": "l3-amputat", "topic": "trauma", "type": "single",
+      "question": "Wie versorgst du ein abgetrenntes Fingerglied?",
+      "options": ["Trocken und keimfrei in eine Kompresse bzw. einen Beutel, diesen in einen zweiten Beutel mit Eiswasser", "Direkt auf Eis legen", "In Wasser einlegen", "In Desinfektionsmittel einlegen"],
+      "answer": 0,
+      "explanation": "Kühl, aber nicht gefroren: Direkter Eiskontakt schädigt das Gewebe. Das Amputat begleitet den Patienten ins Krankenhaus."
+    },
+    {
+      "id": "l3-nase", "topic": "trauma", "type": "single",
+      "question": "Nasenbluten – was ist richtig?",
+      "options": ["Kopf nach vorne beugen, Nasenflügel zusammendrücken, Nacken kühlen", "Kopf in den Nacken legen", "Flach hinlegen", "Taschentuch tief in die Nase stopfen"],
+      "answer": 0,
+      "explanation": "Kopf nach vorn, damit kein Blut verschluckt wird (Übelkeit, Erbrechen). Hört es nach ca. 15–20 Minuten nicht auf: ärztliche Hilfe."
+    },
+    {
+      "id": "l3-hitzschlag", "topic": "thermisch", "type": "single",
+      "question": "Patient auf einem Sommerfest: Körpertemperatur über 40 °C, heiße und gerötete Haut, er ist verwirrt. Was liegt vor?",
+      "options": ["Hitzschlag – lebensbedrohlich", "Leichte Erschöpfung", "Unterkühlung", "Hyperventilation"],
+      "answer": 0,
+      "explanation": "Beim Hitzschlag versagt die Temperaturregulation. Notruf und sofort aktiv kühlen (Schatten, Kleidung öffnen, feuchte Tücher, Luft zufächeln)."
+    },
+    {
+      "id": "l3-hitzeersch", "topic": "thermisch", "type": "single",
+      "question": "Hitzeerschöpfung (blass, schwitzt stark, schwach, schneller Puls). Welche Maßnahmen sind richtig?",
+      "options": ["In den Schatten, flach lagern, Beine hoch; wenn wach: trinken lassen", "In die Sonne setzen, damit der Kreislauf in Schwung kommt", "Alkohol zum Entspannen geben", "Warme Decke umlegen und schwitzen lassen"],
+      "answer": 0,
+      "explanation": "Ursache ist meist Flüssigkeits- und Salzverlust. Wasser oder Saftschorle in kleinen Schlucken, Vitalwerte kontrollieren."
+    },
+    {
+      "id": "l3-sonnenstich", "topic": "thermisch", "type": "single",
+      "question": "Sonnenstich: Welche Lagerung und Maßnahme ist richtig?",
+      "options": ["Schatten, Oberkörper leicht erhöht, Kopf und Nacken kühlen", "Flach mit erhöhten Beinen in der Sonne", "Bauchlage", "Kopftieflage"],
+      "answer": 0,
+      "explanation": "Beim Sonnenstich reizt die Sonne direkt die Hirnhäute: Kopfschmerz, Übelkeit, Nackensteifigkeit. Kinder ohne Kopfbedeckung sind besonders gefährdet."
+    },
+    {
+      "id": "l3-unterkuehlung", "topic": "thermisch", "type": "multi",
+      "question": "Stark unterkühlter Patient (z. B. aus dem Wasser gerettet). Was ist richtig?",
+      "options": ["Möglichst schonend und horizontal bewegen", "Vor weiterer Auskühlung schützen (nasse Kleidung vorsichtig entfernen, Decken, Windschutz)", "Arme und Beine kräftig reiben", "Patient umherlaufen lassen, damit er warm wird", "Notruf"],
+      "answer": [0, 1, 4],
+      "explanation": "Kaltes Blut aus Armen und Beinen kann bei Bewegung zum Herzen gelangen und Rhythmusstörungen auslösen („Bergungstod“)."
+    },
+    {
+      "id": "l3-neuner", "topic": "thermisch", "type": "single",
+      "question": "Nach der Neunerregel: Wie viel Prozent der Körperoberfläche macht ein ganzer Arm eines Erwachsenen aus?",
+      "options": ["1 %", "9 %", "18 %", "36 %"],
+      "answer": 1,
+      "explanation": "Kopf 9 %, je Arm 9 %, Rumpf vorn 18 %, Rumpf hinten 18 %, je Bein 18 %, Genitalbereich 1 %."
+    },
+    {
+      "id": "l3-handflaeche", "topic": "thermisch", "type": "single",
+      "question": "Wie groß ist die Handfläche (inklusive Finger) des Patienten ungefähr?",
+      "options": ["Ca. 1 % seiner Körperoberfläche", "Ca. 9 %", "Ca. 5 %", "Ca. 0,1 %"],
+      "answer": 0,
+      "explanation": "Die Handflächenregel ist praktisch bei kleinen oder verstreuten Verbrennungen – auch bei Kindern."
+    },
+    {
+      "id": "l3-alkohol", "topic": "vergiftung", "type": "multi",
+      "question": "Welche Gefahren drohen bei einer schweren Alkoholvergiftung?",
+      "options": ["Erbrechen mit Aspiration", "Unterkühlung", "Unterzuckerung", "Übersehene Verletzungen (z. B. am Kopf)", "Allergischer Schock durch Alkohol"],
+      "answer": [0, 1, 2, 3],
+      "explanation": "„Der ist nur betrunken“ ist eine gefährliche Annahme. Immer vollständig untersuchen (ABCDE), Blutzucker messen und auf Kopfverletzungen achten."
+    },
+    {
+      "id": "l3-erbrechen", "topic": "vergiftung", "type": "truefalse",
+      "question": "Nach dem Verschlucken von Reinigungsmitteln soll man Erbrechen auslösen.",
+      "answer": false,
+      "explanation": "Ätzende oder schäumende Stoffe schädigen beim Erbrechen ein zweites Mal Speiseröhre und Atemwege. Giftinformationszentrum anrufen, Verpackung sichern."
+    },
+    {
+      "id": "l3-giz", "topic": "vergiftung", "type": "single",
+      "question": "Welches Giftinformationszentrum ist für Niedersachsen zuständig?",
+      "options": ["GIZ-Nord in Göttingen", "Giftnotruf München", "Giftnotruf Freiburg", "Es gibt keins"],
+      "answer": 0,
+      "explanation": "Das GIZ-Nord in Göttingen (0551 19240) ist für Niedersachsen, Bremen, Hamburg und Schleswig-Holstein zuständig. Bei Lebensgefahr gilt aber immer zuerst: 112."
+    },
+    {
+      "id": "l3-wespe-mund", "topic": "vergiftung", "type": "single",
+      "question": "Wespenstich im Mund-Rachen-Raum. Was tust du?",
+      "options": ["Notruf, Eis lutschen lassen, Hals von außen kühlen, überwachen", "Abwarten – das schwillt immer von selbst ab", "Warme Getränke geben", "Den Stachel mit den Fingern im Rachen suchen"],
+      "answer": 0,
+      "explanation": "Auch ohne Allergie kann die Schwellung die Atemwege verlegen. Oberkörper hoch, beruhigen, Atmung engmaschig kontrollieren."
+    },
+    {
+      "id": "l3-anaphylaxie", "topic": "vergiftung", "type": "multi",
+      "question": "Welche Zeichen passen zu einer schweren allergischen Reaktion (Anaphylaxie)?",
+      "options": ["Quaddeln oder Rötung am ganzen Körper", "Schwellung im Gesicht, Heiserkeit, Atemnot", "Blutdruckabfall, Schwindel, Bewusstseinsstörung", "Übelkeit, Erbrechen, Bauchkrämpfe", "Langsamer, kräftiger Puls"],
+      "answer": [0, 1, 2, 3],
+      "explanation": "Sofort Notruf mit Notarzt. Hat der Patient einen Adrenalin-Autoinjektor, hilfst du ihm bei der Anwendung (nach eurer Regelung)."
+    },
+    {
+      "id": "l3-co", "topic": "vergiftung", "type": "truefalse",
+      "question": "Bei einer Kohlenmonoxid-Vergiftung zeigt das Pulsoxymeter oft normale oder falsch hohe Werte.",
+      "answer": true,
+      "explanation": "Das Gerät kann CO-beladenes Blut nicht von sauerstoffbeladenem unterscheiden. Typische Quellen: Grill, Heizpilz oder Stromaggregat im geschlossenen Zelt, Shisha. Eigenschutz!"
+    },
+    {
+      "id": "l3-kind-hf", "topic": "kinder", "type": "single",
+      "question": "Wie hoch ist die normale Herzfrequenz eines Säuglings in Ruhe?",
+      "options": ["40–60 pro Minute", "60–80 pro Minute", "100–160 pro Minute", "180–220 pro Minute"],
+      "answer": 2,
+      "explanation": "Je jünger das Kind, desto höher Herz- und Atemfrequenz. Eine niedrige Herzfrequenz ist bei Säuglingen ein Alarmzeichen."
+    },
+    {
+      "id": "l3-kind-rea", "topic": "kinder", "type": "single",
+      "question": "Wie beginnst du als ausgebildeter Helfer eine Reanimation bei einem Kind?",
+      "options": ["5 Initialbeatmungen, dann 15:2", "Sofort 30:2 ohne Beatmung", "Nur Beatmung, keine Herzdruckmassage", "2 Beatmungen, dann 5:1"],
+      "answer": 0,
+      "explanation": "Bei Kindern ist meist Sauerstoffmangel die Ursache – deshalb die Beatmungen zu Beginn. Wer unsicher ist, macht 30:2 wie beim Erwachsenen – Hauptsache, es wird gehandelt."
+    },
+    {
+      "id": "l3-saeugling-druck", "topic": "kinder", "type": "single",
+      "question": "Herzdruckmassage beim Säugling: Womit und wie tief?",
+      "options": ["Mit zwei Fingern oder umgreifenden Daumen, ca. ein Drittel der Brustkorbtiefe (ca. 4 cm)", "Mit beiden Handballen, 5–6 cm", "Mit der Faust, 2 cm", "Mit einem Handballen, 8 cm"],
+      "answer": 0,
+      "explanation": "Druckpunkt: untere Hälfte des Brustbeins. Frequenz wie beim Erwachsenen: 100–120 pro Minute."
+    },
+    {
+      "id": "l3-krupp", "topic": "kinder", "type": "single",
+      "question": "Kleinkind nachts: bellender Husten, pfeifendes Geräusch beim Einatmen, Heiserkeit. Was passt am ehesten?",
+      "options": ["Pseudokrupp – Kind beruhigen, aufrecht halten, kühle Luft", "Asthma – flach hinlegen", "Herzinfarkt", "Sonnenstich"],
+      "answer": 0,
+      "explanation": "Aufregung verschlimmert die Atemnot – also Ruhe ausstrahlen, Eltern einbeziehen, Kind auf dem Arm lassen. Bei Atemnot Rettungsdienst."
+    },
+    {
+      "id": "l3-fieberkrampf", "topic": "kinder", "type": "single",
+      "question": "Ein zweijähriges Kind krampft bei hohem Fieber. Was ist richtig?",
+      "options": ["Vor Verletzungen schützen, Zeit messen, Notruf, nach dem Anfall Seitenlage und überwachen", "Kind festhalten, damit der Krampf aufhört", "In kaltes Wasser setzen", "Etwas zwischen die Zähne schieben"],
+      "answer": 0,
+      "explanation": "Fieberkrämpfe sind meist harmlos, müssen aber ärztlich abgeklärt werden. Eltern beruhigen – für sie ist die Situation extrem belastend."
+    },
+    {
+      "id": "l3-schaufeltrage", "topic": "material", "type": "single",
+      "question": "Wofür nutzt du die Schaufeltrage?",
+      "options": ["Um einen Patienten möglichst bewegungsarm vom Boden aufzunehmen", "Für die Herzdruckmassage", "Für den Transport über lange Strecken ohne Umlagern", "Zum Schienen eines Fingers"],
+      "answer": 0,
+      "explanation": "Die Schaufeltrage wird geteilt unter den Patienten geschoben und geschlossen – meist zum Umlagern auf die Vakuummatratze."
+    },
+    {
+      "id": "l3-vakuum", "topic": "material", "type": "single",
+      "question": "Wie funktioniert eine Vakuummatratze?",
+      "options": ["Sie wird an den Körper angeformt und durch Absaugen der Luft hart – der ganze Körper ist ruhiggestellt", "Sie wird aufgepumpt, bis sie hart ist", "Sie wärmt den Patienten aktiv", "Sie wird nur bei Kindern eingesetzt"],
+      "answer": 0,
+      "explanation": "In der Matratze befinden sich Kügelchen, die sich beim Absaugen verkeilen. Ideal bei Verdacht auf Wirbelsäulen- oder Beckenverletzung."
+    },
+    {
+      "id": "l3-hws", "topic": "material", "type": "single",
+      "question": "Was gilt, bevor eine HWS-Immobilisation (Halskrause/Orthese) angelegt wird?",
+      "options": ["Der Kopf wird manuell stabilisiert und die passende Größe ausgemessen", "Der Patient bewegt den Kopf in alle Richtungen", "Der Patient wird aufgesetzt", "Nichts – eine Größe passt allen"],
+      "answer": 0,
+      "explanation": "Eine falsch sitzende Orthese schadet mehr als sie nützt. Wann eine Orthese angelegt wird, richtet sich nach eurer Ausbildung und euren Vorgaben."
+    },
+    {
+      "id": "l3-spo2-fehler", "topic": "material", "type": "multi",
+      "question": "Was kann die Messung mit dem Pulsoxymeter verfälschen?",
+      "options": ["Kalte Finger / schlechte Durchblutung", "Nagellack oder künstliche Nägel", "Starke Bewegung", "Kohlenmonoxid-Vergiftung", "Die Brille des Patienten"],
+      "answer": [0, 1, 2, 3],
+      "explanation": "Messwerte immer zum Patienten passen lassen: Sieht der Patient schlecht aus, aber der Wert ist gut – dem Patienten glauben!"
+    },
+    {
+      "id": "l3-o2-fett", "topic": "material", "type": "truefalse",
+      "question": "An Sauerstoffarmaturen dürfen kein Fett und kein Öl gelangen – auch keine Handcreme.",
+      "answer": true,
+      "explanation": "Reiner Sauerstoff unter Druck kann Fette und Öle entzünden – Brand- und Explosionsgefahr."
+    },
+    {
+      "id": "l3-absaugen", "topic": "material", "type": "single",
+      "question": "Wie lange darf ein einzelner Absaugvorgang beim Erwachsenen höchstens dauern?",
+      "options": ["Ca. 10–15 Sekunden", "1 Minute", "So lange, bis alles weg ist", "5 Minuten"],
+      "answer": 0,
+      "explanation": "Während des Absaugens bekommt der Patient keinen Sauerstoff. Kurz absaugen, zwischendurch beatmen bzw. atmen lassen."
+    },
+    {
+      "id": "l3-rr-mess", "topic": "material", "type": "single",
+      "question": "Was ist bei der Blutdruckmessung am Oberarm wichtig?",
+      "options": ["Passende Manschettengröße, Arm etwa auf Herzhöhe", "Manschette über einer dicken Jacke anlegen", "Am Arm mit Tourniquet messen", "Der Patient soll dabei aufstehen"],
+      "answer": 0,
+      "explanation": "Zu kleine Manschetten messen zu hohe Werte, zu große zu niedrige. Möglichst am unverletzten Arm ohne Shunt oder Infusion messen."
+    },
+    {
+      "id": "l3-uebergabe", "topic": "kommunikation", "type": "multi",
+      "question": "Was gehört in die Übergabe an den Rettungsdienst?",
+      "options": ["Was ist passiert (Ereignis, Zeitpunkt)?", "Auffällige Befunde nach ABCDE und Vitalwerte", "Durchgeführte Maßnahmen mit Uhrzeit und Wirkung", "Vorerkrankungen, Medikamente, Allergien", "Deine Meinung zu den Getränkepreisen"],
+      "answer": [0, 1, 2, 3],
+      "explanation": "Eine strukturierte, kurze Übergabe spart Zeit und verhindert Informationsverluste. Erst übergeben, wenn das Team zuhört – und das Protokoll mitgeben."
+    },
+    {
+      "id": "l3-funk", "topic": "kommunikation", "type": "single",
+      "question": "Was gilt für Patientendaten im Funkverkehr?",
+      "options": ["So wenig persönliche Daten wie möglich – keine Namen über Funk", "Immer vollständigen Namen und Adresse durchgeben", "Diagnosen möglichst ausführlich schildern", "Funk ist privat, alles ist erlaubt"],
+      "answer": 0,
+      "explanation": "Funk kann mitgehört werden. Kurz, klar und ohne persönliche Daten funken – Details persönlich übergeben."
+    },
+    {
+      "id": "l3-nachforderung", "topic": "kommunikation", "type": "single",
+      "question": "Du forderst einen Rettungswagen nach. Welche Angaben sind am wichtigsten?",
+      "options": ["Genauer Standort und Zufahrt, Anzahl der Patienten, Verdacht und Zustand", "Name und Geburtsdatum des Patienten", "Die Uhrzeit deines Dienstbeginns", "Wer an dem Unfall schuld ist"],
+      "answer": 0,
+      "explanation": "Auf Festgeländen ist die Zufahrt entscheidend: Welches Tor, welcher Treffpunkt? Ggf. einen Einweiser schicken."
+    }
+  ]
+}

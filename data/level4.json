@@ -1,0 +1,388 @@
+{
+  "level": 4,
+  "items": [
+    {
+      "id": "c-kohlfahrt", "topic": "thermisch", "type": "case",
+      "title": "Kohlfahrt im Januar",
+      "scenario": "Januar, 2 °C, Nieselregen und kräftiger Wind. Eine Kohlfahrt-Gruppe zieht mit Bollerwagen und Boßelkugeln über die Feldwege bei Loppersum. Freunde finden einen etwa 40-jährigen Teilnehmer im Graben neben dem Weg und holen dich als Sanitäter dazu.",
+      "steps": [
+        {
+          "topic": "eh", "type": "single",
+          "question": "Was ist dein erster Schritt?",
+          "options": ["Eigenschutz: Lage am Graben einschätzen (rutschige Böschung, Wassertiefe), dann den Patienten ansprechen", "Sofort in den Graben springen", "Zuerst den Blutzucker messen", "Die Freunde nach Namen und Adresse fragen und dokumentieren"],
+          "answer": 0,
+          "explanation": "Gräben in Ostfriesland sind oft tiefer und rutschiger, als sie aussehen. Nur sicher retten – ggf. mit Hilfe weiterer Personen."
+        },
+        {
+          "situation": "Der Mann reagiert nur auf Schmerzreiz und atmet normal (16/min). Seine Kleidung ist durchnässt, die Haut kalt. Starker Alkoholgeruch.",
+          "topic": "vergiftung", "type": "multi",
+          "question": "Welche Maßnahmen sind jetzt richtig?",
+          "options": ["Rettungsdienst nachfordern", "Atemwege sichern: stabile Seitenlage", "Vor weiterer Auskühlung schützen (raus aus dem Wasser, Rettungsdecke, Decken, Windschutz)", "Kaffee einflößen, damit er wach wird", "Liegen lassen – er schläft seinen Rausch aus"],
+          "answer": [0, 1, 2],
+          "explanation": "Reaktion nur auf Schmerzreiz bedeutet: Schutzreflexe gefährdet. Alkohol, Kälte und Nässe sind zusammen eine lebensgefährliche Kombination."
+        },
+        {
+          "situation": "Du misst den Blutzucker: 48 mg/dl.",
+          "topic": "neuro", "type": "single",
+          "question": "Wie bewertest du den Wert?",
+          "options": ["Unterzuckerung – Alkohol kann sie mit verursachen; nichts in den Mund, Info an den Rettungsdienst", "Normalwert", "Überzuckerung", "Messfehler wegen Kälte – ignorieren"],
+          "answer": 0,
+          "explanation": "Alkohol hemmt die Zuckerneubildung in der Leber. Bei Bewusstseinsstörung darf nichts oral gegeben werden – der Rettungsdienst gibt Glukose über die Vene."
+        },
+        {
+          "topic": "thermisch", "type": "single",
+          "question": "Worauf achtest du beim Umlagern auf die Trage?",
+          "options": ["Schonend und möglichst horizontal bewegen", "Ihn aufsetzen und ein paar Schritte gehen lassen", "Arme und Beine kräftig massieren", "Egal wie – Hauptsache schnell ins Warme"],
+          "answer": 0,
+          "explanation": "Bei Unterkühlung kann kaltes Blut aus den Extremitäten Herzrhythmusstörungen auslösen. Deshalb schonend und flach bewegen."
+        }
+      ]
+    },
+    {
+      "id": "c-bosseln", "topic": "trauma", "type": "case",
+      "title": "Boßelkugel am Kopf",
+      "scenario": "Boßelturnier an einem Sonntag im Februar. Eine 14-Jährige wird von einer verirrten Boßelkugel seitlich am Kopf getroffen. Laut Zeugen war sie „kurz weg“. Jetzt sitzt sie am Straßenrand und hält sich den Kopf.",
+      "steps": [
+        {
+          "topic": "beurteilung", "type": "single",
+          "question": "Wie gehst du vor?",
+          "options": ["Strukturiert nach ABCDE untersuchen, den Kopf dabei ruhig halten", "Kühlakku geben und weiterspielen lassen", "Sofort aufstehen und ein paar Schritte gehen lassen", "Nur die Platzwunde verbinden"],
+          "answer": 0,
+          "explanation": "Eine kurze Bewusstlosigkeit nach Kopfanprall ist immer ernst zu nehmen – auch wenn die Patientin wieder munter wirkt."
+        },
+        {
+          "situation": "Sie ist wach, weiß aber nicht mehr, was passiert ist, fragt mehrfach dasselbe und muss sich übergeben.",
+          "topic": "trauma", "type": "single",
+          "question": "Was bedeutet das?",
+          "options": ["Hinweise auf ein Schädel-Hirn-Trauma – Rettungsdienst nachfordern", "Typische Aufregung, nicht schlimm", "Hinweis auf Unterzuckerung – Cola geben", "Sie hat sich den Magen verdorben"],
+          "answer": 0,
+          "explanation": "Erinnerungslücke, wiederholtes Fragen und Erbrechen sind klassische Zeichen einer Gehirnerschütterung bzw. eines Schädel-Hirn-Traumas."
+        },
+        {
+          "topic": "trauma", "type": "multi",
+          "question": "Was tust du bis zum Eintreffen des Rettungsdienstes?",
+          "options": ["Oberkörper leicht erhöht lagern, Kopf ruhig halten (sofern kein Schock)", "Engmaschig Bewusstsein, Pupillen und Vitalwerte kontrollieren", "Bei erneutem Erbrechen oder Bewusstseinsverlust auf die Seitenlage vorbereitet sein", "Erziehungsberechtigte verständigen lassen", "Eine Schmerztablette geben"],
+          "answer": [0, 1, 2, 3],
+          "explanation": "Bei Minderjährigen die Eltern früh einbeziehen. Medikamente gibt der Sanitäter nicht."
+        }
+      ]
+    },
+    {
+      "id": "c-matjestage", "topic": "thermisch", "type": "case",
+      "title": "Hitze am Emder Hafen",
+      "scenario": "Anfang Juni, 29 °C, volle Hafenpromenade bei einem Stadtfest in Emden. Eine 72-jährige Frau wird zur Sanitätsstation gebracht. Ihr war schwindelig, sie musste sich setzen.",
+      "steps": [
+        {
+          "situation": "Sie ist wach und orientiert, die Haut ist blass und feucht. Puls 118/min, Blutdruck 95/60 mmHg, Atemfrequenz 20/min, SpO₂ 96 %.",
+          "topic": "kreislauf", "type": "single",
+          "question": "Wie hoch ist der Schockindex?",
+          "options": ["Ca. 1,24 – Hinweis auf drohenden Schock", "Ca. 0,8 – unauffällig", "Ca. 0,5", "Ca. 2,5"],
+          "answer": 0,
+          "explanation": "118 ÷ 95 ≈ 1,24. Bei älteren Menschen ist der Index nur ein Hinweis – Blutdruckmedikamente können den Puls bremsen und den Wert verfälschen."
+        },
+        {
+          "topic": "thermisch", "type": "single",
+          "question": "Was ist am wahrscheinlichsten?",
+          "options": ["Hitzeerschöpfung mit Flüssigkeitsmangel", "Hitzschlag", "Schlaganfall", "Hyperventilation"],
+          "answer": 0,
+          "explanation": "Blass, schwitzig, schneller Puls und niedriger Blutdruck bei klarem Bewusstsein passen zur Hitzeerschöpfung. Beim Hitzschlag wäre die Haut eher heiß und die Patientin verwirrt."
+        },
+        {
+          "topic": "thermisch", "type": "multi",
+          "question": "Welche Maßnahmen ergreifst du?",
+          "options": ["In den Schatten bzw. einen kühlen Raum bringen", "Flach lagern, Beine anheben", "Wach und schluckfähig: Wasser oder Saftschorle trinken lassen", "Vitalwerte regelmäßig kontrollieren, nach Medikamenten fragen (SAMPLER)", "Sie soll zügig zum Bus laufen, um nach Hause zu fahren"],
+          "answer": [0, 1, 2, 3],
+          "explanation": "Viele ältere Menschen nehmen Entwässerungs- oder Blutdruckmedikamente – das verstärkt den Flüssigkeitsmangel."
+        },
+        {
+          "situation": "Nach 20 Minuten: Puls 92/min, Blutdruck 115/70 mmHg. Sie fühlt sich besser und möchte nach Hause.",
+          "topic": "recht", "type": "single",
+          "question": "Was ist richtig?",
+          "options": ["Über Risiken aufklären, Hausarzt empfehlen, nicht allein gehen lassen, alles dokumentieren – bei Zweifeln Rettungsdienst", "Sie ohne Dokumentation gehen lassen", "Sie gegen ihren Willen festhalten", "Ihr eine Tablette für unterwegs mitgeben"],
+          "answer": 0,
+          "explanation": "Eine orientierte Patientin entscheidet selbst. Gute Aufklärung, Begleitung durch Angehörige und saubere Dokumentation schützen sie und dich."
+        }
+      ]
+    },
+    {
+      "id": "c-grossesmeer", "topic": "reanimation", "type": "case",
+      "title": "Badeunfall am Großen Meer",
+      "scenario": "Hochsommer, Vereinsfest an der Badestelle am Großen Meer. Ein etwa 15-jähriger Junge wird leblos aus dem Wasser gezogen und an Land gebracht. Du bist mit dem Sanitätsrucksack und AED als Erster da.",
+      "steps": [
+        {
+          "situation": "Er reagiert nicht und hat keine normale Atmung.",
+          "topic": "reanimation", "type": "single",
+          "question": "Was ist beim Ertrinkungsnotfall anders als bei der üblichen Reanimation?",
+          "options": ["Mit 5 Initialbeatmungen beginnen, dann 30:2", "Gar nicht beatmen, nur Herzdruckmassage", "Zuerst Wasser aus der Lunge drücken (Patient kopfüber halten)", "Erst 10 Minuten abwarten"],
+          "answer": 0,
+          "explanation": "Beim Ertrinken ist Sauerstoffmangel die Ursache – deshalb zuerst beatmen. Wasser aus der Lunge „herausdrücken“ kostet nur Zeit."
+        },
+        {
+          "topic": "reanimation", "type": "multi",
+          "question": "Was ist beim AED-Einsatz zu beachten?",
+          "options": ["Brustkorb abtrocknen, bevor die Elektroden geklebt werden", "Beim Schock berührt niemand den Patienten – nicht in einer Wasserlache knien", "Die Herzdruckmassage nur für Analyse und Schock unterbrechen", "Bei Nässe darf ein AED niemals benutzt werden"],
+          "answer": [0, 1, 2],
+          "explanation": "Ein AED darf auch nach Badeunfällen eingesetzt werden – die Elektroden brauchen nur eine trockene Haut, damit sie haften."
+        },
+        {
+          "situation": "Nach zwei Zyklen erbricht der Junge Wasser und Mageninhalt.",
+          "topic": "atmung", "type": "single",
+          "question": "Was tust du?",
+          "options": ["Kopf zur Seite drehen, Mund ausräumen bzw. absaugen, sofort weiter reanimieren", "Reanimation abbrechen", "Den Patienten aufsetzen", "Nichts ändern, einfach weiterdrücken"],
+          "answer": 0,
+          "explanation": "Erbrechen ist bei Ertrinkungsunfällen häufig. Atemwege schnell freimachen und die Unterbrechung so kurz wie möglich halten."
+        },
+        {
+          "situation": "Plötzlich atmet er wieder normal, ist aber noch bewusstlos.",
+          "topic": "reanimation", "type": "single",
+          "question": "Was jetzt?",
+          "options": ["Stabile Seitenlage, Wärmeerhalt, Atmung engmaschig kontrollieren, AED angeschlossen lassen", "AED-Elektroden sofort entfernen", "Ihn aufstehen lassen", "Weiter Herzdruckmassage"],
+          "answer": 0,
+          "explanation": "Ein erneuter Kreislaufstillstand ist möglich. Der AED bleibt angeschlossen und eingeschaltet, bis der Rettungsdienst übernimmt."
+        }
+      ]
+    },
+    {
+      "id": "c-festzelt", "topic": "kreislauf", "type": "case",
+      "title": "Herz-Notfall im Festzelt",
+      "scenario": "Dorffest in Loppersum, voller Festzelt, laute Musik. Ein 61-jähriger Mann setzt sich blass an den Tresen und hält sich die Brust. Ein Bekannter winkt dich heran.",
+      "steps": [
+        {
+          "situation": "Er klagt seit 15 Minuten über starken Druck auf der Brust, der in den linken Arm ausstrahlt. Er schwitzt kalt.",
+          "topic": "kreislauf", "type": "single",
+          "question": "Welcher Verdacht liegt nahe?",
+          "options": ["Akutes Koronarsyndrom (Herzinfarkt)", "Sodbrennen nach dem Essen", "Hyperventilation", "Muskelkater"],
+          "answer": 0,
+          "explanation": "Brustdruck über Minuten, Ausstrahlung und kalter Schweiß sind klassisch. Bis zum Beweis des Gegenteils ist das ein Herzinfarkt."
+        },
+        {
+          "topic": "kreislauf", "type": "multi",
+          "question": "Was tust du jetzt?",
+          "options": ["Notarzt nachfordern lassen", "Oberkörper hoch lagern, ihn nicht laufen lassen", "Ruhige Umgebung schaffen (z. B. auf der Trage aus dem lauten Zelt)", "AED bereitlegen, Vitalwerte überwachen", "Zur Beruhigung einen Korn trinken lassen"],
+          "answer": [0, 1, 2, 3],
+          "explanation": "Getragen wird, nicht gelaufen. Der AED gehört bei jedem Herz-Patienten griffbereit neben die Trage."
+        },
+        {
+          "situation": "Plötzlich sackt er zusammen, reagiert nicht und hat keine normale Atmung.",
+          "topic": "reanimation", "type": "single",
+          "question": "Was tust du?",
+          "options": ["Sofort Herzdruckmassage, AED anschließen, Lageänderung melden", "Stabile Seitenlage", "Erst den Blutdruck messen", "Auf den Notarzt warten"],
+          "answer": 0,
+          "explanation": "Jede Minute ohne Herzdruckmassage senkt die Überlebenschance deutlich. Die Einsatzleitung muss wissen, dass jetzt reanimiert wird."
+        },
+        {
+          "topic": "reanimation", "type": "single",
+          "question": "Der AED empfiehlt einen Schock. Was ist richtig?",
+          "options": ["„Alle weg vom Patienten!“, Schock auslösen, sofort mit der Herzdruckmassage weitermachen", "Nach dem Schock erst eine Minute lang den Puls tasten", "Den Patienten beim Schock festhalten", "Nur auf Anordnung des Notarztes schocken"],
+          "answer": 0,
+          "explanation": "Nach dem Schock nicht nach dem Puls suchen – sofort 2 Minuten weiter drücken, bis der AED erneut analysiert."
+        }
+      ]
+    },
+    {
+      "id": "c-wespe", "topic": "vergiftung", "type": "case",
+      "title": "Wespe im Butterkuchen",
+      "scenario": "Erntefest auf einem Hof bei Hinte. Beim Tee mit Butterkuchen draußen wird eine 34-jährige Frau von einer Wespe, die auf dem Kuchen saß, in die Zunge gestochen.",
+      "steps": [
+        {
+          "topic": "vergiftung", "type": "single",
+          "question": "Warum ist ein Stich im Mund-Rachen-Raum gefährlich?",
+          "options": ["Die Schwellung kann die Atemwege verlegen – auch ohne Allergie", "Gar nicht – Wespenstiche sind harmlos", "Das Gift greift den Magen an", "Man kann danach keinen Tee mehr trinken"],
+          "answer": 0,
+          "explanation": "Zunge und Rachen schwellen schnell an. Sofort kühlen und den Rettungsdienst früh alarmieren."
+        },
+        {
+          "situation": "Nach wenigen Minuten: Quaddeln an Hals und Armen, heisere Stimme, sie wird unruhig und atmet schneller.",
+          "topic": "vergiftung", "type": "multi",
+          "question": "Was tust du?",
+          "options": ["Sofort Notruf mit Notarzt", "Eis lutschen lassen, Hals von außen kühlen", "Nach einem Notfallset fragen und bei der Anwendung des eigenen Adrenalin-Autoinjektors helfen", "Bei Atemnot sitzend bzw. mit erhöhtem Oberkörper lagern", "Heißen Tee zum Abschwellen geben"],
+          "answer": [0, 1, 2, 3],
+          "explanation": "Quaddeln am ganzen Körper plus Heiserkeit und Atemnot = Anaphylaxie. Allergiker tragen oft einen Autoinjektor bei sich."
+        },
+        {
+          "situation": "Sie wird zunehmend benommen, Puls 130/min, Blutdruck 80/50 mmHg. Die Atmung ist nicht mehr das Hauptproblem.",
+          "topic": "kreislauf", "type": "single",
+          "question": "Wie lagerst du jetzt?",
+          "options": ["Flach lagern, Beine anheben (Schocklage)", "Sitzend auf einem Stuhl", "Bauchlage", "Oberkörper 90° hoch"],
+          "answer": 0,
+          "explanation": "Jetzt steht der anaphylaktische Schock im Vordergrund. Wird die Atemnot wieder stärker, Lagerung anpassen. Wird sie bewusstlos mit Atmung: Seitenlage."
+        }
+      ]
+    },
+    {
+      "id": "c-reitturnier", "topic": "trauma", "type": "case",
+      "title": "Sturz beim Reitturnier",
+      "scenario": "Reitturnier im Landkreis Aurich. Eine 17-jährige Reiterin stürzt beim Springen kopfüber vom Pferd und bleibt auf dem Rücken liegen.",
+      "steps": [
+        {
+          "topic": "eh", "type": "single",
+          "question": "Was ist beim Annähern zuerst wichtig?",
+          "options": ["Eigenschutz: Ist das Pferd eingefangen? Ist der Parcours gesperrt?", "Sofort die Reiterin hochziehen", "Den Helm schnell abnehmen", "Zuerst das Pferd untersuchen"],
+          "answer": 0,
+          "explanation": "Ein freilaufendes, aufgeregtes Pferd ist eine echte Gefahr. Absprache mit der Turnierleitung über die Sperrung des Platzes."
+        },
+        {
+          "situation": "Sie ist wach, atmet normal und klagt über Nackenschmerzen und Kribbeln in beiden Händen.",
+          "topic": "trauma", "type": "single",
+          "question": "Was tust du?",
+          "options": ["Kopf manuell stabilisieren, sie nicht bewegen lassen, Rettungsdienst nachfordern", "Sie aufsetzen und Wasser geben", "Sie zum Stall laufen lassen", "Den Kopf in alle Richtungen drehen lassen, um die Beweglichkeit zu testen"],
+          "answer": 0,
+          "explanation": "Nackenschmerz plus Kribbeln nach einem Sturz = Verdacht auf Verletzung der Halswirbelsäule mit Beteiligung des Rückenmarks."
+        },
+        {
+          "topic": "material", "type": "multi",
+          "question": "Was ist bei der weiteren Versorgung richtig?",
+          "options": ["ABCDE-Untersuchung, DMS an allen Extremitäten prüfen", "Helm nur zu zweit und mit Stabilisierung des Kopfes abnehmen, wenn nötig (z. B. für die Atemwege)", "Schaufeltrage und Vakuummatratze vorbereiten", "Die Patientin zur Beruhigung wieder aufs Pferd setzen"],
+          "answer": [0, 1, 2],
+          "explanation": "Bei wacher Patientin mit freien Atemwegen kann der Helm bis zum Rettungsdienst oft aufbleiben – das regelt euer Algorithmus."
+        }
+      ]
+    },
+    {
+      "id": "c-openair", "topic": "neuro", "type": "case",
+      "title": "Krampfanfall beim Open Air",
+      "scenario": "Open-Air-Konzert in Emden, 23 Uhr. Freunde holen dich: Ein 19-Jähriger liegt am Boden und zuckt an Armen und Beinen.",
+      "steps": [
+        {
+          "topic": "neuro", "type": "multi",
+          "question": "Was tust du während des Anfalls?",
+          "options": ["Umgebung sichern, Kopf polstern", "Uhrzeit festhalten", "Nicht festhalten, nichts in den Mund", "Freunde nach Vorerkrankungen, Drogen und Alkohol fragen", "Ihn kräftig festhalten, damit er sich nicht verletzt"],
+          "answer": [0, 1, 2, 3],
+          "explanation": "Die Fremdanamnese ist jetzt besonders wertvoll: Bekannte Epilepsie? Drogen? Schlafmangel? Gestürzt?"
+        },
+        {
+          "situation": "Nach 2 Minuten hört das Zucken auf. Er atmet, reagiert aber kaum und hat eingenässt.",
+          "topic": "neuro", "type": "single",
+          "question": "Was jetzt?",
+          "options": ["Stabile Seitenlage, Atmung überwachen, Blutzucker messen, Sichtschutz herstellen", "Sofort aufsetzen und Wasser trinken lassen", "Mit der Reanimation beginnen", "Ihn allein ausschlafen lassen"],
+          "answer": 0,
+          "explanation": "Nach einem Anfall folgt oft eine Phase mit Bewusstseinstrübung. Sichtschutz wahrt die Würde des Patienten – gerade vor Publikum."
+        },
+        {
+          "topic": "neuro", "type": "single",
+          "question": "Wann muss der Rettungsdienst in jedem Fall kommen?",
+          "options": ["Bei erstmaligem Anfall, Anfall über 5 Minuten, mehreren Anfällen hintereinander oder Verletzungen", "Nur wenn der Patient es ausdrücklich will", "Nie – Krampfanfälle hören immer von selbst auf", "Nur bei Kindern"],
+          "answer": 0,
+          "explanation": "Ein erstmaliger Anfall muss immer ärztlich abgeklärt werden. Bei bekannter Epilepsie und typischem Verlauf entscheidet ihr nach Rücksprache."
+        }
+      ]
+    },
+    {
+      "id": "c-erntefest", "topic": "trauma", "type": "case",
+      "title": "Unfall beim Erntefestumzug",
+      "scenario": "Beim Erntefestumzug gerät ein Helfer zwischen Trecker-Anhänger und Absperrgitter. Er hat eine tiefe Wunde am Oberschenkel, hellrotes Blut spritzt pulsierend.",
+      "steps": [
+        {
+          "topic": "trauma", "type": "single",
+          "question": "Der Trecker steht, der Bereich ist gesichert. Was ist deine erste Maßnahme?",
+          "options": ["Sofort fest auf die Wunde drücken", "Erst den Blutdruck messen", "Den Patienten zum Sanitätszelt laufen lassen", "Die Wunde mit Wasser ausspülen"],
+          "answer": 0,
+          "explanation": "Bei spritzender arterieller Blutung zählt jede Sekunde – sofort Druck ausüben, Handschuhe so schnell wie möglich."
+        },
+        {
+          "situation": "Trotz Druckverband blutet es weiter stark durch.",
+          "topic": "trauma", "type": "single",
+          "question": "Was tust du?",
+          "options": ["Tourniquet oberhalb der Wunde anlegen und festziehen, bis die Blutung steht", "Einen zweiten, lockeren Verband darüberwickeln und abwarten", "Das Bein tief lagern", "Den Verband abnehmen und nachschauen"],
+          "answer": 0,
+          "explanation": "Am Oberschenkel braucht es oft viel Kraft. Steht die Blutung nicht, ggf. ein zweites Tourniquet direkt oberhalb des ersten."
+        },
+        {
+          "topic": "kreislauf", "type": "multi",
+          "question": "Was ist danach wichtig?",
+          "options": ["Uhrzeit des Tourniquets dokumentieren", "Notarzt nachfordern lassen", "Schockbekämpfung: flach lagern, Wärmeerhalt, beruhigen", "Vitalwerte engmaschig kontrollieren", "Das Tourniquet nach 10 Minuten wieder lösen"],
+          "answer": [0, 1, 2, 3],
+          "explanation": "Großer Blutverlust führt schnell in den Schock. Das Tourniquet bleibt fest, bis die Klinik übernimmt."
+        }
+      ]
+    },
+    {
+      "id": "c-fussball", "topic": "neuro", "type": "case",
+      "title": "Der vermeintlich Betrunkene",
+      "scenario": "Sommer-Fußballturnier im Ort. Ein 28-jähriger Spieler torkelt nach dem Spiel, redet verwaschen und wird aggressiv. Ein Mitspieler meint: „Der hat doch nur einen im Tee.“",
+      "steps": [
+        {
+          "topic": "neuro", "type": "single",
+          "question": "Was solltest du bei diesem Bild immer ausschließen?",
+          "options": ["Eine Unterzuckerung (Blutzucker messen)", "Einen Sonnenbrand", "Fußpilz", "Heuschnupfen"],
+          "answer": 0,
+          "explanation": "Verwaschene Sprache, Gangunsicherheit und Aggressivität sind typisch für eine Unterzuckerung – gerade nach Sport."
+        },
+        {
+          "situation": "Er hat Typ-1-Diabetes. Blutzucker: 42 mg/dl. Er ist wach und kann schlucken.",
+          "topic": "neuro", "type": "single",
+          "question": "Was tust du?",
+          "options": ["Traubenzucker oder ein zuckerhaltiges Getränk geben, nach ca. 15 Minuten erneut messen", "Insulin aus seiner Tasche spritzen", "Nur Wasser geben", "Ihn zum Duschen schicken"],
+          "answer": 0,
+          "explanation": "Insulin würde den Zucker weiter senken – lebensgefährlich! Bei Unsicherheit oder fehlender Besserung: Rettungsdienst."
+        },
+        {
+          "situation": "Nach 15 Minuten ist er wieder klar. Blutzucker 95 mg/dl.",
+          "topic": "recht", "type": "single",
+          "question": "Was gehört noch dazu?",
+          "options": ["Langsam wirkende Kohlenhydrate essen lassen, nicht allein lassen, dokumentieren, ärztliche Abklärung empfehlen", "Er darf direkt das nächste Spiel bestreiten und danach Auto fahren", "Nichts weiter", "Zur Sicherheit noch etwas Insulin"],
+          "answer": 0,
+          "explanation": "Der schnell wirksame Zucker hält nicht lange vor – ohne Kohlenhydrate (z. B. Brot) droht die nächste Unterzuckerung."
+        }
+      ]
+    },
+    {
+      "id": "c-grill", "topic": "kinder", "type": "case",
+      "title": "Verbrennung am Grill",
+      "scenario": "Grillabend des Ortsvereins. Ein 4-jähriges Kind greift an den heißen Grillrost. Die Handinnenfläche ist gerötet, es bilden sich Blasen. Das Kind schreit, die Eltern sind aufgelöst.",
+      "steps": [
+        {
+          "topic": "thermisch", "type": "single",
+          "question": "Was tust du zuerst?",
+          "options": ["Mit handwarmem, fließendem Wasser kühlen und das Kind dabei warm halten", "Eiswürfel direkt auf die Hand legen", "Butter oder Zahnpasta auftragen", "Die Blasen aufstechen"],
+          "answer": 0,
+          "explanation": "Kühlen lindert Schmerzen und begrenzt den Schaden. Bei Kindern besonders auf Unterkühlung achten – nur die betroffene Stelle kühlen."
+        },
+        {
+          "topic": "thermisch", "type": "single",
+          "question": "Wie groß ist die verbrannte Fläche ungefähr?",
+          "options": ["Etwa 1 % der Körperoberfläche oder weniger", "Etwa 9 %", "Etwa 18 %", "0 % – Blasen zählen nicht"],
+          "answer": 0,
+          "explanation": "Die Handfläche des Kindes (mit Fingern) entspricht etwa 1 % seiner Körperoberfläche. Trotzdem: Verbrennungen an Händen sind immer ärztlich abzuklären."
+        },
+        {
+          "topic": "kinder", "type": "multi",
+          "question": "Was ist weiter richtig?",
+          "options": ["Wunde keimfrei abdecken (z. B. Brandwunden-Verbandtuch)", "Ärztliche Vorstellung, weil Blasen an der Hand eines Kleinkindes", "Eltern beruhigen und einbeziehen", "Brandsalbe aus der Küche auftragen", "Das Kind trösten und ablenken"],
+          "answer": [0, 1, 2, 4],
+          "explanation": "Kinder spiegeln die Aufregung der Erwachsenen. Ruhige Eltern helfen dem Kind am meisten – gib ihnen eine Aufgabe."
+        }
+      ]
+    },
+    {
+      "id": "c-deichlauf", "topic": "atmung", "type": "case",
+      "title": "Atemnot beim Deichlauf",
+      "scenario": "Volkslauf am Deich bei Greetsiel, kräftiger Nordwestwind, die Gräser blühen. Eine 25-jährige Läuferin bleibt im Zielbereich stehen und ringt nach Luft. Beim Ausatmen hört man ein Pfeifen.",
+      "steps": [
+        {
+          "topic": "atmung", "type": "single",
+          "question": "Welcher Verdacht liegt nahe?",
+          "options": ["Asthmaanfall", "Herzinfarkt", "Hitzschlag", "Unterzuckerung"],
+          "answer": 0,
+          "explanation": "Pfeifendes Ausatmen (Giemen), Belastung und Pollen sind typische Auslöser eines Asthmaanfalls."
+        },
+        {
+          "situation": "Atemfrequenz 30/min, SpO₂ 90 %, sie spricht nur in kurzen Sätzen. Sie hat ein Notfallspray dabei.",
+          "topic": "atmung", "type": "multi",
+          "question": "Was tust du?",
+          "options": ["Sitzende Position mit aufgestützten Armen (Kutschersitz)", "Lippenbremse anleiten, beruhigen", "Bei der Anwendung ihres eigenen Sprays helfen", "Sauerstoff nach eurer Regelung, Ziel-SpO₂ 94–98 %", "Flach hinlegen"],
+          "answer": [0, 1, 2, 3],
+          "explanation": "Flachlagerung verschlimmert die Atemnot. Der Rettungsdienst sollte bei Sprechdyspnoe und SpO₂ 90 % bereits alarmiert sein."
+        },
+        {
+          "situation": "Nach 10 Minuten keine Besserung. Sie wird müde und die Atemgeräusche werden leiser.",
+          "topic": "atmung", "type": "single",
+          "question": "Wie bewertest du das?",
+          "options": ["Alarmzeichen – drohende Erschöpfung („stille Lunge“), sofort Notarzt", "Gutes Zeichen, sie beruhigt sich", "Sie ist nur erschöpft vom Lauf", "Kein Grund zur Sorge – das Spray wirkt verzögert"],
+          "answer": 0,
+          "explanation": "Leiser werdende Atemgeräusche bei schwerem Asthma bedeuten: Es kommt kaum noch Luft durch. Die Patientin kann jeden Moment aufhören zu atmen."
+        }
+      ]
+    }
+  ]
+}
