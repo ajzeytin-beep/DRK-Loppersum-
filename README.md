@@ -95,7 +95,12 @@ python3 -m http.server 8000
 
 Nach der Anmeldung siehst du sofort den Stand deines Kurses. Die Ansicht aktualisiert sich jede Minute.
 
-- **Neue Anmeldungen:** Registrierte Konten mit deinem Kurscode (oder ohne gültigen Kurscode) freigeben oder ablehnen. Beim Ablehnen wird das Konto gelöscht.
+- **Neue Anmeldungen:** Registrierte Konten mit deinem Kurscode (oder ohne gültigen Kurscode) als Teilnehmer **freigeben**, direkt **als Ausbilder** freigeben oder **ablehnen**. Beim Ablehnen wird das Konto gelöscht.
+- **Ausbilder in diesem Kurs:**
+  - Liste aller Ausbilder.
+  - Anderen kannst du die Ausbilder-Rechte entziehen, dir selbst nicht. So bleibt immer mindestens ein Ausbilder.
+  - Teilnehmende machst du in der Tabelle über 🛡 zum Ausbilder.
+  - **Neue Ausbilder:** Den Ausbilder-Link schicken, registrieren lassen und unter „Neue Anmeldungen“ auf **„Als Ausbilder“** tippen.
 - **Lernfortschritt** pro Person:
   - Fortschritt in Prozent
   - Stufen 1–4 (grün = geschafft)
@@ -113,6 +118,7 @@ Nach der Anmeldung siehst du sofort den Stand deines Kurses. Die Ansicht aktuali
    2. `supabase/update-1.sql`
    3. `supabase/update-2.sql`
    4. `supabase/update-3.sql`
+   5. `supabase/update-4.sql`
 
    Wer schon eingerichtet ist, führt nur die fehlenden Updates aus.
 3. Einen Kurs anlegen (eine PIN ist seit Update 2 nicht mehr nötig):
@@ -126,7 +132,7 @@ Nach der Anmeldung siehst du sofort den Stand deines Kurses. Die Ansicht aktuali
    - Email-Anmeldung aktiv lassen.
    - **„Confirm email“ ausschalten**, solange kein eigener E-Mail-Versand eingerichtet ist (siehe unten).
 6. **Authentication → URL Configuration:** *Site URL* und *Redirect URLs* auf `https://ajzeytin-beep.github.io/DRK-Loppersum-/` setzen.
-7. **Ausbilder eintragen:** In der App registrieren, dann im SQL Editor:
+7. **Ersten Ausbilder eintragen** (nur einmal nötig, weitere Ausbilder gehen danach direkt in der App): In der App registrieren, dann im SQL Editor:
 
    ```sql
    update public.profiles set role = 'instructor', course_code = 'LOP-2026' where email = 'deine@email.de';

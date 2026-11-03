@@ -158,10 +158,12 @@ export function renderInstructor(view) {
     </div>
     <div id="pending"></div>
     <div id="stats">${lastStats ? "" : '<div class="loader" aria-label="Lädt"></div>'}</div>
+    <div id="instructors"></div>
     ${code ? inviteCard(code) : '<section class="card"><p class="form-error">Deinem Ausbilder-Konto ist noch kein Kurs zugeordnet (siehe README: „Ausbilder eintragen“).</p></section>'}`;
 
   const statsEl = view.querySelector("#stats");
   const pendingEl = view.querySelector("#pending");
+  const instructorsEl = view.querySelector("#instructors");
   const info = view.querySelector("#refresh-info");
   if (code) bindInvite(view, code);
 
@@ -170,9 +172,14 @@ export function renderInstructor(view) {
     if (!btn || !document.body.contains(btn)) { clearInterval(refreshTimer); return; } // Seite wurde verlassen
     btn.disabled = true;
     try {
-      const [stats, pending] = await Promise.all([sync.courseStats(), sync.pendingRegistrations()]);
+      const [stats, pending, instructors] = await Promise.all([
+        sync.courseStats(),
+        sync.pendingRegistrations(),
+        sync.courseInstructors().catch(() => null), // null = Update 4 fehlt noch
+      ]);
       lastStats = stats;
       renderPending(pendingEl, pending, load);
+      renderInstructors(instructorsEl, instructors, load);
       renderStats(statsEl, stats, load);
       info.textContent = `Kurs ${stats.course?.code || code} · Stand ${new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} Uhr · aktualisiert sich jede Minute`;
     } catch (e) {
@@ -203,6 +210,7 @@ function renderPending(el, list, reload) {
             <span class="small muted">${esc(r.email || "")} · ${fmt(r.created_at)}${r.requested_course ? ` · Kurscode ${esc(r.requested_course)}` : " · ohne Kurscode"}</span></div>
           <div class="pending-actions">
             <button class="btn btn-primary btn-sm" data-act="approve">${icon("check")} Freigeben</button>
+            <button class="btn btn-secondary btn-sm" data-act="instructor" title="Als Ausbilder für diesen Kurs freigeben">${icon("shield")} Als Ausbilder</button>
             <button class="btn btn-ghost btn-sm" data-act="reject">Ablehnen</button>
           </div>
         </li>`).join("")}</ul>
@@ -210,20 +218,56 @@ function renderPending(el, list, reload) {
   el.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", async () => {
     const li = b.closest("li");
     const r = list.find((x) => x.id === li.dataset.id);
-    if (b.dataset.act === "reject" && !confirm(`Anmeldung von ${r.name} (${r.email}) ablehnen?\n\nDas Konto wird gelöscht.`)) return;
+    const act = b.dataset.act;
+    if (act === "reject" && !confirm(`Anmeldung von ${r.name} (${r.email}) ablehnen?\n\nDas Konto wird gelöscht.`)) return;
+    if (act === "instructor" && !confirm(`${r.name} (${r.email}) als Ausbilder freigeben?\n\nAusbilder sehen den Lernfortschritt aller Teilnehmenden dieses Kurses und können Konten verwalten.`)) return;
     li.querySelectorAll("button").forEach((x) => { x.disabled = true; });
     try {
-      await (b.dataset.act === "approve" ? sync.approve(r.id) : sync.reject(r.id));
+      await ({ approve: sync.approve, reject: sync.reject, instructor: sync.approveAsInstructor }[act])(r.id);
       await reload();
     } catch (e) {
-      alert(e.message);
+      alert(/could not find the function|approve_as_instructor/i.test(e.message) ? "Diese Funktion braucht das Datenbank-Update „supabase/update-4.sql“ – bitte einmal in Supabase ausführen (siehe README)." : e.message);
       li.querySelectorAll("button").forEach((x) => { x.disabled = false; });
     }
   }));
 }
 
-// Teilnehmer verwalten: Passwort zurücksetzen oder aus dem Kurs entfernen
+/* ---------------- Ausbilder des Kurses ---------------- */
+
+function renderInstructors(el, list, reload) {
+  if (list === null) {
+    el.innerHTML = `<section class="card"><h2>${icon("shield")} Ausbilder in diesem Kurs</h2><p class="muted small">Diese Funktion braucht das Datenbank-Update „supabase/update-4.sql“ – bitte einmal in Supabase ausführen (siehe README).</p></section>`;
+    return;
+  }
+  el.innerHTML = `
+    <section class="card instructors-card">
+      <div class="card-head"><h2>${icon("shield")} Ausbilder in diesem Kurs</h2>
+        <span class="small muted">Neue Ausbilder: registrieren lassen und unter „Neue Anmeldungen“ auf „Als Ausbilder“ tippen</span></div>
+      <ul class="pending-list">${list.map((i) => `
+        <li data-id="${esc(i.id)}">
+          <span class="avatar avatar-shield">${icon("shield")}</span>
+          <div class="pp-text"><strong>${esc(i.name || "Ohne Namen")}${i.me ? ' <span class="tag tag-muted">du</span>' : ""}</strong>
+            <span class="small muted">${esc(i.email || "")}</span></div>
+          ${i.me ? "" : '<div class="pending-actions"><button class="btn btn-ghost btn-sm" data-act="demote">Ausbilder-Rechte entziehen</button></div>'}
+        </li>`).join("")}</ul>
+    </section>`;
+  el.querySelectorAll("[data-act=demote]").forEach((b) => b.addEventListener("click", async () => {
+    const i = list.find((x) => x.id === b.closest("li").dataset.id);
+    if (!confirm(`${i.name} die Ausbilder-Rechte entziehen?\n\n${i.name} wird wieder als Teilnehmer geführt und sieht den Ausbilder-Bereich nicht mehr.`)) return;
+    b.disabled = true;
+    try { await sync.demoteInstructor(i.id); await reload(); }
+    catch (e) { alert(e.message); b.disabled = false; }
+  }));
+}
+
+// Teilnehmer verwalten: Passwort zurücksetzen, zum Ausbilder machen oder aus dem Kurs entfernen
 async function manageLearner(l, action, reload) {
+  if (action === "promote") {
+    if (!confirm(`${l.name} zum Ausbilder machen?\n\nAusbilder sehen den Lernfortschritt aller Teilnehmenden dieses Kurses und können Konten verwalten. ${l.name} erscheint danach nicht mehr in der Teilnehmerliste.`)) return;
+    try { await sync.promoteToInstructor(l.id); await reload(); }
+    catch (e) { alert(/could not find the function|promote_to_instructor/i.test(e.message) ? "Diese Funktion braucht das Datenbank-Update „supabase/update-4.sql“ – bitte einmal in Supabase ausführen (siehe README)." : e.message); }
+    return;
+  }
   if (action === "password") {
     const pw = prompt(`Neues Passwort für ${l.name} (mindestens 8 Zeichen):\n\nGib es der Person persönlich weiter – sie kann es danach im Profil ändern.`);
     if (pw == null) return;
@@ -340,7 +384,7 @@ function renderStats(el, stats, reload) {
               <td>${l.best == null ? '<span class="muted">–</span>' : `<span class="tag ${l.passed ? "tag-ok" : "tag-red"}">${pct(l.best)}</span>`}</td>
               <td class="small muted">${relDay(l.last_seen)}</td>
               <td class="row-actions">
-                ${l.account === false ? "" : `<button class="btn btn-ghost btn-sm" data-learner="${esc(l.id)}" data-act="password" title="Neues Passwort setzen">${icon("lock")}</button>`}
+                ${l.account === false ? "" : `<button class="btn btn-ghost btn-sm" data-learner="${esc(l.id)}" data-act="promote" title="Zum Ausbilder machen">${icon("shield")}</button><button class="btn btn-ghost btn-sm" data-learner="${esc(l.id)}" data-act="password" title="Neues Passwort setzen">${icon("lock")}</button>`}
                 <button class="btn btn-ghost btn-sm" data-learner="${esc(l.id)}" data-act="remove" title="Aus dem Kurs entfernen">✕</button>
               </td>
             </tr>`).join("")}</tbody>

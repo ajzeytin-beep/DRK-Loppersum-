@@ -47,6 +47,10 @@ export const approve = (id) => rpc("approve_registration", { p_user: id });
 export const reject = (id) => rpc("reject_registration", { p_user: id });
 export const removeLearner = (id) => rpc("remove_learner", { p_user: id });
 export const setLearnerPassword = (id, password) => rpc("learner_set_password", { p_user: id, p_password: password });
+export const courseInstructors = () => rpc("course_instructors");
+export const approveAsInstructor = (id) => rpc("approve_as_instructor", { p_user: id });
+export const promoteToInstructor = (id) => rpc("promote_to_instructor", { p_user: id });
+export const demoteInstructor = (id) => rpc("demote_instructor", { p_user: id });
 
 /* ---------------- Lernfortschritt übertragen ---------------- */
 

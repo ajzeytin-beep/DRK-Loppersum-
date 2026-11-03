@@ -503,7 +503,11 @@ input.bad { border-color: var(--red) !important; background: var(--red-soft) !im
 .pending-list .pp-text { flex: 1; min-width: 180px; }
 .pending-actions { display: flex; gap: 0.4rem; }
 .pending-actions .btn + .btn { margin-left: 0; }
-.row-actions { text-align: right; }
+.row-actions { text-align: right; white-space: nowrap; }
+.instructors-card { margin-top: 1.25rem; }
+.avatar-shield { background: var(--surface-2); color: #ff8a91; border: 1px solid var(--border-strong); }
+.avatar-shield .icon { width: 18px; height: 18px; }
+.pending-actions { flex-wrap: wrap; }
 .row-actions .btn { min-height: 32px; padding: 0.25rem 0.5rem; color: var(--muted); }
 .row-actions .btn:hover { color: var(--text); }
 .row-actions .btn + .btn { margin-left: 0.2rem; }
