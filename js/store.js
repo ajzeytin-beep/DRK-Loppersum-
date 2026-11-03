@@ -1,7 +1,10 @@
 // Lokaler Lernstand (localStorage). Bleibt auf dem Gerät, auch offline.
+// Mehrere Teilnehmende können dasselbe Gerät nutzen – jede Person hat ihren eigenen Lernstand.
 import { CONFIG } from "./config.js";
 
-const KEY = "sani-trainer-v1";
+const INDEX_KEY = "sani-trainer-profiles";
+const OLD_KEY = "sani-trainer-v1";           // Format bis Version 1 (nur eine Person)
+const stateKey = (id) => `sani-trainer-v1:${id}`;
 const DAY = 86400000;
 
 const fresh = () => ({
@@ -14,28 +17,79 @@ const fresh = () => ({
   lastSync: null,
 });
 
-function load() {
-  try {
-    const raw = localStorage.getItem(KEY);
-    if (raw) {
-      const s = JSON.parse(raw);
-      return { ...fresh(), ...s, settings: { ...fresh().settings, ...(s.settings || {}) } };
-    }
-  } catch { /* privater Modus o. Ä. */ }
-  return fresh();
+const read = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } };
+const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* privater Modus o. Ä. */ } };
+
+function normalize(s) {
+  return { ...fresh(), ...s, settings: { ...fresh().settings, ...(s?.settings || {}) } };
 }
 
-let state = load();
+function loadIndex() {
+  let idx = read(INDEX_KEY);
+  if (!idx) {
+    idx = { current: null, profiles: [] };
+    const old = read(OLD_KEY);
+    if (old?.profile?.id) {
+      write(stateKey(old.profile.id), old);
+      idx.profiles.push({ id: old.profile.id, name: old.profile.name, courseCode: old.profile.courseCode || null, lastUsed: Date.now() });
+      idx.current = old.profile.id;
+      try { localStorage.removeItem(OLD_KEY); } catch { /* ignorieren */ }
+    }
+    write(INDEX_KEY, idx);
+  }
+  return idx;
+}
+
+let index = loadIndex();
+let state = index.current ? normalize(read(stateKey(index.current)) || {}) : fresh();
+if (index.current && !state.profile) { index.current = null; state = fresh(); }
 
 export const getState = () => state;
+export const listProfiles = () => [...index.profiles].sort((a, b) => (b.lastUsed || 0) - (a.lastUsed || 0));
 
 export function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* ignorieren */ }
+  if (!state.profile?.id) return;
+  write(stateKey(state.profile.id), state);
 }
+
+function saveIndex() { write(INDEX_KEY, index); }
 
 export function setProfile(profile) {
   state.profile = { ...(state.profile || {}), ...profile };
+  const entry = { id: state.profile.id, name: state.profile.name, courseCode: state.profile.courseCode || null, lastUsed: Date.now() };
+  index.profiles = [...index.profiles.filter((p) => p.id !== entry.id), entry];
+  index.current = entry.id;
+  saveIndex();
   save();
+}
+
+export function switchTo(id) {
+  const s = read(stateKey(id));
+  if (!s?.profile) return false;
+  state = normalize(s);
+  index.current = id;
+  index.profiles = index.profiles.map((p) => (p.id === id ? { ...p, lastUsed: Date.now() } : p));
+  saveIndex();
+  return true;
+}
+
+export function findProfile(name, courseCode) {
+  const n = name.trim().toLowerCase();
+  return index.profiles.find((p) => p.name.trim().toLowerCase() === n && (p.courseCode || null) === (courseCode || null)) || null;
+}
+
+export function logout() {
+  save();
+  index.current = null;
+  saveIndex();
+  state = fresh();
+}
+
+export function removeProfile(id) {
+  try { localStorage.removeItem(stateKey(id)); } catch { /* ignorieren */ }
+  index.profiles = index.profiles.filter((p) => p.id !== id);
+  if (index.current === id) { index.current = null; state = fresh(); }
+  saveIndex();
 }
 
 export function setSetting(key, value) {

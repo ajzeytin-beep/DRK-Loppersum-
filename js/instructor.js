@@ -37,96 +37,73 @@ async function savePin(pin) {
   ls.set(PIN_KEY, { salt, iterations: ITERATIONS, hash: await hashPin(pin, salt), failed: 0, lockedUntil: 0 });
 }
 
+export const hasPin = () => Boolean(ls.get(PIN_KEY));
+export const isAdmin = () => hasPin() && unlocked();
+export function adminLogout() { setUnlocked(false); }
+
+// Neue PIN festlegen (Ersteinrichtung) und direkt anmelden
+export async function setupPin(pin) {
+  await savePin(pin);
+  setUnlocked(true);
+}
+
+// PIN prüfen – mit Sperre nach mehreren Fehlversuchen
+export async function verifyPin(pin) {
+  const c = ls.get(PIN_KEY);
+  if (!c) return { ok: false, error: "Es ist noch keine PIN eingerichtet." };
+  const wait = (c.lockedUntil || 0) - Date.now();
+  if (wait > 0) return { ok: false, error: `Zu viele Fehlversuche. Bitte ${Math.ceil(wait / 1000)} Sekunden warten.` };
+  const ok = (await hashPin(pin, c.salt, c.iterations)) === c.hash;
+  if (ok) {
+    ls.set(PIN_KEY, { ...c, failed: 0, lockedUntil: 0 });
+    setUnlocked(true);
+    return { ok: true };
+  }
+  const failed = (c.failed || 0) + 1;
+  const lockedUntil = failed >= 5 ? Date.now() + 30000 * 2 ** Math.min(failed - 5, 5) : 0;
+  ls.set(PIN_KEY, { ...c, failed, lockedUntil });
+  return { ok: false, error: lockedUntil ? "PIN falsch. Die Anmeldung ist vorübergehend gesperrt." : "PIN falsch." };
+}
+
+// PIN vergessen: PIN und alle gespeicherten Auswertungen löschen
+export function resetAdmin() {
+  ls.del(PIN_KEY);
+  ls.del(DATA_KEY);
+  setUnlocked(false);
+}
+
 export function renderInstructor(view) {
   if (!crypto?.subtle) {
     view.innerHTML = `<section class="card empty"><h2>Nicht verfügbar</h2><p class="muted">Der Ausbilder-Bereich braucht eine sichere Verbindung (https). Bitte die App über den offiziellen Link öffnen.</p></section>`;
     return;
   }
-  const cfg = ls.get(PIN_KEY);
-  if (!cfg) return renderSetup(view);
-  if (!unlocked()) return renderLock(view, cfg);
+  if (!isAdmin()) { location.hash = "#/start/ausbilder"; return; }
   renderPanel(view);
 }
 
-function pinShell(title, text, fields, button, extra = "") {
-  return `
-    <div class="onboarding">
-      <form class="card onboarding-card form" id="pin-form">
+function renderChangePin(view) {
+  view.innerHTML = `
+    <div class="auth-wrap auth-inline">
+      <form class="card auth-card form" id="pin-form">
         <div class="lock-icon">${icon("lock")}</div>
-        <h1>${title}</h1>
-        <p class="muted">${text}</p>
-        ${fields}
+        <h1>Neue PIN festlegen</h1>
+        <p class="muted">Mindestens 4 Zeichen – besser 6 oder mehr, gern auch Buchstaben.</p>
+        <label>Neue PIN<input name="pin" type="password" autocomplete="new-password" minlength="4" maxlength="64" required></label>
+        <label>PIN wiederholen<input name="pin2" type="password" autocomplete="new-password" minlength="4" maxlength="64" required></label>
         <p class="form-error" hidden></p>
-        <button class="btn btn-primary btn-lg">${button}</button>
-        ${extra}
+        <button class="btn btn-primary btn-lg">PIN speichern</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="cancel">Abbrechen</button>
       </form>
     </div>`;
-}
-
-const pinInput = (name, label, auto) =>
-  `<label>${label}<input name="${name}" type="password" inputmode="text" autocomplete="${auto}" minlength="4" maxlength="64" required></label>`;
-
-function renderSetup(view, isChange = false) {
-  view.innerHTML = pinShell(
-    isChange ? "Neue PIN festlegen" : "Ausbilder-PIN festlegen",
-    "Die PIN schützt den Ausbilder-Bereich und die gespeicherten Auswertungen auf <strong>diesem Gerät</strong>. Mindestens 4 Zeichen – besser 6 oder mehr, gern auch Buchstaben.",
-    pinInput("pin", "PIN", "new-password") + pinInput("pin2", "PIN wiederholen", "new-password"),
-    "PIN speichern",
-    isChange ? '<a class="link small" href="#/ausbilder" id="cancel">Abbrechen</a>' : "",
-  );
   const f = view.querySelector("#pin-form");
-  f.querySelector("#cancel")?.addEventListener("click", (e) => { e.preventDefault(); renderPanel(view); });
+  f.querySelector("#cancel").addEventListener("click", () => renderPanel(view));
   f.addEventListener("submit", async (e) => {
     e.preventDefault();
     const err = f.querySelector(".form-error");
     if (f.pin.value !== f.pin2.value) { err.textContent = "Die beiden Eingaben stimmen nicht überein."; err.hidden = false; return; }
     f.querySelector("button").disabled = true;
-    await savePin(f.pin.value);
-    setUnlocked(true);
+    await setupPin(f.pin.value);
     renderPanel(view);
-  });
-  f.pin.focus();
-}
-
-function renderLock(view, cfg) {
-  view.innerHTML = pinShell(
-    "Ausbilder-Bereich",
-    "Bitte gib deine Ausbilder-PIN ein.",
-    pinInput("pin", "PIN", "current-password"),
-    "Entsperren",
-    '<button type="button" class="btn btn-ghost btn-sm" id="forgot">PIN vergessen?</button>',
-  );
-  const f = view.querySelector("#pin-form");
-  const err = f.querySelector(".form-error");
-  const btn = f.querySelector("button[class*=primary]");
-  f.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const c = ls.get(PIN_KEY);
-    const wait = (c.lockedUntil || 0) - Date.now();
-    if (wait > 0) { err.textContent = `Zu viele Fehlversuche. Bitte ${Math.ceil(wait / 1000)} Sekunden warten.`; err.hidden = false; return; }
-    btn.disabled = true;
-    const ok = (await hashPin(f.pin.value, c.salt, c.iterations)) === c.hash;
-    btn.disabled = false;
-    if (ok) {
-      ls.set(PIN_KEY, { ...c, failed: 0, lockedUntil: 0 });
-      setUnlocked(true);
-      renderPanel(view);
-      return;
-    }
-    const failed = (c.failed || 0) + 1;
-    const lockedUntil = failed >= 5 ? Date.now() + 30000 * 2 ** Math.min(failed - 5, 5) : 0;
-    ls.set(PIN_KEY, { ...c, failed, lockedUntil });
-    err.textContent = lockedUntil ? "PIN falsch. Der Bereich ist vorübergehend gesperrt." : "PIN falsch.";
-    err.hidden = false;
-    f.pin.value = "";
-    f.pin.focus();
-  });
-  f.querySelector("#forgot").addEventListener("click", () => {
-    if (confirm("PIN zurücksetzen?\n\nAus Sicherheitsgründen werden dabei auch alle auf diesem Gerät gespeicherten Auswertungen gelöscht. Die Teilnehmenden können dir ihre Exportdateien danach einfach erneut schicken.")) {
-      ls.del(PIN_KEY);
-      ls.del(DATA_KEY);
-      renderSetup(view);
-    }
   });
   f.pin.focus();
 }
@@ -257,7 +234,7 @@ function renderPanel(view) {
       </div>
       <div class="head-actions">
         <button class="btn btn-ghost btn-sm" id="change-pin">PIN ändern</button>
-        <button class="btn btn-secondary btn-sm" id="lock">${icon("lock")} Sperren</button>
+        <button class="btn btn-secondary btn-sm" id="lock">${icon("logout")} Abmelden</button>
       </div>
     </div>
     ${inviteCard()}
@@ -289,8 +266,8 @@ function renderPanel(view) {
   const statsEl = view.querySelector("#stats");
   bindInvite(view);
 
-  view.querySelector("#lock").addEventListener("click", () => { setUnlocked(false); renderInstructor(view); window.scrollTo(0, 0); });
-  view.querySelector("#change-pin").addEventListener("click", () => renderSetup(view, true));
+  view.querySelector("#lock").addEventListener("click", () => { adminLogout(); location.hash = "#/start/ausbilder"; });
+  view.querySelector("#change-pin").addEventListener("click", () => renderChangePin(view));
 
   const showStored = (scroll) => {
     const s = storedStats();

@@ -3,7 +3,7 @@ import * as store from "./store.js";
 import { DATA, loadData, topicLabel } from "./data.js";
 import { renderItem, answerText, esc, shuffle } from "./quiz.js";
 import * as sync from "./sync.js";
-import { renderInstructor } from "./instructor.js";
+import { renderInstructor, isAdmin, hasPin, setupPin, verifyPin, resetAdmin, adminLogout } from "./instructor.js";
 import { icon } from "./icons.js";
 
 const view = document.getElementById("view");
@@ -99,24 +99,40 @@ const NAV = [
   { href: "#/wiederholen", label: "Wiederholen", icon: "repeat" },
   { href: "#/pruefung", label: "Prüfung", icon: "award" },
   { href: "#/merkkarten", label: "Merkkarten", icon: "cards" },
-  { href: "#/ausbilder", label: "Ausbilder", icon: "users", desktopOnly: true },
+  { href: "#/ausbilder", label: "Ausbilder", icon: "users", desktopOnly: true, adminOnly: true },
   { href: "#/profil", label: "Profil", icon: "user" },
+];
+
+// Ausbilder ohne Teilnehmer-Anmeldung sehen nur ihren Bereich
+const ADMIN_NAV = [
+  { href: "#/ausbilder", label: "Ausbilder", icon: "users" },
+  { href: "#/merkkarten", label: "Merkkarten", icon: "cards" },
 ];
 
 function renderNav() {
   const hash = location.hash || "#/";
+  const learner = Boolean(store.getState().profile);
+  const items = learner ? NAV.filter((n) => !n.adminOnly || isAdmin()) : ADMIN_NAV;
   const isActive = (href) =>
     href === "#/" ? hash === "#/" || hash.startsWith("#/lernen") || hash.startsWith("#/thema") : hash.startsWith(href);
   const link = (n) => `<a href="${n.href}" class="${isActive(n.href) ? "active" : ""}">${icon(n.icon)}<span>${n.label}</span></a>`;
-  document.getElementById("nav").innerHTML = NAV.map(link).join("");
-  document.getElementById("bottom-nav").innerHTML = NAV.filter((n) => !n.desktopOnly).map(link).join("");
+  document.getElementById("nav").innerHTML = items.map(link).join("");
+  const bottom = learner ? items.filter((n) => !n.desktopOnly) : [...items, { href: "#/abmelden", label: "Abmelden", icon: "logout" }];
+  document.getElementById("bottom-nav").innerHTML = bottom.map(link).join("");
+  document.getElementById("bottom-nav").style.gridTemplateColumns = `repeat(${bottom.length}, 1fr)`;
   renderSyncStatus();
 }
 
 function renderSyncStatus() {
   const el = document.getElementById("sync-status");
   const p = store.getState().profile;
-  if (!p) { el.innerHTML = ""; return; }
+  if (!p) {
+    el.innerHTML = isAdmin()
+      ? `<div class="me">${icon("shield")}<div><strong>Ausbilder</strong><span>angemeldet</span></div></div>
+         <a class="logout-link" href="#/abmelden">${icon("logout")} Abmelden</a>`
+      : "";
+    return;
+  }
   let status = "";
   if (p.courseCode && p.joined && sync.backendEnabled()) {
     const pending = sync.pendingCount();
@@ -126,12 +142,21 @@ function renderSyncStatus() {
   }
   el.innerHTML = `
     <div class="me">${icon("user")}<div><strong>${esc(p.name)}</strong>
-    ${p.courseCode ? `<span>Kurs ${esc(p.courseCode)}</span><span class="small">${status}</span>` : '<span>Ohne Kurs</span>'}</div></div>`;
+    ${p.courseCode ? `<span>Kurs ${esc(p.courseCode)}</span><span class="small">${status}</span>` : "<span>Teilnehmer · ohne Kurs</span>"}</div></div>
+    <a class="logout-link" href="#/abmelden">${icon("logout")} Abmelden</a>`;
+}
+
+function logoutAll() {
+  sync.flush();
+  store.logout();
+  adminLogout();
+  location.hash = "#/start";
 }
 
 const ROUTES = [
   [/^#\/?$/, () => dashboard()],
-  [/^#\/start$/, () => onboarding()],
+  [/^#\/start(?:\/(teilnehmer|ausbilder))?$/, (m) => loginView(m[1] || "teilnehmer")],
+  [/^#\/abmelden$/, () => logoutAll()],
   [/^#\/lernen\/([1-4])$/, (m) => learnLevel(Number(m[1]))],
   [/^#\/thema\/([\w-]+)$/, (m) => topicTraining(m[1])],
   [/^#\/wiederholen$/, () => review()],
@@ -141,17 +166,23 @@ const ROUTES = [
   [/^#\/profil$/, () => profileView()],
 ];
 
+// Seiten, die ohne Teilnehmer-Anmeldung erreichbar sind
+const PUBLIC = [/^#\/start/, /^#\/abmelden$/, /^#\/ausbilder$/];
+const ADMIN_PUBLIC = [/^#\/merkkarten$/];
+
 function route() {
   clearTimer();
   const hash = location.hash || "#/";
-  if (!store.getState().profile && hash !== "#/start" && hash !== "#/ausbilder") {
-    location.hash = "#/start";
+  const learner = Boolean(store.getState().profile);
+  const allowed = learner || PUBLIC.some((r) => r.test(hash)) || (isAdmin() && ADMIN_PUBLIC.some((r) => r.test(hash)));
+  if (!allowed) {
+    location.hash = isAdmin() ? "#/ausbilder" : "#/start";
     return;
   }
   for (const [re, fn] of ROUTES) {
     const m = hash.match(re);
     if (m) {
-      document.body.classList.toggle("in-session", false);
+      document.body.classList.remove("in-session", "auth");
       fn(m);
       renderNav();
       window.scrollTo(0, 0);
@@ -161,7 +192,7 @@ function route() {
   location.hash = "#/";
 }
 
-/* ---------------- Onboarding & Profil ---------------- */
+/* ---------------- Anmeldung & Profil ---------------- */
 
 function profileForm(p, submitLabel) {
   return `
@@ -186,6 +217,15 @@ function bindProfileForm(onDone) {
     const name = form.name.value.trim();
     const code = form.code.value.trim().toUpperCase();
     const prev = store.getState().profile;
+    // Gleicher Name + Kurscode schon auf diesem Gerät? Dann diesen Lernstand fortsetzen.
+    if (!prev) {
+      const existing = store.findProfile(name, code || null);
+      if (existing && store.switchTo(existing.id)) {
+        sync.flush().then(renderSyncStatus);
+        onDone();
+        return;
+      }
+    }
     const id = prev?.id || uuid();
     let joined = false;
     let courseName = null;
@@ -211,18 +251,103 @@ function bindProfileForm(onDone) {
   });
 }
 
-function onboarding() {
+function loginView(tab) {
+  // Bereits angemeldet? Direkt weiter.
+  if (tab === "teilnehmer" && store.getState().profile) { location.hash = "#/"; return; }
+  if (tab === "ausbilder" && isAdmin()) { location.hash = "#/ausbilder"; return; }
+  document.body.classList.add("auth");
+
   view.innerHTML = `
-    <div class="onboarding">
-      <div class="card onboarding-card">
-        <div class="onb-logos">${logos()}<div class="onb-mark">${icon("pulse")}</div></div>
-        <h1>Moin! Willkommen beim Sani-Trainer</h1>
-        <p class="lead">Vom Erste-Hilfe-Kurs zum Sanitätsdienst: Lerne Schritt für Schritt alles, was du für den Abschluss des Sanitätslehrgangs brauchst – mit Fallbeispielen aus Ostfriesland.</p>
-        ${profileForm(store.getState().profile, "Los geht’s")}
-        <p class="small muted">Dein Lernstand wird auf diesem Gerät gespeichert. Mit Kurscode sieht dein Ausbilder deinen Namen, deine Antworten und Prüfungsergebnisse – damit er dich gezielt unterstützen kann.</p>
+    <div class="auth-wrap">
+      <div class="card auth-card">
+        <div class="auth-logo"><img src="assets/logo-ov.png" alt="DRK OV Loppersum" onerror="this.remove()"></div>
+        <h1>Sani-Trainer</h1>
+        <p class="muted auth-sub">${esc(CONFIG.orgName)} · Sanitätsausbildung</p>
+        <nav class="seg" aria-label="Anmeldung als">
+          <a href="#/start/teilnehmer" class="${tab === "teilnehmer" ? "active" : ""}" ${tab === "teilnehmer" ? 'aria-current="page"' : ""}>${icon("user")} Teilnehmer</a>
+          <a href="#/start/ausbilder" class="${tab === "ausbilder" ? "active" : ""}" ${tab === "ausbilder" ? 'aria-current="page"' : ""}>${icon("shield")} Ausbilder</a>
+        </nav>
+        <div id="auth-body"></div>
       </div>
     </div>`;
+  const body = view.querySelector("#auth-body");
+  tab === "ausbilder" ? adminLogin(body) : learnerLogin(body);
+}
+
+function learnerLogin(body) {
+  const profiles = store.listProfiles();
+  body.innerHTML = `
+    ${profiles.length ? `
+      <h2 class="auth-h">Weiterlernen</h2>
+      <ul class="profile-list">${profiles.map((p) => `
+        <li>
+          <button class="profile-pick" data-id="${esc(p.id)}">
+            <span class="avatar">${esc(p.name.trim().charAt(0).toUpperCase())}</span>
+            <span class="pp-text"><strong>${esc(p.name)}</strong><span class="small muted">${p.courseCode ? `Kurs ${esc(p.courseCode)}` : "ohne Kurs"}</span></span>
+            ${icon("login")}
+          </button>
+          <button class="profile-del" data-del="${esc(p.id)}" title="${esc(p.name)} von diesem Gerät entfernen" aria-label="${esc(p.name)} von diesem Gerät entfernen">✕</button>
+        </li>`).join("")}</ul>
+      <div class="divider"><span>oder neu anmelden</span></div>` : `
+      <p class="lead auth-lead">Moin! Vom Erste-Hilfe-Kurs zum Sanitätsdienst – lerne Schritt für Schritt alles für den Abschluss des Lehrgangs.</p>`}
+    ${profileForm(null, `${icon("login")} Anmelden`)}
+    <p class="small muted auth-note">Dein Lernstand wird auf diesem Gerät gespeichert. Mit Kurscode sieht dein Ausbilder deinen Namen, deine Antworten und Prüfungsergebnisse – damit er dich gezielt unterstützen kann.</p>`;
   bindProfileForm(() => { location.hash = "#/"; });
+  body.querySelectorAll(".profile-pick").forEach((b) => b.addEventListener("click", () => {
+    if (store.switchTo(b.dataset.id)) { sync.flush(); location.hash = "#/"; }
+  }));
+  body.querySelectorAll(".profile-del").forEach((b) => b.addEventListener("click", () => {
+    const p = profiles.find((x) => x.id === b.dataset.del);
+    if (p && confirm(`${p.name} von diesem Gerät entfernen?\n\nDer Lernstand auf diesem Gerät wird gelöscht. Exportiere ihn vorher, falls du ihn noch brauchst.`)) {
+      store.removeProfile(p.id);
+      learnerLogin(body);
+    }
+  }));
+  if (!profiles.length) body.querySelector("input[name=name]").focus();
+}
+
+function adminLogin(body) {
+  if (!crypto?.subtle) {
+    body.innerHTML = '<p class="form-error">Die Ausbilder-Anmeldung braucht eine sichere Verbindung (https). Bitte die App über den offiziellen Link öffnen.</p>';
+    return;
+  }
+  const first = !hasPin();
+  body.innerHTML = `
+    <form class="form" id="admin-form">
+      ${first
+        ? `<p class="muted auth-lead"><strong>Ersteinrichtung:</strong> Lege eine Ausbilder-PIN für dieses Gerät fest. Sie schützt den Ausbilder-Bereich und die gespeicherten Auswertungen. Mindestens 4 Zeichen – besser 6 oder mehr.</p>
+           <label>Neue PIN<input name="pin" type="password" autocomplete="new-password" minlength="4" maxlength="64" required></label>
+           <label>PIN wiederholen<input name="pin2" type="password" autocomplete="new-password" minlength="4" maxlength="64" required></label>`
+        : `<p class="muted auth-lead">Melde dich mit deiner Ausbilder-PIN an.</p>
+           <label>Ausbilder-PIN<input name="pin" type="password" autocomplete="current-password" maxlength="64" required></label>`}
+      <p class="form-error" hidden></p>
+      <button class="btn btn-primary btn-lg">${icon("login")} ${first ? "PIN speichern & anmelden" : "Anmelden"}</button>
+      ${first ? "" : '<button type="button" class="btn btn-ghost btn-sm" id="forgot">PIN vergessen?</button>'}
+    </form>
+    <p class="small muted auth-note">Die PIN gilt nur für dieses Gerät. Auswertungen bleiben lokal gespeichert.</p>`;
+  const f = body.querySelector("#admin-form");
+  const err = f.querySelector(".form-error");
+  const btn = f.querySelector(".btn-primary");
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    err.hidden = true;
+    if (first && f.pin.value !== f.pin2.value) { err.textContent = "Die beiden Eingaben stimmen nicht überein."; err.hidden = false; return; }
+    btn.disabled = true;
+    const res = first ? (await setupPin(f.pin.value), { ok: true }) : await verifyPin(f.pin.value);
+    btn.disabled = false;
+    if (res.ok) { location.hash = "#/ausbilder"; return; }
+    err.textContent = res.error;
+    err.hidden = false;
+    f.pin.value = "";
+    f.pin.focus();
+  });
+  f.querySelector("#forgot")?.addEventListener("click", () => {
+    if (confirm("PIN zurücksetzen?\n\nAus Sicherheitsgründen werden dabei auch alle auf diesem Gerät gespeicherten Auswertungen gelöscht. Die Teilnehmenden können dir ihre Exportdateien danach einfach erneut schicken.")) {
+      resetAdmin();
+      adminLogin(body);
+    }
+  });
+  f.pin.focus();
 }
 
 function profileView() {
@@ -251,7 +376,10 @@ function profileView() {
         <h2>Zurücksetzen</h2>
         <button class="btn btn-danger-ghost" id="reset">Lernstand löschen</button>
         <hr>
-        <a class="link" href="#/ausbilder">${icon("users")} Zum Ausbilder-Bereich</a>
+        <div class="invite-actions">
+          <a class="btn btn-secondary" href="#/abmelden">${icon("logout")} Abmelden</a>
+          <a class="link" href="#/start/ausbilder">${icon("shield")} Ausbilder-Anmeldung</a>
+        </div>
       </section>
     </div>`;
   bindProfileForm(() => {

@@ -82,13 +82,25 @@ python3 -m http.server 8000
 2. Nach kurzer Zeit ist die App unter `https://<benutzer>.github.io/<repository>/` erreichbar.
 3. Diesen Link oder einen QR-Code an die Teilnehmenden geben. Auf dem Handy dann „Zum Startbildschirm hinzufügen“ wählen.
 
+## Anmeldung
+
+Die Startseite hat zwei Reiter: **Teilnehmer** und **Ausbilder**.
+
+- **Teilnehmer** melden sich mit Vorname und optional Kurscode an.
+  - Mehrere Personen können dasselbe Gerät nutzen, z. B. ein Tablet im Lehrgang. Jede Person hat ihren eigenen Lernstand.
+  - Unter „Weiterlernen“ erscheinen alle Personen auf dem Gerät, ein Tipp genügt.
+  - Wer denselben Namen und Kurscode erneut eingibt, macht mit seinem bisherigen Lernstand weiter.
+  - **Abmelden** geht über die Seitenleiste oder das Profil.
+- **Ausbilder** melden sich mit ihrer PIN an. Beim ersten Mal wird die PIN auf dem Gerät festgelegt.
+  - Ausbilder ohne Teilnehmer-Anmeldung sehen nur den Ausbilder-Bereich und die Merkkarten.
+
 ## Ausbilder-Bereich
 
-Der Ausbilder-Bereich ist am PC über **„Ausbilder“** in der Seitenleiste erreichbar, am Handy über **Profil → „Zum Ausbilder-Bereich“**.
+Nach der Ausbilder-Anmeldung öffnet sich der Ausbilder-Bereich direkt.
 
-- **PIN:** Beim ersten Öffnen legst du auf deinem Gerät eine PIN fest. Sie schützt den Bereich und die dort gespeicherten Auswertungen.
+- **PIN:** Sie schützt den Bereich und die dort gespeicherten Auswertungen.
   - Nach 5 Fehlversuchen wird der Bereich vorübergehend gesperrt.
-  - Mit **„Sperren“** schließt du ihn sofort wieder.
+  - Mit **„Abmelden“** schließt du ihn sofort wieder.
   - **„PIN vergessen?“** löscht die PIN und alle gespeicherten Auswertungen auf diesem Gerät. Die Teilnehmenden schicken dir ihre Dateien dann einfach erneut.
   - Die PIN gilt nur für das jeweilige Gerät. Auf den Handys der Teilnehmenden liegen keine Auswertungen anderer Personen.
 - **Teilnehmende einladen:**

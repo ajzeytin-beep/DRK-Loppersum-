@@ -424,6 +424,51 @@ textarea:focus { outline: 2px solid var(--red); outline-offset: 1px; border-colo
   .invite-actions .btn, .invite-actions .file-btn { flex: 1 1 auto; }
 }
 
+/* ---------- Anmeldung ---------- */
+body.auth .sidebar, body.auth .bottom-nav, body.auth .topbar { display: none; }
+body.auth .app { grid-template-columns: 1fr; }
+body.auth .view { padding-top: 2rem; padding-bottom: 2rem; }
+.auth-wrap { min-height: calc(100vh - 4rem); display: grid; place-items: center; }
+.auth-inline { min-height: 60vh; }
+.auth-card { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 0.25rem; padding: 2rem; }
+.auth-card h1 { text-align: center; margin: 0.25rem 0 0; }
+.auth-sub { text-align: center; margin-bottom: 1.25rem; }
+.auth-logo { display: flex; justify-content: center; }
+.auth-logo img { width: 112px; height: 112px; border-radius: 50%; filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6)); }
+.auth-lead { margin: 0.25rem 0 0.5rem; font-size: 0.98rem; }
+.auth-h { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0.25rem 0 0.6rem; }
+.auth-note { margin: 1rem 0 0; }
+#auth-body .form { gap: 0.9rem; }
+#auth-body #forgot { align-self: center; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 1.25rem; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; }
+.seg a { display: flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 44px; border-radius: 10px; font-weight: 600; color: var(--muted); transition: background 0.15s, color 0.15s; }
+.seg a:hover { color: var(--text); }
+.seg a.active { background: var(--red); color: #fff; box-shadow: 0 4px 14px rgba(227, 6, 19, 0.35); }
+.seg .icon { width: 18px; height: 18px; }
+.profile-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.profile-list li { display: flex; gap: 0.4rem; }
+.profile-pick {
+  flex: 1; display: flex; align-items: center; gap: 0.8rem; min-height: 56px; padding: 0.55rem 0.9rem; text-align: left;
+  font: inherit; color: var(--text); background: var(--surface-3); border: 1px solid var(--border-strong); border-radius: 12px; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.profile-pick:hover { border-color: var(--red); background: var(--red-soft); }
+.profile-pick > .icon { margin-left: auto; color: var(--muted); }
+.pp-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.avatar { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--red); color: #fff; font-weight: 700; }
+.profile-del { flex: none; width: 44px; font: inherit; color: var(--muted); background: transparent; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; }
+.profile-del:hover { color: #ff6b74; border-color: rgba(227, 6, 19, 0.5); }
+.divider { display: flex; align-items: center; gap: 0.75rem; margin: 1.25rem 0 0.75rem; color: var(--muted); font-size: 0.85rem; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.logout-link { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; padding: 0.5rem 0.9rem; border-radius: 10px; color: var(--muted); font-size: 0.9rem; }
+.logout-link:hover { color: var(--text); background: var(--surface-2); }
+.logout-link .icon { width: 18px; height: 18px; }
+@media (max-width: 640px) {
+  body.auth .view { padding: 1rem 16px; }
+  .auth-card { padding: 1.5rem 1.25rem; }
+  .auth-logo img { width: 92px; height: 92px; }
+}
+
 /* ---------- Laden ---------- */
 .loader { width: 40px; height: 40px; margin: 30vh auto; border-radius: 50%; border: 3px solid var(--surface-3); border-top-color: var(--red); animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
