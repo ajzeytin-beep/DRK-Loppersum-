@@ -112,6 +112,7 @@ Nach der Anmeldung siehst du sofort den Stand deines Kurses. Die Ansicht aktuali
    1. `supabase/schema.sql`
    2. `supabase/update-1.sql`
    3. `supabase/update-2.sql`
+   4. `supabase/update-3.sql`
 
    Wer schon eingerichtet ist, führt nur die fehlenden Updates aus.
 3. Einen Kurs anlegen (eine PIN ist seit Update 2 nicht mehr nötig):

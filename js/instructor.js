@@ -231,9 +231,14 @@ async function manageLearner(l, action, reload) {
     try { await sync.setLearnerPassword(l.id, pw); alert(`Das Passwort für ${l.name} wurde geändert.`); }
     catch (e) { alert(e.message); }
   } else if (action === "remove") {
-    if (!confirm(`${l.name} aus dem Kurs entfernen?\n\nDas Konto und der gesamte Lernfortschritt werden gelöscht.`)) return;
+    const what = l.account === false ? "Der Eintrag (ohne Konto) und sein Lernfortschritt werden gelöscht." : "Das Konto und der gesamte Lernfortschritt werden gelöscht.";
+    if (!confirm(`${l.name} aus dem Kurs entfernen?\n\n${what}`)) return;
     try { await sync.removeLearner(l.id); await reload(); }
-    catch (e) { alert(e.message); }
+    catch (e) {
+      alert(/nicht gefunden/.test(e.message)
+        ? `${e.message}.\n\nFalls es sich um einen alten Eintrag ohne Konto handelt: Bitte supabase/update-3.sql in Supabase ausführen (siehe README).`
+        : e.message);
+    }
   }
 }
 
@@ -327,7 +332,7 @@ function renderStats(el, stats, reload) {
           <thead><tr><th>Name</th><th>Fortschritt</th><th>Stufen</th><th>Steht bei</th><th>Trefferquote</th><th>Prüfung</th><th>Zuletzt aktiv</th><th></th></tr></thead>
           <tbody>${byProgress.map((l) => `
             <tr>
-              <th>${esc(l.name)}</th>
+              <th>${esc(l.name)}${l.account === false ? ' <span class="tag tag-muted" title="Eintrag aus der Zeit vor den Konten">ohne Konto</span>' : ""}</th>
               <td><div class="pt-bar"><div class="bar ${progClass(l.progress)}"><span style="width:${Math.round(l.progress * 100)}%"></span></div><strong>${pct(l.progress)}</strong></div></td>
               <td><div class="stage-dots">${l.levels.map((p, k) => `<span class="dot-lv ${p >= CONFIG.unlockThreshold ? "done" : p > 0 ? "part" : ""}" title="Stufe ${k + 1}: ${pct(p)} sicher">${k + 1}</span>`).join("")}</div></td>
               <td class="small">${esc(stageLabel(l.stage))}</td>
@@ -335,7 +340,7 @@ function renderStats(el, stats, reload) {
               <td>${l.best == null ? '<span class="muted">–</span>' : `<span class="tag ${l.passed ? "tag-ok" : "tag-red"}">${pct(l.best)}</span>`}</td>
               <td class="small muted">${relDay(l.last_seen)}</td>
               <td class="row-actions">
-                <button class="btn btn-ghost btn-sm" data-learner="${esc(l.id)}" data-act="password" title="Neues Passwort setzen">${icon("lock")}</button>
+                ${l.account === false ? "" : `<button class="btn btn-ghost btn-sm" data-learner="${esc(l.id)}" data-act="password" title="Neues Passwort setzen">${icon("lock")}</button>`}
                 <button class="btn btn-ghost btn-sm" data-learner="${esc(l.id)}" data-act="remove" title="Aus dem Kurs entfernen">✕</button>
               </td>
             </tr>`).join("")}</tbody>
