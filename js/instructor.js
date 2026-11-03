@@ -1,4 +1,5 @@
-// Ausbilder-Bereich: Lernerfolg der Teilnehmenden und Schwächenanalyse.
+// Ausbilder-Bereich: Anmeldung mit Kurscode + Kurs-PIN (Prüfung auf dem Server)
+// und automatische Übersicht über den Lernfortschritt aller Teilnehmenden.
 import { CONFIG } from "./config.js";
 import { DATA, topicLabel, findQuestion } from "./data.js";
 import { esc } from "./quiz.js";
@@ -8,330 +9,260 @@ import { icon } from "./icons.js";
 const pct = (r) => (r == null ? "–" : `${Math.round(r * 100)} %`);
 const rateClass = (r) => (r == null ? "none" : r >= 0.8 ? "good" : r >= 0.6 ? "mid" : "bad");
 
-/* ---------------- PIN-Schutz (pro Gerät) ---------------- */
+/* ---------------- Anmeldung ---------------- */
 
-const PIN_KEY = "sani-trainer-admin";
-const DATA_KEY = "sani-trainer-admin-data";
-const UNLOCK_KEY = "sani-trainer-admin-unlocked";
-const ITERATIONS = 150000;
+const SESSION_KEY = "sani-trainer-admin-session";
 
-const ls = {
-  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
-  del(k) { try { localStorage.removeItem(k); } catch { /* ignorieren */ } },
-};
-const unlocked = () => { try { return sessionStorage.getItem(UNLOCK_KEY) === "1"; } catch { return false; } };
-const setUnlocked = (v) => { try { v ? sessionStorage.setItem(UNLOCK_KEY, "1") : sessionStorage.removeItem(UNLOCK_KEY); } catch { /* ignorieren */ } };
+// Alte, nur lokal gespeicherte Ausbilder-Daten aus früheren Versionen entfernen
+try {
+  localStorage.removeItem("sani-trainer-admin");
+  localStorage.removeItem("sani-trainer-admin-data");
+  sessionStorage.removeItem("sani-trainer-admin-unlocked");
+} catch { /* ignorieren */ }
 
-const toHex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
-
-async function hashPin(pin, saltHex, iterations = ITERATIONS) {
-  const salt = new Uint8Array(saltHex.match(/../g).map((h) => parseInt(h, 16)));
-  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(pin), "PBKDF2", false, ["deriveBits"]);
-  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations }, key, 256);
-  return toHex(bits);
+function getSession() {
+  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch { return null; }
 }
 
-async function savePin(pin) {
-  const salt = toHex(crypto.getRandomValues(new Uint8Array(16)));
-  ls.set(PIN_KEY, { salt, iterations: ITERATIONS, hash: await hashPin(pin, salt), failed: 0, lockedUntil: 0 });
-}
+export const isAdmin = () => Boolean(getSession()?.code);
 
-export const hasPin = () => Boolean(ls.get(PIN_KEY));
-export const isAdmin = () => hasPin() && unlocked();
-export function adminLogout() { setUnlocked(false); }
+let lastStats = null;
+let refreshTimer = null;
 
-// Neue PIN festlegen (Ersteinrichtung) und direkt anmelden
-export async function setupPin(pin) {
-  await savePin(pin);
-  setUnlocked(true);
-}
-
-// PIN prüfen – mit Sperre nach mehreren Fehlversuchen
-export async function verifyPin(pin) {
-  const c = ls.get(PIN_KEY);
-  if (!c) return { ok: false, error: "Es ist noch keine PIN eingerichtet." };
-  const wait = (c.lockedUntil || 0) - Date.now();
-  if (wait > 0) return { ok: false, error: `Zu viele Fehlversuche. Bitte ${Math.ceil(wait / 1000)} Sekunden warten.` };
-  const ok = (await hashPin(pin, c.salt, c.iterations)) === c.hash;
-  if (ok) {
-    ls.set(PIN_KEY, { ...c, failed: 0, lockedUntil: 0 });
-    setUnlocked(true);
+// Prüft Kurscode + Kurs-PIN auf dem Server. Die Anmeldung gilt bis zum Abmelden
+// bzw. bis der Browser-Tab geschlossen wird.
+export async function adminLogin(code, pin) {
+  if (!sync.backendEnabled()) return { ok: false, error: "Die Online-Auswertung ist nicht eingerichtet." };
+  const c = code.trim().toUpperCase();
+  try {
+    const stats = await sync.courseStats(c, pin);
+    try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ code: c, pin })); } catch { /* ignorieren */ }
+    lastStats = stats;
     return { ok: true };
+  } catch (e) {
+    const offline = e instanceof TypeError || !navigator.onLine;
+    return { ok: false, error: offline ? "Keine Verbindung zum Server. Bitte Internetverbindung prüfen." : e.message };
   }
-  const failed = (c.failed || 0) + 1;
-  const lockedUntil = failed >= 5 ? Date.now() + 30000 * 2 ** Math.min(failed - 5, 5) : 0;
-  ls.set(PIN_KEY, { ...c, failed, lockedUntil });
-  return { ok: false, error: lockedUntil ? "PIN falsch. Die Anmeldung ist vorübergehend gesperrt." : "PIN falsch." };
 }
 
-// PIN vergessen: PIN und alle gespeicherten Auswertungen löschen
-export function resetAdmin() {
-  ls.del(PIN_KEY);
-  ls.del(DATA_KEY);
-  setUnlocked(false);
-}
-
-export function renderInstructor(view) {
-  if (!crypto?.subtle) {
-    view.innerHTML = `<section class="card empty"><h2>Nicht verfügbar</h2><p class="muted">Der Ausbilder-Bereich braucht eine sichere Verbindung (https). Bitte die App über den offiziellen Link öffnen.</p></section>`;
-    return;
-  }
-  if (!isAdmin()) { location.hash = "#/start/ausbilder"; return; }
-  renderPanel(view);
-}
-
-function renderChangePin(view) {
-  view.innerHTML = `
-    <div class="auth-wrap auth-inline">
-      <form class="card auth-card form" id="pin-form">
-        <div class="lock-icon">${icon("lock")}</div>
-        <h1>Neue PIN festlegen</h1>
-        <p class="muted">Mindestens 4 Zeichen – besser 6 oder mehr, gern auch Buchstaben.</p>
-        <label>Neue PIN<input name="pin" type="password" autocomplete="new-password" minlength="4" maxlength="64" required></label>
-        <label>PIN wiederholen<input name="pin2" type="password" autocomplete="new-password" minlength="4" maxlength="64" required></label>
-        <p class="form-error" hidden></p>
-        <button class="btn btn-primary btn-lg">PIN speichern</button>
-        <button type="button" class="btn btn-ghost btn-sm" id="cancel">Abbrechen</button>
-      </form>
-    </div>`;
-  const f = view.querySelector("#pin-form");
-  f.querySelector("#cancel").addEventListener("click", () => renderPanel(view));
-  f.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const err = f.querySelector(".form-error");
-    if (f.pin.value !== f.pin2.value) { err.textContent = "Die beiden Eingaben stimmen nicht überein."; err.hidden = false; return; }
-    f.querySelector("button").disabled = true;
-    await setupPin(f.pin.value);
-    renderPanel(view);
-  });
-  f.pin.focus();
+export function adminLogout() {
+  clearInterval(refreshTimer);
+  try { sessionStorage.removeItem(SESSION_KEY); } catch { /* ignorieren */ }
+  lastStats = null;
 }
 
 /* ---------------- Einladen ---------------- */
 
-const appUrl = () => CONFIG.appUrl || `${location.origin}${location.pathname}`;
+const inviteUrl = (code) => `${CONFIG.appUrl || `${location.origin}${location.pathname}`}?kurs=${encodeURIComponent(code)}`;
 
 function inviteText(code) {
   return `Moin! Für unseren Sanitätslehrgang beim ${CONFIG.orgName} gibt es eine Lern-App mit Fragen, Fallbeispielen und Prüfungssimulation:
 
-${appUrl()}
+${inviteUrl(code)}
 
-Einfach öffnen und deinen Vornamen eintragen${code ? ` – Kurscode: ${code}` : ""}.
+Einfach öffnen und deinen Vornamen eintragen – der Kurscode ${code} ist über den Link schon ausgefüllt.
 Tipp: Über „Zum Home-Bildschirm“ (iPhone) bzw. „App installieren“ (Android) wird sie zur App und funktioniert auch offline.`;
 }
 
-function inviteCard() {
-  const code = ls.get("sani-trainer-invite-code") || "";
+// QR-Code als Bild (mit Logo und Beschriftung) – im Browser erzeugt, damit der Kurscode enthalten ist
+async function qrCanvas(url, code) {
+  const qr = window.qrcode(0, "H");
+  qr.addData(url);
+  qr.make();
+  const n = qr.getModuleCount();
+  const cell = 12;
+  const margin = 2 * cell;
+  const W = n * cell + margin * 2;
+  const H = W + 150;
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const g = c.getContext("2d");
+  g.fillStyle = "#fff";
+  g.fillRect(0, 0, W, H);
+  g.fillStyle = "#000";
+  for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (qr.isDark(r, k)) g.fillRect(margin + k * cell, margin + r * cell, cell, cell);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = "assets/logo-ov.png"; });
+    const s = Math.round(W / 4.2);
+    g.fillStyle = "#fff";
+    g.beginPath(); g.arc(W / 2, W / 2, s / 2 + 8, 0, Math.PI * 2); g.fill();
+    g.drawImage(img, W / 2 - s / 2, W / 2 - s / 2, s, s);
+  } catch { /* ohne Logo */ }
+  g.textAlign = "center";
+  g.fillStyle = "#e30613";
+  g.font = "bold 44px system-ui, sans-serif";
+  g.fillText("Sani-Trainer", W / 2, W + 40);
+  g.fillStyle = "#1e1e1e";
+  g.font = "bold 28px system-ui, sans-serif";
+  g.fillText(`${CONFIG.orgName} · Kurs ${code}`, W / 2, W + 84, W - 30);
+  g.fillStyle = "#5a5a5a";
+  g.font = "18px system-ui, sans-serif";
+  g.fillText(url, W / 2, W + 120, W - 30);
+  return c;
+}
+
+function inviteCard(code) {
   return `
     <section class="card invite">
-      <div class="invite-qr">
-        <img src="assets/qr-code.png" alt="QR-Code zur App" width="200" height="255">
-      </div>
+      <div class="invite-qr"><canvas id="invite-qr" aria-label="QR-Code zur App mit Kurscode ${esc(code)}"></canvas></div>
       <div class="invite-body">
         <h2>${icon("users")} Teilnehmende einladen</h2>
-        <p class="muted small">Teile Link und QR-Code z. B. in der WhatsApp-Gruppe des Lehrgangs – oder zeig den QR-Code am Beamer.</p>
-        <label><span>Kurscode <span class="muted">(optional)</span></span>
-          <input id="invite-code" maxlength="20" autocomplete="off" autocapitalize="characters" value="${esc(code)}">
-        </label>
+        <p class="muted small">Wer über diesen Link oder QR-Code kommt, hat den Kurscode <strong>${esc(code)}</strong> schon eingetragen. Der Lernfortschritt erscheint dann automatisch hier.</p>
         <label>Einladungstext
           <textarea id="invite-text" rows="7">${esc(inviteText(code))}</textarea>
         </label>
         <div class="invite-actions">
           <button class="btn btn-primary" id="invite-share">${icon("upload")} Teilen</button>
           <button class="btn btn-secondary" id="invite-copy">Text kopieren</button>
-          <a class="btn btn-secondary" href="assets/qr-code.png" download="Sani-Trainer-QR-Code.png">${icon("download")} QR-Code</a>
+          <button class="btn btn-secondary" id="invite-dl">${icon("download")} QR-Code</button>
         </div>
         <p class="small invite-msg" hidden></p>
       </div>
     </section>`;
 }
 
-function bindInvite(root) {
-  const codeEl = root.querySelector("#invite-code");
+async function bindInvite(root, code) {
   const textEl = root.querySelector("#invite-text");
   const msg = root.querySelector(".invite-msg");
   const say = (t) => { msg.textContent = t; msg.hidden = false; };
-  codeEl.addEventListener("input", () => {
-    const code = codeEl.value.trim().toUpperCase();
-    ls.set("sani-trainer-invite-code", code);
-    textEl.value = inviteText(code);
-  });
+  let canvas = null;
+  if (window.qrcode) {
+    canvas = await qrCanvas(inviteUrl(code), code);
+    canvas.id = "invite-qr";
+    root.querySelector("#invite-qr")?.replaceWith(canvas);
+  }
+  const pngBlob = () => new Promise((res) => (canvas ? canvas.toBlob(res, "image/png") : res(null)));
+  const fileName = `Sani-Trainer-QR-${code}.png`;
+
   const copy = async () => {
     try { await navigator.clipboard.writeText(textEl.value); say("Text kopiert ✓ – jetzt z. B. in WhatsApp einfügen."); }
     catch { textEl.select(); say("Bitte den markierten Text kopieren (Strg+C bzw. lange tippen)."); }
   };
   root.querySelector("#invite-copy").addEventListener("click", copy);
+  root.querySelector("#invite-dl").addEventListener("click", async () => {
+    const blob = await pngBlob();
+    if (!blob) return;
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = fileName;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
   root.querySelector("#invite-share").addEventListener("click", async () => {
     if (!navigator.share) { await copy(); return; }
     const data = { title: "Sani-Trainer", text: textEl.value };
-    try {
-      const blob = await fetch("assets/qr-code.png").then((r) => r.blob());
-      const file = new File([blob], "Sani-Trainer-QR-Code.png", { type: "image/png" });
+    const blob = await pngBlob();
+    if (blob) {
+      const file = new File([blob], fileName, { type: "image/png" });
       if (navigator.canShare?.({ files: [file] })) data.files = [file];
-    } catch { /* ohne Bild teilen */ }
+    }
     try { await navigator.share(data); }
     catch (e) { if (e.name !== "AbortError") await copy(); }
   });
 }
 
-/* ---------------- Gespeicherte Auswertung ---------------- */
-
-// Exportdatei -> kompakte Zusammenfassung pro Teilnehmer (nur Zahlen, keine Einzelantworten)
-function summarize(name, data) {
-  if (data?.format !== "sani-trainer-export") throw new Error(`${name} ist keine Sani-Trainer-Exportdatei`);
-  const topics = {};
-  const questions = {};
-  let last = null;
-  for (const h of data.history || []) {
-    const t = (topics[h.topic] ||= { n: 0, c: 0 });
-    const q = (questions[h.question_id] ||= { n: 0, c: 0 });
-    t.n++; q.n++;
-    if (h.correct) { t.c++; q.c++; }
-    if (!last || h.at > last) last = h.at;
-  }
-  return {
-    id: data.learner?.id || name,
-    name: data.learner?.name || "Unbekannt",
-    courseCode: data.learner?.courseCode || null,
-    exportedAt: data.exportedAt,
-    last_seen: last || data.exportedAt,
-    topics,
-    questions,
-    exams: data.exams || [],
-  };
-}
-
-function storedStats() {
-  const store = ls.get(DATA_KEY);
-  const list = Object.values(store?.learners || {});
-  if (!list.length) return null;
-  const questions = {};
-  const codes = new Set();
-  for (const l of list) {
-    if (l.courseCode) codes.add(l.courseCode);
-    for (const [id, v] of Object.entries(l.questions || {})) {
-      const q = (questions[id] ||= { question_id: id, n: 0, c: 0 });
-      q.n += v.n; q.c += v.c;
-    }
-  }
-  return {
-    course: { code: [...codes].join(", ") || "–", name: `${list.length} importierte Lernstände` },
-    learners: list.sort((a, b) => a.name.localeCompare(b.name, "de")),
-    questions: Object.values(questions),
-    local: true,
-  };
-}
-
 /* ---------------- Hauptansicht ---------------- */
 
-function renderPanel(view) {
+export function renderInstructor(view) {
+  clearInterval(refreshTimer);
+  const session = getSession();
+  if (!session?.code) { location.hash = "#/start/ausbilder"; return; }
+
   view.innerHTML = `
     <div class="page-head stats-head">
       <div>
-        <h1>Ausbilder-Bereich</h1>
-        <p class="muted">Lernfortschritt der Teilnehmenden auf einen Blick – und wo ihr im Lehrgang nochmal ansetzen solltet.</p>
+        <span class="eyebrow">Ausbilder-Bereich</span>
+        <h1 id="course-title">Kurs ${esc(session.code)}</h1>
+        <p class="muted small" id="refresh-info">Lade Daten …</p>
       </div>
       <div class="head-actions">
-        <button class="btn btn-ghost btn-sm" id="change-pin">PIN ändern</button>
-        <button class="btn btn-secondary btn-sm" id="lock">${icon("logout")} Abmelden</button>
+        <button class="btn btn-secondary btn-sm" id="refresh">${icon("repeat")} Aktualisieren</button>
+        <button class="btn btn-secondary btn-sm" id="logout">${icon("logout")} Abmelden</button>
       </div>
     </div>
-    ${inviteCard()}
-    <div class="grid-2">
-      ${sync.backendEnabled()
-        ? `<form class="card form" id="online-form">
-            <h2>${icon("cloud")} Online-Kurs öffnen</h2>
-            <label>Kurscode<input name="code" required autocomplete="off" autocapitalize="characters"></label>
-            <label>Kurs-PIN<input name="pin" type="password" required autocomplete="current-password"></label>
-            <p class="form-error" hidden></p>
-            <button class="btn btn-primary">Auswertung laden</button>
-          </form>`
-        : `<section class="card">
-            <h2>${icon("cloud")} Online-Kurs</h2>
-            <p class="muted">Die automatische Online-Auswertung ist noch nicht eingerichtet (siehe README, Abschnitt „Ausbilder-Auswertung einrichten“). Bis dahin funktioniert der Import der Exportdateien.</p>
-          </section>`}
-      <section class="card">
-        <h2>${icon("upload")} Exportdateien importieren</h2>
-        <p class="muted">Teilnehmende exportieren ihren Lernstand unter „Profil“ und schicken dir die Datei. Du kannst mehrere Dateien auf einmal auswählen. Neue Dateien ersetzen ältere Stände derselben Person – die Auswertung bleibt auf diesem Gerät gespeichert.</p>
-        <div class="invite-actions">
-          <label class="btn btn-primary file-btn">Dateien auswählen<input type="file" id="import" accept=".json,application/json" multiple hidden></label>
-          <button class="btn btn-danger-ghost btn-sm" id="clear-data">Gespeicherte Auswertung löschen</button>
-        </div>
-        <p class="form-error" id="import-error" hidden></p>
-      </section>
-    </div>
-    <div id="stats"></div>`;
+    <div id="stats">${lastStats ? "" : '<div class="loader" aria-label="Lädt"></div>'}</div>
+    ${inviteCard(session.code)}`;
 
   const statsEl = view.querySelector("#stats");
-  bindInvite(view);
+  const info = view.querySelector("#refresh-info");
+  bindInvite(view, session.code);
 
-  view.querySelector("#lock").addEventListener("click", () => { adminLogout(); location.hash = "#/start/ausbilder"; });
-  view.querySelector("#change-pin").addEventListener("click", () => renderChangePin(view));
-
-  const showStored = (scroll) => {
-    const s = storedStats();
-    if (s) renderStats(statsEl, s, scroll);
-    else statsEl.innerHTML = "";
-    view.querySelector("#clear-data").hidden = !s;
-  };
-  showStored(false);
-
-  view.querySelector("#clear-data").addEventListener("click", () => {
-    if (confirm("Alle auf diesem Gerät gespeicherten Auswertungen löschen?")) { ls.del(DATA_KEY); showStored(false); }
+  view.querySelector("#logout").addEventListener("click", () => {
+    adminLogout();
+    location.hash = "#/start/ausbilder";
   });
 
-  view.querySelector("#online-form")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const f = e.target;
-    const err = f.querySelector(".form-error");
-    const btn = f.querySelector("button");
-    err.hidden = true;
+  const load = async () => {
+    const btn = view.querySelector("#refresh");
+    if (!btn || !document.body.contains(btn)) { clearInterval(refreshTimer); return; } // Seite wurde verlassen
     btn.disabled = true;
-    btn.textContent = "Lade …";
     try {
-      const stats = await sync.courseStats(f.code.value.trim().toUpperCase(), f.pin.value);
-      renderStats(statsEl, stats, true);
-    } catch (ex) {
-      err.textContent = ex.message;
-      err.hidden = false;
+      lastStats = await sync.courseStats(session.code, session.pin);
+      renderStats(statsEl, lastStats);
+      view.querySelector("#course-title").textContent = lastStats.course?.name || `Kurs ${session.code}`;
+      info.textContent = `Kurs ${session.code} · Stand ${new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} Uhr · aktualisiert sich jede Minute`;
+    } catch (e) {
+      if (/PIN falsch/.test(e.message)) {
+        adminLogout();
+        location.hash = "#/start/ausbilder";
+        return;
+      }
+      info.textContent = `Aktualisieren fehlgeschlagen: ${e instanceof TypeError ? "keine Verbindung" : e.message}`;
     } finally {
       btn.disabled = false;
-      btn.textContent = "Auswertung laden";
     }
-  });
-
-  view.querySelector("#import").addEventListener("change", async (e) => {
-    const err = view.querySelector("#import-error");
-    err.hidden = true;
-    try {
-      const files = await Promise.all([...e.target.files].map((f) => f.text().then((t) => summarize(f.name, JSON.parse(t)))));
-      const store = ls.get(DATA_KEY) || { learners: {} };
-      for (const s of files) {
-        const prev = store.learners[s.id];
-        if (!prev || (prev.exportedAt || "") <= (s.exportedAt || "")) store.learners[s.id] = s;
-      }
-      if (!ls.set(DATA_KEY, store)) throw new Error("Speicher voll – bitte ältere Auswertungen löschen");
-      showStored(true);
-    } catch (ex) {
-      err.textContent = `Import fehlgeschlagen: ${ex.message}`;
-      err.hidden = false;
-    }
-    e.target.value = "";
-  });
+  };
+  if (lastStats) renderStats(statsEl, lastStats);
+  view.querySelector("#refresh").addEventListener("click", load);
+  load();
+  refreshTimer = setInterval(() => { if (!document.hidden) load(); }, 60000);
 }
 
-function renderStats(el, stats, scroll = true) {
+/* ---------------- Auswertung ---------------- */
+
+// Anzahl Fragen je Stufe (Fall-Schritte zählen einzeln, wie auf dem Server)
+function levelTotals() {
+  const t = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  for (const i of DATA.items) t[i.level] += i.type === "case" ? i.steps.length : 1;
+  return t;
+}
+
+function relDay(d) {
+  if (!d) return "–";
+  const date = new Date(d);
+  if (new Date().toDateString() === date.toDateString()) return "heute";
+  const days = Math.floor((Date.now() - date.getTime()) / 86400000);
+  if (days <= 1) return "gestern";
+  if (days < 7) return `vor ${days} Tagen`;
+  return date.toLocaleDateString("de-DE");
+}
+
+function renderStats(el, stats) {
+  const totals = levelTotals();
+  const allTotal = Object.values(totals).reduce((a, b) => a + b, 0);
+
   const learners = (stats.learners || []).map((l) => {
     const n = Object.values(l.topics || {}).reduce((s, t) => s + t.n, 0);
     const c = Object.values(l.topics || {}).reduce((s, t) => s + t.c, 0);
     const exams = l.exams || [];
     const best = exams.reduce((m, e) => Math.max(m, e.score / e.total), -1);
-    return { ...l, n, c, rate: n ? c / n : null, best: best < 0 ? null : best, passed: exams.some((e) => e.passed) };
+    const levels = [1, 2, 3, 4].map((lv) => Math.min(1, (l.mastered?.[lv] || 0) / (totals[lv] || 1)));
+    const mastered = [1, 2, 3, 4].reduce((s, lv) => s + Math.min(l.mastered?.[lv] || 0, totals[lv]), 0);
+    const current = levels.findIndex((p) => p < CONFIG.unlockThreshold);
+    return {
+      ...l, n, c, rate: n ? c / n : null, best: best < 0 ? null : best, passed: exams.some((e) => e.passed),
+      levels, progress: allTotal ? mastered / allTotal : 0, stage: current === -1 ? 5 : current + 1,
+    };
   });
 
   if (!learners.length) {
-    el.innerHTML = `<section class="card empty"><h2>Noch keine Daten</h2><p class="muted">Im Kurs ${esc(stats.course?.code)} hat noch niemand Fragen beantwortet.</p></section>`;
+    el.innerHTML = `
+      <section class="card empty">
+        ${icon("users", "icon icon-xl")}
+        <h2>Noch niemand angemeldet</h2>
+        <p class="muted">Sobald sich Teilnehmende mit dem Kurscode <strong>${esc(stats.course?.code)}</strong> anmelden, erscheinen sie hier automatisch – lade sie unten über Link oder QR-Code ein.</p>
+      </section>`;
     return;
   }
 
@@ -348,27 +279,47 @@ function renderStats(el, stats, scroll = true) {
     .map((t) => ({ ...t, rate: courseTopics[t.id].c / courseTopics[t.id].n, n: courseTopics[t.id].n }))
     .sort((a, b) => a.rate - b.rate);
 
-  const totalN = learners.reduce((s, l) => s + l.n, 0);
-  const totalC = learners.reduce((s, l) => s + l.c, 0);
+  const avgProgress = learners.reduce((s, l) => s + l.progress, 0) / learners.length;
+  const activeWeek = learners.filter((l) => l.last_seen && Date.now() - new Date(l.last_seen).getTime() < 7 * 86400000).length;
   const hardest = (stats.questions || [])
     .filter((q) => q.n >= 3)
     .map((q) => ({ ...q, rate: q.c / q.n, q: findQuestion(q.question_id) }))
     .filter((q) => q.q)
     .sort((a, b) => a.rate - b.rate || b.n - a.n)
     .slice(0, 10);
-
+  const stageLabel = (s) => (s === 5 ? "Prüfungsreif" : `Stufe ${s}: ${DATA.levels[s - 1]?.title || ""}`);
+  const byProgress = [...learners].sort((a, b) => b.progress - a.progress || a.name.localeCompare(b.name, "de"));
   const fmtDate = (d) => (d ? new Date(d).toLocaleDateString("de-DE") : "–");
+  const progClass = (p) => (p >= 0.8 ? "good" : p >= 0.4 ? "mid" : "bad");
 
   el.innerHTML = `
-    <div class="page-head stats-head">
-      <h2>Kurs ${esc(stats.course?.code)} <span class="muted">· ${esc(stats.course?.name || "")}</span></h2>
-      <button class="btn btn-secondary btn-sm" id="csv">${icon("download")} CSV exportieren</button>
-    </div>
     <section class="kpis">
       <div class="kpi">${icon("users")}<div><span>Teilnehmende</span><strong>${learners.length}</strong></div></div>
-      <div class="kpi">${icon("target")}<div><span>Ø Trefferquote</span><strong>${pct(totalN ? totalC / totalN : null)}</strong></div></div>
-      <div class="kpi">${icon("list")}<div><span>Antworten gesamt</span><strong>${totalN}</strong></div></div>
+      <div class="kpi">${icon("pulse")}<div><span>Ø Lernfortschritt</span><strong>${pct(avgProgress)}</strong></div></div>
+      <div class="kpi">${icon("clock")}<div><span>Aktiv (7 Tage)</span><strong>${activeWeek} / ${learners.length}</strong></div></div>
       <div class="kpi">${icon("award")}<div><span>Prüfung bestanden</span><strong>${learners.filter((l) => l.passed).length} / ${learners.length}</strong></div></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Lernfortschritt</h2>
+        <button class="btn btn-ghost btn-sm" id="csv">${icon("download")} CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table class="progress-table">
+          <thead><tr><th>Name</th><th>Fortschritt</th><th>Stufen</th><th>Steht bei</th><th>Trefferquote</th><th>Prüfung</th><th>Zuletzt aktiv</th></tr></thead>
+          <tbody>${byProgress.map((l) => `
+            <tr>
+              <th>${esc(l.name)}</th>
+              <td><div class="pt-bar"><div class="bar ${progClass(l.progress)}"><span style="width:${Math.round(l.progress * 100)}%"></span></div><strong>${pct(l.progress)}</strong></div></td>
+              <td><div class="stage-dots">${l.levels.map((p, k) => `<span class="dot-lv ${p >= CONFIG.unlockThreshold ? "done" : p > 0 ? "part" : ""}" title="Stufe ${k + 1}: ${pct(p)} sicher">${k + 1}</span>`).join("")}</div></td>
+              <td class="small">${esc(stageLabel(l.stage))}</td>
+              <td><span class="${rateClass(l.rate)}">${pct(l.rate)}</span> <span class="small muted">(${l.n})</span></td>
+              <td>${l.best == null ? '<span class="muted">–</span>' : `<span class="tag ${l.passed ? "tag-ok" : "tag-red"}">${pct(l.best)}</span>`}</td>
+              <td class="small muted">${relDay(l.last_seen)}</td>
+            </tr>`).join("")}</tbody>
+        </table>
+      </div>
+      <p class="small muted table-note">Fortschritt = Anteil aller Fragen, deren letzte Antwort richtig war. Eine Stufe gilt ab ${Math.round(CONFIG.unlockThreshold * 100)} % als geschafft (grün).</p>
     </section>
 
     <div class="grid-2">
@@ -394,27 +345,26 @@ function renderStats(el, stats, scroll = true) {
       </div>
       <div class="table-wrap">
         <table class="heatmap">
-          <thead><tr><th>Name</th><th>Gesamt</th><th>Prüfung</th>${DATA.topics.map((t) => `<th title="${esc(t.label)}"><span>${esc(t.short)}</span></th>`).join("")}<th>Aktiv</th></tr></thead>
+          <thead><tr><th>Name</th><th>Gesamt</th>${DATA.topics.map((t) => `<th title="${esc(t.label)}"><span>${esc(t.short)}</span></th>`).join("")}</tr></thead>
           <tbody>${learners.map((l) => `
             <tr>
               <th>${esc(l.name)}</th>
               <td class="cell ${rateClass(l.rate)}">${pct(l.rate)}<small>${l.n}</small></td>
-              <td class="cell ${l.best == null ? "none" : l.passed ? "good" : "bad"}">${pct(l.best)}</td>
               ${DATA.topics.map((t) => {
                 const v = l.topics?.[t.id];
                 const r = v ? v.c / v.n : null;
                 return `<td class="cell ${rateClass(r)}" title="${esc(t.label)}: ${v ? `${v.c}/${v.n}` : "keine Daten"}">${v ? Math.round(r * 100) : "·"}</td>`;
               }).join("")}
-              <td class="small muted">${fmtDate(l.last_seen)}</td>
             </tr>`).join("")}</tbody>
         </table>
       </div>
     </section>`;
 
   el.querySelector("#csv").addEventListener("click", () => {
-    const head = ["Name", "Antworten", "Trefferquote", "Beste Prüfung", "Bestanden", ...DATA.topics.map((t) => t.label), "Zuletzt aktiv"];
-    const rows = learners.map((l) => [
-      l.name, l.n, l.rate == null ? "" : Math.round(l.rate * 100), l.best == null ? "" : Math.round(l.best * 100), l.passed ? "ja" : "nein",
+    const head = ["Name", "Fortschritt %", "Steht bei", "Antworten", "Trefferquote %", "Beste Prüfung %", "Bestanden", ...DATA.topics.map((t) => t.label), "Zuletzt aktiv"];
+    const rows = byProgress.map((l) => [
+      l.name, Math.round(l.progress * 100), stageLabel(l.stage), l.n, l.rate == null ? "" : Math.round(l.rate * 100),
+      l.best == null ? "" : Math.round(l.best * 100), l.passed ? "ja" : "nein",
       ...DATA.topics.map((t) => { const v = l.topics?.[t.id]; return v ? Math.round((v.c / v.n) * 100) : ""; }),
       fmtDate(l.last_seen),
     ]);
@@ -424,6 +374,4 @@ function renderStats(el, stats, scroll = true) {
     a.download = `sani-trainer_kurs_${stats.course?.code || "auswertung"}.csv`;
     a.click();
   });
-  if (scroll) el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
-

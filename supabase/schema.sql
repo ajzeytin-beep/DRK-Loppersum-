@@ -141,13 +141,26 @@ begin
       select json_agg(json_build_object(
         'id', l.id,
         'name', l.display_name,
-        'last_seen', l.last_seen,
+        'last_seen', coalesce((select max(a.answered_at) from attempts a where a.learner_id = l.id), l.last_seen),
         'topics', coalesce((
           select json_object_agg(t.topic, json_build_object('n', t.n, 'c', t.c))
           from (
             select a.topic, count(*) as n, count(*) filter (where a.correct) as c
             from attempts a where a.learner_id = l.id group by a.topic
           ) t), '{}'::json),
+        -- Fortschritt: Fragen je Stufe, deren letzte Antwort richtig war
+        'mastered', coalesce((
+          select json_object_agg(m.level, m.n)
+          from (
+            select x.level, count(*) as n
+            from (
+              select distinct on (a.question_id) a.question_id, a.level, a.correct
+              from attempts a where a.learner_id = l.id
+              order by a.question_id, a.answered_at desc, a.id desc
+            ) x
+            where x.correct
+            group by x.level
+          ) m), '{}'::json),
         'exams', coalesce((
           select json_agg(json_build_object('score', e.score, 'total', e.total, 'passed', e.passed, 'at', e.taken_at) order by e.taken_at)
           from exams e where e.learner_id = l.id), '[]'::json)

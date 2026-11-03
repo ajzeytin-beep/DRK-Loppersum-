@@ -137,18 +137,3 @@ export function resetProgress() {
   state.profile = profile;
   save();
 }
-
-export function exportData() {
-  return {
-    format: "sani-trainer-export",
-    version: 1,
-    exportedAt: new Date().toISOString(),
-    learner: {
-      id: state.profile?.id,
-      name: state.profile?.name,
-      courseCode: state.profile?.courseCode || null,
-    },
-    history: state.history,
-    exams: state.exams.map(({ synced, ...e }) => e),
-  };
-}

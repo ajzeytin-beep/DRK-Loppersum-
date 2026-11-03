@@ -3,7 +3,7 @@ import * as store from "./store.js";
 import { DATA, loadData, topicLabel } from "./data.js";
 import { renderItem, answerText, esc, shuffle } from "./quiz.js";
 import * as sync from "./sync.js";
-import { renderInstructor, isAdmin, hasPin, setupPin, verifyPin, resetAdmin, adminLogout } from "./instructor.js";
+import { renderInstructor, isAdmin, adminLogin as adminLoginRequest, adminLogout } from "./instructor.js";
 import { icon } from "./icons.js";
 
 const view = document.getElementById("view");
@@ -138,7 +138,7 @@ function renderSyncStatus() {
     const pending = sync.pendingCount();
     status = pending ? `${pending} Antworten noch nicht übertragen` : "Fortschritt übertragen";
   } else if (p.courseCode) {
-    status = "Offline – Export unter Profil";
+    status = sync.backendEnabled() ? "Verbindung wird hergestellt …" : "";
   }
   el.innerHTML = `
     <div class="me">${icon("user")}<div><strong>${esc(p.name)}</strong>
@@ -194,14 +194,19 @@ function route() {
 
 /* ---------------- Anmeldung & Profil ---------------- */
 
+// Kurscode aus dem Einladungslink (…/?kurs=LOP-2026)
+function inviteCode() {
+  try { return (new URLSearchParams(location.search).get("kurs") || "").trim().toUpperCase().slice(0, 20); } catch { return ""; }
+}
+
 function profileForm(p, submitLabel) {
   return `
     <form id="profile-form" class="form">
       <label>Dein Vorname oder Spitzname
         <input name="name" required maxlength="40" autocomplete="given-name" value="${esc(p?.name || "")}">
       </label>
-      <label><span>Kurscode <span class="muted">(optional – bekommst du von deinem Ausbilder)</span></span>
-        <input name="code" maxlength="20" autocomplete="off" autocapitalize="characters" value="${esc(p?.courseCode || "")}">
+      <label><span>Kurscode ${sync.backendEnabled() ? '<span class="muted">(steht in der Einladung deines Ausbilders)</span>' : '<span class="muted">(optional)</span>'}</span>
+        <input name="code" maxlength="20" autocomplete="off" autocapitalize="characters" ${sync.backendEnabled() ? "required" : ""} value="${esc(p?.courseCode || inviteCode())}">
       </label>
       <p class="form-error" hidden></p>
       <button class="btn btn-primary btn-lg">${submitLabel}</button>
@@ -237,10 +242,16 @@ function bindProfileForm(onDone) {
         joined = true;
         courseName = res?.name || null;
       } catch (ex) {
-        err.textContent = `Kurs konnte nicht verbunden werden: ${ex.message}. Prüfe den Code oder lass das Feld leer.`;
-        err.hidden = false;
-        btn.disabled = false;
-        return;
+        const offline = ex instanceof TypeError || !navigator.onLine;
+        if (!offline) {
+          err.textContent = /unbekannt/i.test(ex.message)
+            ? `Den Kurscode „${code}“ gibt es nicht. Bitte prüfe die Einladung deines Ausbilders.`
+            : `Kurs konnte nicht verbunden werden: ${ex.message}`;
+          err.hidden = false;
+          btn.disabled = false;
+          return;
+        }
+        // Offline: anmelden und die Verbindung später automatisch herstellen
       }
     }
     const st = store.getState();
@@ -291,7 +302,7 @@ function learnerLogin(body) {
       <div class="divider"><span>oder neu anmelden</span></div>` : `
       <p class="lead auth-lead">Moin! Vom Erste-Hilfe-Kurs zum Sanitätsdienst – lerne Schritt für Schritt alles für den Abschluss des Lehrgangs.</p>`}
     ${profileForm(null, `${icon("login")} Anmelden`)}
-    <p class="small muted auth-note">Dein Lernstand wird auf diesem Gerät gespeichert. Mit Kurscode sieht dein Ausbilder deinen Namen, deine Antworten und Prüfungsergebnisse – damit er dich gezielt unterstützen kann.</p>`;
+    <p class="small muted auth-note">Dein Ausbilder sieht deinen Namen, deine Antworten und Prüfungsergebnisse – damit er dich gezielt unterstützen kann. Alles wird automatisch übertragen.</p>`;
   bindProfileForm(() => { location.hash = "#/"; });
   body.querySelectorAll(".profile-pick").forEach((b) => b.addEventListener("click", () => {
     if (store.switchTo(b.dataset.id)) { sync.flush(); location.hash = "#/"; }
@@ -307,67 +318,73 @@ function learnerLogin(body) {
 }
 
 function adminLogin(body) {
-  if (!crypto?.subtle) {
-    body.innerHTML = '<p class="form-error">Die Ausbilder-Anmeldung braucht eine sichere Verbindung (https). Bitte die App über den offiziellen Link öffnen.</p>';
+  if (!sync.backendEnabled()) {
+    body.innerHTML = '<p class="form-error">Die Online-Auswertung ist noch nicht eingerichtet (siehe README).</p>';
     return;
   }
-  const first = !hasPin();
+  let lastCode = "";
+  try { lastCode = localStorage.getItem("sani-trainer-admin-code") || ""; } catch { /* ignorieren */ }
   body.innerHTML = `
     <form class="form" id="admin-form">
-      ${first
-        ? `<p class="muted auth-lead"><strong>Ersteinrichtung:</strong> Lege eine Ausbilder-PIN für dieses Gerät fest. Sie schützt den Ausbilder-Bereich und die gespeicherten Auswertungen. Mindestens 4 Zeichen – besser 6 oder mehr.</p>
-           <label>Neue PIN<input name="pin" type="password" autocomplete="new-password" minlength="4" maxlength="64" required></label>
-           <label>PIN wiederholen<input name="pin2" type="password" autocomplete="new-password" minlength="4" maxlength="64" required></label>`
-        : `<p class="muted auth-lead">Melde dich mit deiner Ausbilder-PIN an.</p>
-           <label>Ausbilder-PIN<input name="pin" type="password" autocomplete="current-password" maxlength="64" required></label>`}
+      <p class="muted auth-lead">Melde dich mit Kurscode und Kurs-PIN an – du siehst sofort den Lernfortschritt aller Teilnehmenden.</p>
+      <label>Kurscode<input name="code" required maxlength="20" autocomplete="username" autocapitalize="characters" value="${esc(lastCode)}"></label>
+      <label>Kurs-PIN<input name="pin" type="password" required maxlength="64" autocomplete="current-password"></label>
       <p class="form-error" hidden></p>
-      <button class="btn btn-primary btn-lg">${icon("login")} ${first ? "PIN speichern & anmelden" : "Anmelden"}</button>
-      ${first ? "" : '<button type="button" class="btn btn-ghost btn-sm" id="forgot">PIN vergessen?</button>'}
+      <button class="btn btn-primary btn-lg">${icon("login")} Anmelden</button>
     </form>
-    <p class="small muted auth-note">Die PIN gilt nur für dieses Gerät. Auswertungen bleiben lokal gespeichert.</p>`;
+    <p class="small muted auth-note">Die Kurs-PIN wurde beim Anlegen des Kurses in Supabase festgelegt. Neue Kurse oder PINs legt ihr dort an (siehe README).</p>`;
   const f = body.querySelector("#admin-form");
   const err = f.querySelector(".form-error");
   const btn = f.querySelector(".btn-primary");
   f.addEventListener("submit", async (e) => {
     e.preventDefault();
     err.hidden = true;
-    if (first && f.pin.value !== f.pin2.value) { err.textContent = "Die beiden Eingaben stimmen nicht überein."; err.hidden = false; return; }
     btn.disabled = true;
-    const res = first ? (await setupPin(f.pin.value), { ok: true }) : await verifyPin(f.pin.value);
+    btn.innerHTML = `${icon("login")} Prüfe …`;
+    const res = await adminLoginRequest(f.code.value, f.pin.value);
     btn.disabled = false;
-    if (res.ok) { location.hash = "#/ausbilder"; return; }
+    btn.innerHTML = `${icon("login")} Anmelden`;
+    if (res.ok) {
+      try { localStorage.setItem("sani-trainer-admin-code", f.code.value.trim().toUpperCase()); } catch { /* ignorieren */ }
+      location.hash = "#/ausbilder";
+      return;
+    }
     err.textContent = res.error;
     err.hidden = false;
     f.pin.value = "";
     f.pin.focus();
   });
-  f.querySelector("#forgot")?.addEventListener("click", () => {
-    if (confirm("PIN zurücksetzen?\n\nAus Sicherheitsgründen werden dabei auch alle auf diesem Gerät gespeicherten Auswertungen gelöscht. Die Teilnehmenden können dir ihre Exportdateien danach einfach erneut schicken.")) {
-      resetAdmin();
-      adminLogin(body);
-    }
-  });
-  f.pin.focus();
+  (lastCode ? f.pin : f.code).focus();
 }
 
 function profileView() {
   const st = store.getState();
+  const p = st.profile;
+  let shareInfo;
+  if (!sync.backendEnabled()) {
+    shareInfo = '<p class="muted">Dein Lernstand wird auf diesem Gerät gespeichert.</p>';
+  } else if (p?.courseCode && p.joined) {
+    shareInfo = `<p class="muted">Dein Fortschritt wird automatisch an den Kurs <strong>${esc(p.courseName || p.courseCode)}</strong> übertragen – du musst nichts weiter tun.</p>
+      <button class="btn btn-secondary" id="sync-now">${icon("cloud")} Jetzt übertragen</button>
+      <p class="small muted" id="sync-msg">${st.lastSync ? `Zuletzt: ${new Date(st.lastSync).toLocaleString("de-DE")}` : ""}</p>`;
+  } else if (p?.courseCode) {
+    shareInfo = `<p class="muted">Kurs <strong>${esc(p.courseCode)}</strong>: Die Verbindung wird hergestellt, sobald du online bist. Dein Fortschritt wird dann automatisch nachgeliefert.</p>
+      <button class="btn btn-secondary" id="sync-now">${icon("cloud")} Jetzt verbinden</button>
+      <p class="small muted" id="sync-msg"></p>`;
+  } else {
+    shareInfo = '<p class="muted">Trag oben den Kurscode deines Lehrgangs ein, damit dein Ausbilder deinen Fortschritt sieht.</p>';
+  }
   view.innerHTML = `
     <div class="page-head"><h1>Profil & Einstellungen</h1></div>
     <div class="grid-2">
       <section class="card">
         <h2>Deine Angaben</h2>
-        ${profileForm(st.profile, "Speichern")}
+        ${profileForm(p, "Speichern")}
         <p class="form-ok small" hidden>Gespeichert ✓</p>
       </section>
       <section class="card">
-        <h2>Fortschritt teilen</h2>
-        ${sync.backendEnabled() && st.profile?.joined
-          ? `<p class="muted">Dein Fortschritt wird automatisch an den Kurs <strong>${esc(st.profile.courseName || st.profile.courseCode)}</strong> übertragen.</p>
-             <button class="btn btn-secondary" id="sync-now">${icon("cloud")} Jetzt übertragen</button>
-             <p class="small muted" id="sync-msg">${st.lastSync ? `Zuletzt: ${new Date(st.lastSync).toLocaleString("de-DE")}` : ""}</p>`
-          : `<p class="muted">Lade deinen Lernstand als Datei herunter und schick sie deinem Ausbilder (z. B. per Messenger oder E-Mail).</p>`}
-        <button class="btn btn-secondary" id="export">${icon("download")} Lernstand exportieren</button>
+        <h2>Fortschritt</h2>
+        ${shareInfo}
         <hr>
         <h2>Lernpfad</h2>
         <label class="switch"><input type="checkbox" id="unlock" ${st.settings.unlockAll ? "checked" : ""}><span></span> Alle Stufen freischalten</label>
@@ -386,21 +403,11 @@ function profileView() {
     view.querySelector(".form-ok").hidden = false;
     renderNav();
   });
-  view.querySelector("#export").addEventListener("click", () => {
-    const data = store.exportData();
-    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
-    const a = document.createElement("a");
-    const safe = (st.profile?.name || "teilnehmer").replace(/[^\wäöüÄÖÜß-]+/g, "_");
-    a.href = URL.createObjectURL(blob);
-    a.download = `sani-trainer_${safe}_${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  });
   view.querySelector("#sync-now")?.addEventListener("click", async () => {
     const msg = view.querySelector("#sync-msg");
     msg.textContent = "Übertrage …";
     const r = await sync.flush();
-    msg.textContent = r.error ? `Fehler: ${r.error}` : "Alles übertragen ✓";
+    msg.textContent = r.error ? `Fehler: ${r.error}` : r.skipped ? "Gerade nicht möglich – bist du online?" : "Alles übertragen ✓";
     renderSyncStatus();
   });
   view.querySelector("#unlock").addEventListener("change", (e) => store.setSetting("unlockAll", e.target.checked));

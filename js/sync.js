@@ -42,9 +42,15 @@ export function pendingCount() {
 let flushing = false;
 export async function flush() {
   const st = store.getState();
-  if (!backendEnabled() || !st.profile?.joined || flushing || !navigator.onLine) return { skipped: true };
+  if (!backendEnabled() || !st.profile?.courseCode || flushing || !navigator.onLine) return { skipped: true };
   flushing = true;
   try {
+    // Beitritt nachholen (z. B. wenn bei der Anmeldung kein Internet da war)
+    if (!st.profile.joined) {
+      const res = await joinCourse(st.profile.courseCode, st.profile.id, st.profile.name);
+      store.setProfile({ joined: true, courseName: res?.name || null });
+      st.syncedCount = 0;
+    }
     while (st.syncedCount < st.history.length) {
       const batch = st.history.slice(st.syncedCount, st.syncedCount + 500);
       await rpc("record_progress", { p_learner_id: st.profile.id, p_attempts: batch, p_exams: [] });
@@ -64,6 +70,12 @@ export async function flush() {
     store.save();
     return { ok: true };
   } catch (e) {
+    // Auf dem Server unbekannt (z. B. vom Ausbilder entfernt): beim nächsten Mal neu beitreten und alles erneut senden
+    if (/Teilnehmer unbekannt/.test(e.message)) {
+      store.setProfile({ joined: false });
+      st.syncedCount = 0;
+      store.save();
+    }
     return { error: e.message };
   } finally {
     flushing = false;

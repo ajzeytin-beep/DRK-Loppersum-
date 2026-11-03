@@ -19,12 +19,8 @@ Nach dem ersten Aufruf funktioniert sie auch **offline**.
 - **Karteikasten-Wiederholung:** Falsche Antworten kommen sofort wieder, richtige in wachsenden Abständen.
 - **Dashboard** mit Gesamtfortschritt, Trefferquote, fälligen Wiederholungen und den eigenen Schwachstellen. Jedes Thema lässt sich gezielt üben.
 - **Prüfungssimulation:** Zeitlimit, Bestehensgrenze, Auswertung am Ende.
-- **Merkkarten:** Vitalwerte, ABCDE, SAMPLER, BE-FAST, Lagerungen, Reanimation, Neunerregel, Nummern.
-- **Ausbilder-Bereich:**
-  - Heatmap „Teilnehmende × Themen“
-  - schwächste Themen des Kurses
-  - häufigste Fehlerfragen
-  - CSV-Export
+- **Merkkarten:** erste Minute, xABCDE, Vitalwerte, Sauerstoffgabe, SAMPLERS, ZOPS & GIRL, Bodycheck, Tourniquet, Beckenschlinge, BE-FAST, Lagerungen, Reanimation, Neunerregel, Nummern.
+- **Ausbilder-Bereich:** automatische Übersicht über den Lernfortschritt aller Teilnehmenden, schwächste Themen, häufigste Fehler, Heatmap und CSV-Export.
 
 ## Inhalte bearbeiten
 
@@ -61,12 +57,8 @@ Nach Änderungen in `sw.js` die Versionsnummer (`sani-trainer-v1` → `v2`) erh�
 
 ## Logos
 
-Die Logodateien gehören in den Ordner `assets/`:
-
-- `assets/logo-drk.png`
-- `assets/logo-ov.png`
-
-Sie erscheinen dann automatisch im Kopfbereich. Ohne Dateien zeigt die App ein neutrales Symbol.
+Das Abzeichen des OV Loppersum liegt unter `assets/logo-ov.png`. Daraus sind auch die App-Symbole erzeugt (`assets/icon-192.png`, `assets/icon-512.png`).
+Ein zusätzliches DRK-Logo kann als `assets/logo-drk.png` abgelegt werden und erscheint dann automatisch daneben.
 Für das Rotkreuz-Zeichen gelten die Regeln zum Schutzzeichen und die CD-Vorgaben des DRK.
 
 ## Lokal starten
@@ -86,50 +78,64 @@ python3 -m http.server 8000
 
 Die Startseite hat zwei Reiter: **Teilnehmer** und **Ausbilder**.
 
-- **Teilnehmer** melden sich mit Vorname und optional Kurscode an.
+- **Teilnehmer** melden sich mit Vorname und **Kurscode** an.
+  - Über den Einladungslink (`…/?kurs=LOP-2026`) oder den QR-Code ist der Kurscode schon ausgefüllt.
+  - Der Lernfortschritt wird **automatisch** an den Kurs übertragen. Ohne Internet wird er gesammelt und später nachgeliefert.
   - Mehrere Personen können dasselbe Gerät nutzen, z. B. ein Tablet im Lehrgang. Jede Person hat ihren eigenen Lernstand.
   - Unter „Weiterlernen“ erscheinen alle Personen auf dem Gerät, ein Tipp genügt.
   - Wer denselben Namen und Kurscode erneut eingibt, macht mit seinem bisherigen Lernstand weiter.
   - **Abmelden** geht über die Seitenleiste oder das Profil.
-- **Ausbilder** melden sich mit ihrer PIN an. Beim ersten Mal wird die PIN auf dem Gerät festgelegt.
+- **Ausbilder** melden sich mit **Kurscode und Kurs-PIN** an. Die PIN wird auf dem Server geprüft, das funktioniert von jedem Gerät aus.
+  - Die Anmeldung gilt, bis man sich abmeldet oder den Browser-Tab schließt.
   - Ausbilder ohne Teilnehmer-Anmeldung sehen nur den Ausbilder-Bereich und die Merkkarten.
 
 ## Ausbilder-Bereich
 
-Nach der Ausbilder-Anmeldung öffnet sich der Ausbilder-Bereich direkt.
+Nach der Anmeldung siehst du sofort den Stand aller Teilnehmenden. Die Ansicht aktualisiert sich jede Minute.
 
-- **PIN:** Sie schützt den Bereich und die dort gespeicherten Auswertungen.
-  - Nach 5 Fehlversuchen wird der Bereich vorübergehend gesperrt.
-  - Mit **„Abmelden“** schließt du ihn sofort wieder.
-  - **„PIN vergessen?“** löscht die PIN und alle gespeicherten Auswertungen auf diesem Gerät. Die Teilnehmenden schicken dir ihre Dateien dann einfach erneut.
-  - Die PIN gilt nur für das jeweilige Gerät. Auf den Handys der Teilnehmenden liegen keine Auswertungen anderer Personen.
-- **Teilnehmende einladen:**
-  - Die Kachel zeigt QR-Code, Link und einen Einladungstext, in den du optional den Kurscode einträgst.
-  - **„Teilen“** öffnet am Handy das Teilen-Menü (WhatsApp, Signal, E-Mail …), am PC wird der Text kopiert.
-  - **„QR-Code“** lädt das Bild zum Ausdrucken oder für den Beamer herunter.
-- **Auswertung:** Importierte Exportdateien bleiben auf deinem Gerät gespeichert. Neuere Dateien ersetzen ältere Stände derselben Person.
+- **Lernfortschritt** pro Person:
+  - Fortschritt in Prozent
+  - Stufen 1–4 (grün = geschafft)
+  - wo die Person gerade steht
+  - Trefferquote, beste Prüfung, zuletzt aktiv
+- **Schwächste Themen** und **häufigste Fehler** im Kurs, um sie im Unterricht gezielt zu wiederholen.
+- **Teilnehmende × Themen** als Übersicht mit Farben.
+- **CSV-Export** für Excel.
+- **Teilnehmende einladen:** QR-Code und Link mit eingebautem Kurscode, Einladungstext, „Teilen“ (WhatsApp, Signal, E-Mail …) und QR-Code-Download zum Ausdrucken oder für den Beamer.
 
-## Ausbilder-Auswertung einrichten
+## Online-Auswertung (Supabase) einrichten
 
-Ohne weitere Einrichtung exportieren die Teilnehmenden ihren Lernstand unter **Profil → Lernstand exportieren** und schicken dir die Datei.
-Im **Ausbilder-Bereich** importierst du alle Dateien auf einmal.
+Die Daten liegen in einer kostenlosen Supabase-Datenbank (Region Frankfurt).
 
-Für eine **automatische** Übertragung gibt es eine kostenlose Supabase-Datenbank:
-
-1. Ein Konto auf <https://supabase.com> anlegen und ein neues Projekt erstellen (Region: Frankfurt).
+1. Ein Konto auf <https://supabase.com> anlegen und ein neues Projekt erstellen (Region: Frankfurt / eu-central-1).
 2. Im **SQL Editor** den Inhalt von `supabase/schema.sql` ausführen.
-3. Einen Kurs anlegen. Den Befehl dazu findest du am Ende der Datei. Kurscode und PIN wählst du selbst, die PIN muss sicher sein.
-4. Unter **Project Settings → API** die *Project URL* und den *anon public key* in `js/config.js` eintragen.
-5. Den Teilnehmenden den Kurscode geben. Sie tragen ihn beim ersten Start oder später im Profil ein.
-6. Im Ausbilder-Bereich mit Kurscode und PIN die Auswertung öffnen.
+3. Einen Kurs anlegen. Den Befehl dazu findest du am Ende der Datei. Kurscode und Kurs-PIN wählst du selbst, die PIN muss sicher sein.
+4. Unter **Project Settings → API Keys** die *Project URL* und den *publishable key* in `js/config.js` eintragen.
+
+**Update für bestehende Datenbanken:** Wurde `schema.sql` vor der Fortschrittsanzeige eingerichtet, einmal `supabase/update-1.sql` im SQL Editor ausführen. Bestehende Daten bleiben erhalten.
+
+**Hinweise:**
+
+- Kostenlose Supabase-Projekte pausieren nach 7 Tagen ohne Nutzung. Im Dashboard lassen sie sich mit einem Klick reaktivieren, die Daten bleiben erhalten.
+- Weitere Kurse legt ihr mit demselben Befehl an, mit eigenem Kurscode und eigener PIN.
+- Einen Testeintrag entfernt ihr so:
+
+  ```sql
+  delete from public.learners where course_code = 'LOP-2026' and display_name = 'Test';
+  ```
 
 **Datenschutz:**
 
 - Gespeichert werden nur der Anzeigename (am besten Vorname oder Spitzname), die beantworteten Fragen mit „richtig/falsch“ und die Prüfungsergebnisse.
 - Die Teilnehmenden sollten vorher darüber informiert werden.
-- Nach dem Lehrgang den Kurs löschen. Damit werden alle zugehörigen Daten entfernt.
+- Nach dem Lehrgang den Kurs löschen. Damit werden alle zugehörigen Daten entfernt:
+
+  ```sql
+  delete from public.courses where code = 'LOP-2026';
+  ```
 
 ## Technik
 
-Reines HTML/CSS/JavaScript ohne Build-Schritt und ohne Abhängigkeiten.
-Der Lernstand liegt im `localStorage` des Geräts, ein Service Worker sorgt für die Offline-Nutzung.
+Reines HTML/CSS/JavaScript ohne Build-Schritt.
+Der Lernstand liegt im `localStorage` des Geräts und wird an Supabase übertragen. Ein Service Worker sorgt für die Offline-Nutzung.
+Für QR-Codes ist die Bibliothek [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (MIT-Lizenz, Kazuhiko Arase) unter `js/vendor/` eingebunden.
