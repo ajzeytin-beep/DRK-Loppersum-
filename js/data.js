@@ -1,5 +1,5 @@
 // Lädt Themen, Stufen, Fragen und Merkkarten aus /data.
-export const DATA = { topics: [], topicMap: {}, levels: [], items: [], byId: {}, cards: [] };
+export const DATA = { topics: [], topicMap: {}, levels: [], items: [], byId: {}, cards: [], sources: {} };
 
 const LEVEL_FILES = ["level1", "level2", "level3", "level4"];
 
@@ -12,6 +12,7 @@ export async function loadData() {
   DATA.topics = meta.topics;
   DATA.levels = meta.levels;
   DATA.cards = cards.cards;
+  DATA.sources = meta.sources || {};
   meta.topics.forEach((t) => { DATA.topicMap[t.id] = t; });
   for (const lv of levels) {
     for (const item of lv.items) {

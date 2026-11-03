@@ -1,5 +1,5 @@
 // Darstellung und Auswertung einzelner Fragen und Fallbeispiele.
-import { topicLabel } from "./data.js";
+import { topicLabel, DATA } from "./data.js";
 
 export const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -22,8 +22,11 @@ export function answerText(q) {
   }
 }
 
+const sourceTag = (item) =>
+  item.source ? `<span class="tag tag-source" title="Inhalt aus euren Lehrgangsunterlagen">${esc(DATA.sources?.[item.source] || item.source)}</span>` : "";
+
 const metaHtml = (item, extra = "") =>
-  `<div class="q-meta">${extra}<span class="tag">${esc(topicLabel(item.topic))}</span><span class="tag tag-muted">Stufe ${item.level}</span></div>`;
+  `<div class="q-meta">${extra}<span class="tag">${esc(topicLabel(item.topic))}</span><span class="tag tag-muted">Stufe ${item.level}</span>${sourceTag(item)}</div>`;
 
 export function renderItem(host, item, opts) {
   if (item.type !== "case") {

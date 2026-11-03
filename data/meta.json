@@ -1,27 +1,120 @@
 {
   "topics": [
-    { "id": "eh", "label": "Erste-Hilfe-Grundlagen", "short": "EH" },
-    { "id": "sd", "label": "Sanitätsdienst & Organisation", "short": "SanD" },
-    { "id": "recht", "label": "Recht & Dokumentation", "short": "Recht" },
-    { "id": "hygiene", "label": "Hygiene & Eigenschutz", "short": "Hyg" },
-    { "id": "anatomie", "label": "Anatomie & Vitalwerte", "short": "Anat" },
-    { "id": "beurteilung", "label": "Patientenbeurteilung (ABCDE)", "short": "ABCDE" },
-    { "id": "reanimation", "label": "Reanimation & AED", "short": "Rea" },
-    { "id": "atmung", "label": "Atemwege & Atmung", "short": "Atm" },
-    { "id": "kreislauf", "label": "Herz-Kreislauf & Schock", "short": "HKL" },
-    { "id": "neuro", "label": "Bewusstsein & Neurologie", "short": "Neuro" },
-    { "id": "trauma", "label": "Verletzungen & Blutungen", "short": "Trauma" },
-    { "id": "thermisch", "label": "Hitze, Kälte, Verbrennung", "short": "Therm" },
-    { "id": "vergiftung", "label": "Vergiftung & Allergie", "short": "Vergift" },
-    { "id": "kinder", "label": "Kindernotfälle", "short": "Kind" },
-    { "id": "material", "label": "Material & Rettungstechnik", "short": "Mat" },
-    { "id": "kommunikation", "label": "Übergabe & Funk", "short": "Komm" }
+    {
+      "id": "eh",
+      "label": "Erste-Hilfe-Grundlagen",
+      "short": "EH"
+    },
+    {
+      "id": "sd",
+      "label": "Sanitätsdienst & Organisation",
+      "short": "SanD"
+    },
+    {
+      "id": "recht",
+      "label": "Recht & Dokumentation",
+      "short": "Recht"
+    },
+    {
+      "id": "hygiene",
+      "label": "Hygiene & Eigenschutz",
+      "short": "Hyg"
+    },
+    {
+      "id": "anatomie",
+      "label": "Anatomie & Vitalwerte",
+      "short": "Anat"
+    },
+    {
+      "id": "beurteilung",
+      "label": "Patientenbeurteilung (xABCDE)",
+      "short": "xABCDE"
+    },
+    {
+      "id": "reanimation",
+      "label": "Reanimation & AED",
+      "short": "Rea"
+    },
+    {
+      "id": "atmung",
+      "label": "Atemwege & Atmung",
+      "short": "Atm"
+    },
+    {
+      "id": "kreislauf",
+      "label": "Herz-Kreislauf & Schock",
+      "short": "HKL"
+    },
+    {
+      "id": "neuro",
+      "label": "Bewusstsein & Neurologie",
+      "short": "Neuro"
+    },
+    {
+      "id": "trauma",
+      "label": "Verletzungen & Blutungen",
+      "short": "Trauma"
+    },
+    {
+      "id": "thermisch",
+      "label": "Hitze, Kälte, Verbrennung",
+      "short": "Therm"
+    },
+    {
+      "id": "vergiftung",
+      "label": "Vergiftung & Allergie",
+      "short": "Vergift"
+    },
+    {
+      "id": "kinder",
+      "label": "Kindernotfälle",
+      "short": "Kind"
+    },
+    {
+      "id": "verbaende",
+      "label": "Verbände & Wundversorgung",
+      "short": "Verb"
+    },
+    {
+      "id": "material",
+      "label": "Material & Rettungstechnik",
+      "short": "Mat"
+    },
+    {
+      "id": "kommunikation",
+      "label": "Übergabe & Funk",
+      "short": "Komm"
+    }
   ],
   "levels": [
-    { "level": 1, "title": "Auffrischung Erste Hilfe", "description": "Notruf, Bewusstsein, Atmung, Reanimation, AED – das Fundament aus deinem Erste-Hilfe-Kurs." },
-    { "level": 2, "title": "Grundlagen", "description": "Anatomie, Normalwerte, ABCDE & SAMPLER, Hygiene, Recht und Aufgaben im Sanitätsdienst." },
-    { "level": 3, "title": "Notfallbilder", "description": "Herz, Atmung, Neurologie, Trauma, Hitze & Kälte, Vergiftungen, Kinder und Material." },
-    { "level": 4, "title": "Fallbeispiele Ostfriesland", "description": "Einsätze Schritt für Schritt – von der Kohlfahrt bis zum Deichlauf." },
-    { "level": 5, "title": "Prüfungssimulation", "description": "Gemischte Abschlussprüfung mit Zeitlimit – wie im Lehrgang." }
-  ]
+    {
+      "level": 1,
+      "title": "Auffrischung Erste Hilfe",
+      "description": "Notruf, Bewusstsein, Atmung, Reanimation, AED – das Fundament aus deinem Erste-Hilfe-Kurs."
+    },
+    {
+      "level": 2,
+      "title": "Grundlagen",
+      "description": "Anatomie, Normwerte, xABCDE, SAMPLERS, ZOPS, Hygiene, Recht und die erste Minute im Einsatz."
+    },
+    {
+      "level": 3,
+      "title": "Notfallbilder",
+      "description": "Notfallbilder, Sauerstoffgabe, Bodycheck, Tourniquet & Beckenschlinge, Verbände und Material."
+    },
+    {
+      "level": 4,
+      "title": "Fallbeispiele Ostfriesland",
+      "description": "Einsätze Schritt für Schritt – von der Kohlfahrt bis zum Deichlauf."
+    },
+    {
+      "level": 5,
+      "title": "Prüfungssimulation",
+      "description": "Gemischte Abschlussprüfung mit Zeitlimit – wie im Lehrgang."
+    }
+  ],
+  "sources": {
+    "skript": "Lehrgangsskript",
+    "memo": "SAN-Memo"
+  }
 }

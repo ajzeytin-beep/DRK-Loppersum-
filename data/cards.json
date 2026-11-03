@@ -1,117 +1,515 @@
 {
   "cards": [
     {
+      "title": "Die 1. Minute (SAN-Memo)",
+      "items": [
+        "Sicherheit: akute Gefahr für Einsatzkräfte, Betroffene, andere?",
+        "Lage: Zahl der Betroffenen, Hergang, Umfeld (Gelände, Wetter, Licht, Uhrzeit)",
+        "Bedrohliche Blutung? Sofort stillen",
+        "„Hallo! Wir sind vom DRK. Was ist passiert?“",
+        "Bewusstlos: Atemwege frei, Atmung max. 10 s – nicht normal → HLW + AED, eindeutig normal → Seitenlage, ggf. Guedel/Wendl, Absaugbereitschaft",
+        "Wach: Trauma? → manuelle HWS-Immobilisierung; Verdacht auf A-, B-, C-, D-, E-Problem?",
+        "Teambesprechung (10-for-10): Lage, Verdachtsdiagnose, Notarzt?"
+      ]
+    },
+    {
+      "title": "xABCDE-Schema",
+      "rows": [
+        [
+          "x – Exsanguination",
+          "Lebensbedrohliche äußere Blutung: Druck, Druckverband, Tourniquet"
+        ],
+        [
+          "A – Airway",
+          "Atemwege frei? Verlegung, Schwellung, Aspiration, HWS"
+        ],
+        [
+          "B – Breathing",
+          "Atemfrequenz, Atemgeräusche, SpO₂, O₂-Gabe"
+        ],
+        [
+          "C – Circulation",
+          "Puls, Rekap, Blutdruck, Hautfarbe, Becken (S-KIPS)"
+        ],
+        [
+          "D – Disability",
+          "WASB, ZOPS, Pupillen (GIRL), Blutzucker, BE-FAST"
+        ],
+        [
+          "E – Exposure",
+          "Bodycheck (STU), SAMPLERS, Temperatur, Wärmeerhalt"
+        ]
+      ],
+      "note": "Probleme sofort behandeln. Nach Abschluss von E wieder bei A beginnen."
+    },
+    {
       "title": "Vitalwerte Erwachsene",
       "rows": [
-        ["Atemfrequenz", "12–20 / min"],
-        ["Herzfrequenz (Ruhe)", "60–100 / min"],
-        ["Blutdruck", "ca. 120/80 mmHg"],
-        ["SpO₂", "95–100 %"],
-        ["Ziel-SpO₂ bei O₂-Gabe", "94–98 % (COPD: 88–92 %)"],
-        ["Blutzucker nüchtern", "ca. 70–100 mg/dl"],
-        ["Unterzuckerung", "meist < 60 mg/dl"],
-        ["Körpertemperatur", "36,5–37,5 °C"],
-        ["Rekapillarisierung", "< 2 Sekunden"],
-        ["Schockindex", "HF ÷ RR syst. – über 1 = Warnzeichen"]
+        [
+          "Atemfrequenz",
+          "12–16 / min (bis 20 nach NEWS2)"
+        ],
+        [
+          "Herzfrequenz (Ruhe)",
+          "60–80 / min"
+        ],
+        [
+          "Blutdruck",
+          "120/70 bis 140/90 mmHg"
+        ],
+        [
+          "SpO₂ Zielwert",
+          "94–98 % (COPD: 88–92 %)"
+        ],
+        [
+          "Blutzucker nüchtern",
+          "60–100 mg/dl (3,3–5,6 mmol/l)"
+        ],
+        [
+          "Blutzucker nicht nüchtern",
+          "bis 140 mg/dl (7,8 mmol/l)"
+        ],
+        [
+          "Umrechnung",
+          "mmol/l × 18 ≈ mg/dl"
+        ],
+        [
+          "Körpertemperatur",
+          "36,0–37,5 °C"
+        ],
+        [
+          "Rekapillarisierung",
+          "< 2 Sekunden"
+        ],
+        [
+          "Hypertensiver Notfall",
+          "> 220/130 mmHg + Symptome"
+        ],
+        [
+          "Schockindex",
+          "HF ÷ RR syst. – über 1 = Warnzeichen"
+        ]
+      ],
+      "note": "Werte laut Lehrgangsskript „Sanitätshelfer 1x1“."
+    },
+    {
+      "title": "Sauerstoffgabe (Lehrgang)",
+      "rows": [
+        [
+          "Alle Notfallpatienten",
+          "bis 4 l/min"
+        ],
+        [
+          "Reanimation, SHT, Thorax-/Polytrauma",
+          "15 l/min"
+        ],
+        [
+          "CO-Vergiftung, vergiftete Atmosphäre",
+          "15 l/min"
+        ],
+        [
+          "Atemwegsbehinderung / schwere Atemnot mit Zyanose",
+          "15 l/min (CAVE COPD)"
+        ],
+        [
+          "Schwere arterielle Blutung, Tauchunfall",
+          "15 l/min"
+        ],
+        [
+          "Hyperventilation",
+          "kein Sauerstoff!"
+        ],
+        [
+          "Nasenbrille / Maske",
+          "0–4 l/min / ab 6 l/min"
+        ]
+      ],
+      "note": "Kann je nach Ortsverband, Landkreis oder NUN-Algorithmus abweichen."
+    },
+    {
+      "title": "SAMPLERS-Anamnese",
+      "rows": [
+        [
+          "S",
+          "Symptome – was genau? seit wann?"
+        ],
+        [
+          "A",
+          "Allergien"
+        ],
+        [
+          "M",
+          "Medikamente"
+        ],
+        [
+          "P",
+          "Patientengeschichte / Vorerkrankungen"
+        ],
+        [
+          "L",
+          "Letzte Mahlzeit, Flüssigkeit, Ausscheidung"
+        ],
+        [
+          "E",
+          "Ereignis – was ist passiert?"
+        ],
+        [
+          "R",
+          "Risikofaktoren (z. B. Rauchen, Schwangerschaft)"
+        ],
+        [
+          "S",
+          "Schwangerschaft"
+        ]
       ]
+    },
+    {
+      "title": "ZOPS & GIRL",
+      "rows": [
+        [
+          "Z – Zeit",
+          "Tag, Monat, Jahr?"
+        ],
+        [
+          "O – Ort",
+          "Wo sind wir?"
+        ],
+        [
+          "P – Person",
+          "Wer sind Sie?"
+        ],
+        [
+          "S – Situation",
+          "Was ist passiert?"
+        ],
+        [
+          "G – Größe",
+          "Pupillen eng / mittel / weit"
+        ],
+        [
+          "I – Isokorie",
+          "beide gleich groß?"
+        ],
+        [
+          "R – Rund",
+          "Form"
+        ],
+        [
+          "L – Lichtreaktion",
+          "verengen bei Licht?"
+        ]
+      ]
+    },
+    {
+      "title": "SSSS & 4S-Regel",
+      "rows": [
+        [
+          "Scene",
+          "Was ist passiert?"
+        ],
+        [
+          "Safety",
+          "Eigen-/Fremdschutz, PSA, Gefahren"
+        ],
+        [
+          "Situation",
+          "Wie viele Patienten?"
+        ],
+        [
+          "Support",
+          "Kräfte nachfordern"
+        ],
+        [
+          "1. Sage",
+          "dass du da bist und etwas geschieht"
+        ],
+        [
+          "2. Suche",
+          "vorsichtigen Körperkontakt"
+        ],
+        [
+          "3. Schirme",
+          "den Verletzten ab"
+        ],
+        [
+          "4. Sprich",
+          "und höre zu"
+        ]
+      ]
+    },
+    {
+      "title": "Bodycheck (STU)",
+      "rows": [
+        [
+          "Kopf",
+          "Wunden, Ausfluss Nase/Ohr, Brillen-/Monokelhämatom, Deformität"
+        ],
+        [
+          "Hals",
+          "Wunden, gestaute Halsvenen, Druckschmerz, Stufenbildung"
+        ],
+        [
+          "Thorax",
+          "Prellmarken, paradoxe Atmung, Instabilität"
+        ],
+        [
+          "Abdomen",
+          "4 Quadranten, schmerzfern beginnen, Mimik beobachten"
+        ],
+        [
+          "Becken",
+          "seitlich abtasten: Druckschmerz, Instabilität"
+        ],
+        [
+          "Extremitäten",
+          "Wunden, Durchblutung, Fehlstellung, Motorik/Sensibilität"
+        ]
+      ]
+    },
+    {
+      "title": "Tourniquet & Abbinden",
+      "items": [
+        "Erst Druck, dann Druckverband – Tourniquet, wenn das nicht reicht oder nicht möglich ist",
+        "Auf nackter Haut, ca. eine Handbreit über der Wunde",
+        "Nur am Oberarm/Oberschenkel – nie Unterarm oder Unterschenkel",
+        "Ca. eine Handbreit Abstand zum Gelenk",
+        "Ohne Tourniquet: breite Dreiecktuchkrawatte",
+        "Uhrzeit gut sichtbar dokumentieren, nicht wieder lockern"
+      ]
+    },
+    {
+      "title": "Beckenschlinge: S-KIPS & 3-P",
+      "rows": [
+        [
+          "Indikation",
+          "Schock + mind. 1 weiteres Kriterium"
+        ],
+        [
+          "K – Kinematik",
+          "Unfallmechanismus"
+        ],
+        [
+          "I – Inspektion",
+          "sichtbare Verletzung/Deformität"
+        ],
+        [
+          "P – Palpation",
+          "Instabilität, Druckschmerz"
+        ],
+        [
+          "S – Schmerzen",
+          "im Beckenbereich"
+        ],
+        [
+          "Pocket",
+          "Hosentaschen leeren"
+        ],
+        [
+          "Penis",
+          "nicht einklemmen"
+        ],
+        [
+          "Pulse",
+          "periphere Pulse nach Anlage tastbar?"
+        ]
+      ],
+      "note": "Das Becken gehört zum großen C – nicht zum x."
     },
     {
       "title": "Vitalwerte Kinder (Richtwerte)",
       "rows": [
-        ["Säugling – HF", "100–160 / min"],
-        ["Säugling – AF", "30–40 / min"],
-        ["Kleinkind – HF", "90–140 / min"],
-        ["Kleinkind – AF", "20–30 / min"],
-        ["Schulkind – HF", "70–120 / min"],
-        ["Schulkind – AF", "15–25 / min"]
+        [
+          "Säugling – HF",
+          "100–160 / min"
+        ],
+        [
+          "Säugling – AF",
+          "30–40 / min"
+        ],
+        [
+          "Kleinkind – HF",
+          "90–140 / min"
+        ],
+        [
+          "Kleinkind – AF",
+          "20–30 / min"
+        ],
+        [
+          "Schulkind – HF",
+          "70–120 / min"
+        ],
+        [
+          "Schulkind – AF",
+          "15–25 / min"
+        ]
       ],
       "note": "Je nach Lehrbuch leicht unterschiedliche Grenzen – maßgeblich sind eure Lehrgangsunterlagen."
     },
     {
-      "title": "ABCDE-Schema",
-      "rows": [
-        ["A – Airway", "Atemwege frei? Fremdkörper, Schwellung, Geräusche"],
-        ["B – Breathing", "Atemfrequenz, Atemarbeit, SpO₂, Atemgeräusche"],
-        ["C – Circulation", "Puls, Haut, Rekapillarisierung, Blutdruck, Blutungen"],
-        ["D – Disability", "Bewusstsein (WASB/GCS), Pupillen, BZ, BE-FAST"],
-        ["E – Exposure", "Ganzkörper-Check, Temperatur, Umgebung, Wärmeerhalt"]
-      ],
-      "note": "Probleme sofort behandeln, wenn sie gefunden werden („treat first what kills first“) – danach erneut von vorne beurteilen."
-    },
-    {
-      "title": "SAMPLER-Anamnese",
-      "rows": [
-        ["S", "Symptome – was genau? seit wann?"],
-        ["A", "Allergien"],
-        ["M", "Medikamente"],
-        ["P", "Patientengeschichte / Vorerkrankungen"],
-        ["L", "Letzte Mahlzeit, Flüssigkeit, Ausscheidung"],
-        ["E", "Ereignis – was ist passiert?"],
-        ["R", "Risikofaktoren (z. B. Rauchen, Schwangerschaft)"]
-      ]
-    },
-    {
       "title": "Schlaganfall: BE-FAST",
       "rows": [
-        ["B – Balance", "Gleichgewichts- oder Gangstörung"],
-        ["E – Eyes", "Sehstörung, Doppelbilder"],
-        ["F – Face", "hängender Mundwinkel beim Lächeln"],
-        ["A – Arms", "Arm sinkt beim Vorhalten ab"],
-        ["S – Speech", "verwaschene Sprache, Wortfindung"],
-        ["T – Time", "Zeit notieren, sofort Notruf"]
+        [
+          "B – Balance",
+          "Gleichgewichts- oder Gangstörung"
+        ],
+        [
+          "E – Eyes",
+          "Sehstörung, Doppelbilder"
+        ],
+        [
+          "F – Face",
+          "hängender Mundwinkel beim Lächeln"
+        ],
+        [
+          "A – Arms",
+          "Arm sinkt beim Vorhalten ab"
+        ],
+        [
+          "S – Speech",
+          "verwaschene Sprache, Wortfindung"
+        ],
+        [
+          "T – Time",
+          "Zeit notieren, sofort Notruf"
+        ]
       ]
     },
     {
       "title": "Bewusstsein: WASB",
       "rows": [
-        ["W", "wach, orientiert"],
-        ["A", "reagiert auf Ansprache"],
-        ["S", "reagiert nur auf Schmerzreiz"],
-        ["B", "bewusstlos, keine Reaktion"]
+        [
+          "W",
+          "wach, orientiert"
+        ],
+        [
+          "A",
+          "reagiert auf Ansprache"
+        ],
+        [
+          "S",
+          "reagiert nur auf Schmerzreiz"
+        ],
+        [
+          "B",
+          "bewusstlos, keine Reaktion"
+        ]
       ],
       "note": "GCS: 3–15 Punkte. ≤ 8 = schwere Bewusstseinsstörung, Atemwege gefährdet."
     },
     {
       "title": "Lagerungen",
       "rows": [
-        ["Bewusstlos mit normaler Atmung", "Stabile Seitenlage"],
-        ["Atemnot / Herzproblem", "Oberkörper hoch, ggf. Kutschersitz"],
-        ["Volumenmangel-Schock", "Flach, Beine leicht hoch (wenn keine Kontraindikation)"],
-        ["Schädel-Hirn-Trauma (wach)", "Oberkörper ca. 30° hoch, Kopf gerade"],
-        ["Bauchverletzung / -schmerz", "Rückenlage mit Knierolle"],
-        ["Wirbelsäulenverdacht", "Nicht bewegen, Kopf manuell stabilisieren"],
-        ["Unterkühlung", "Schonend, horizontal"]
+        [
+          "Bewusstlos, eindeutig normale Atmung, kein Trauma",
+          "Stabile Seitenlage"
+        ],
+        [
+          "Atemnot / Herzproblem / D-Problem",
+          "Oberkörper hoch, ggf. Kutschersitz"
+        ],
+        [
+          "Volumenmangel-Schock",
+          "Flach, Beine leicht hoch (wenn keine Kontraindikation)"
+        ],
+        [
+          "Schädel-Hirn-Trauma (wach)",
+          "Oberkörper ca. 30° hoch, Kopf gerade"
+        ],
+        [
+          "Bauchverletzung / -schmerz",
+          "Rückenlage mit Knierolle"
+        ],
+        [
+          "Brustkorbverletzung",
+          "Oberkörper hoch, ggf. auf die verletzte Seite"
+        ],
+        [
+          "Wirbelsäulenverdacht",
+          "Nicht bewegen, Kopf manuell stabilisieren"
+        ],
+        [
+          "Unterkühlung",
+          "Schonend, horizontal"
+        ]
       ]
     },
     {
       "title": "Reanimation (BLS)",
       "rows": [
-        ["Erwachsene", "30:2 · 5–6 cm · 100–120 / min"],
-        ["Kinder (ausgebildete Helfer)", "5 Initialbeatmungen, dann 15:2"],
-        ["Drucktiefe Kind/Säugling", "ca. ⅓ des Brustkorbs"],
-        ["Ertrinkungsunfall", "5 Initialbeatmungen, dann 30:2"],
-        ["AED", "so früh wie möglich, Pausen minimal halten"]
+        [
+          "Erwachsene",
+          "30:2 · 5–6 cm · 100–120 / min"
+        ],
+        [
+          "Kinder (ausgebildete Helfer)",
+          "5 Initialbeatmungen, dann 15:2"
+        ],
+        [
+          "Drucktiefe Kind/Säugling",
+          "ca. ⅓ des Brustkorbs"
+        ],
+        [
+          "Ertrinkungsunfall",
+          "5 Initialbeatmungen, dann 30:2"
+        ],
+        [
+          "AED",
+          "so früh wie möglich, Pausen minimal halten"
+        ]
       ]
     },
     {
       "title": "Neunerregel (Erwachsene)",
       "rows": [
-        ["Kopf & Hals", "9 %"],
-        ["je Arm", "9 %"],
-        ["Rumpf vorne", "18 %"],
-        ["Rumpf hinten", "18 %"],
-        ["je Bein", "18 %"],
-        ["Genitalbereich", "1 %"],
-        ["Handfläche des Patienten (inkl. Finger)", "ca. 1 %"]
+        [
+          "Kopf & Hals",
+          "9 %"
+        ],
+        [
+          "je Arm",
+          "9 %"
+        ],
+        [
+          "Rumpf vorne",
+          "18 %"
+        ],
+        [
+          "Rumpf hinten",
+          "18 %"
+        ],
+        [
+          "je Bein",
+          "18 %"
+        ],
+        [
+          "Genitalbereich",
+          "1 %"
+        ],
+        [
+          "Handfläche des Patienten (inkl. Finger)",
+          "ca. 1 %"
+        ]
       ]
     },
     {
       "title": "Wichtige Nummern",
       "rows": [
-        ["Notruf Rettungsdienst / Feuerwehr", "112"],
-        ["Polizei", "110"],
-        ["Ärztlicher Bereitschaftsdienst", "116 117"],
-        ["Giftinformationszentrum Nord (Göttingen)", "0551 19240"]
+        [
+          "Notruf Rettungsdienst / Feuerwehr",
+          "112"
+        ],
+        [
+          "Polizei",
+          "110"
+        ],
+        [
+          "Ärztlicher Bereitschaftsdienst",
+          "116 117"
+        ],
+        [
+          "Giftinformationszentrum Nord (Göttingen)",
+          "0551 19240"
+        ]
       ]
     }
   ]

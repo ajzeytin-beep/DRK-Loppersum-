@@ -2,224 +2,832 @@
   "level": 2,
   "items": [
     {
-      "id": "l2-af", "topic": "anatomie", "type": "single",
+      "id": "l2-af",
+      "topic": "anatomie",
+      "type": "single",
       "question": "Wie hoch ist die normale Atemfrequenz eines Erwachsenen in Ruhe?",
-      "options": ["6–10 pro Minute", "12–20 pro Minute", "25–30 pro Minute", "30–40 pro Minute"],
+      "options": [
+        "6–10 pro Minute",
+        "12–16 pro Minute (bis 20 nach NEWS2)",
+        "25–30 pro Minute",
+        "30–40 pro Minute"
+      ],
       "answer": 1,
-      "explanation": "12–20 Atemzüge pro Minute. Eine erhöhte Atemfrequenz ist eines der frühesten Warnzeichen für einen kritischen Patienten."
+      "explanation": "Laut Lehrgangsskript 12–16 Atemzüge pro Minute, nach NEWS2-Score bis 20/min. Eine erhöhte Atemfrequenz ist eines der frühesten Warnzeichen für einen kritischen Patienten.",
+      "source": "skript"
     },
     {
-      "id": "l2-hf", "topic": "anatomie", "type": "single",
+      "id": "l2-hf",
+      "topic": "anatomie",
+      "type": "single",
       "question": "Wie hoch ist die normale Herzfrequenz eines Erwachsenen in Ruhe?",
-      "options": ["40–50 pro Minute", "60–100 pro Minute", "100–140 pro Minute", "120–160 pro Minute"],
+      "options": [
+        "40–50 pro Minute",
+        "60–80 pro Minute",
+        "110–140 pro Minute",
+        "150–180 pro Minute"
+      ],
       "answer": 1,
-      "explanation": "60–100 Schläge pro Minute. Über 100 nennt man Tachykardie, unter 60 Bradykardie (bei Sportlern kann das normal sein)."
+      "explanation": "Im Lehrgangsskript ist 60–80/min als Normwert angegeben. Über 100/min spricht man von Tachykardie, unter 60/min von Bradykardie (bei Sportlern kann das normal sein).",
+      "source": "skript"
     },
     {
-      "id": "l2-rr", "topic": "anatomie", "type": "single",
+      "id": "l2-rr",
+      "topic": "anatomie",
+      "type": "single",
       "question": "Welcher Blutdruckwert gilt bei Erwachsenen als normal?",
-      "options": ["ca. 120/80 mmHg", "ca. 90/50 mmHg", "ca. 180/110 mmHg", "ca. 80/120 mmHg"],
+      "options": [
+        "ca. 120/70 bis 140/90 mmHg",
+        "ca. 80/40 bis 90/50 mmHg",
+        "ca. 180/110 bis 220/130 mmHg",
+        "ca. 70/120 mmHg"
+      ],
       "answer": 0,
-      "explanation": "Der erste Wert ist der systolische (Herz zieht sich zusammen), der zweite der diastolische Druck (Herz erschlafft). Der systolische Wert ist immer der höhere."
+      "explanation": "Normwert laut Lehrgangsskript: 120/70 bis 140/90 mmHg. Der erste Wert ist der systolische (Herz zieht sich zusammen), der zweite der diastolische Druck (Herz erschlafft).",
+      "source": "skript"
     },
     {
-      "id": "l2-spo2", "topic": "anatomie", "type": "single",
+      "id": "l2-spo2",
+      "topic": "anatomie",
+      "type": "single",
       "question": "In welchem Bereich liegt die Sauerstoffsättigung (SpO₂) bei Gesunden?",
-      "options": ["75–85 %", "85–90 %", "95–100 %", "Immer genau 100 %"],
+      "options": [
+        "75–85 %",
+        "85–90 %",
+        "95–100 %",
+        "Immer genau 100 %"
+      ],
       "answer": 2,
       "explanation": "95–100 %. Werte darunter sind abklärungsbedürftig – Messfehler (kalte Finger, Nagellack, Bewegung) aber immer mitbedenken."
     },
     {
-      "id": "l2-bz", "topic": "anatomie", "type": "single",
+      "id": "l2-bz",
+      "topic": "anatomie",
+      "type": "single",
       "question": "Wo liegt der normale Blutzuckerwert (nüchtern) ungefähr?",
-      "options": ["30–50 mg/dl", "70–100 mg/dl", "150–200 mg/dl", "250–300 mg/dl"],
+      "options": [
+        "30–50 mg/dl",
+        "60–100 mg/dl",
+        "150–200 mg/dl",
+        "250–300 mg/dl"
+      ],
       "answer": 1,
-      "explanation": "Nüchtern ca. 70–100 mg/dl, nach dem Essen auch höher. Eine Unterzuckerung liegt meist unter 60 mg/dl vor (Grenzen je nach Lehrmeinung leicht unterschiedlich)."
+      "explanation": "Laut Lehrgangsskript nüchtern 60–100 mg/dl (3,3–5,6 mmol/l), nicht nüchtern bis 140 mg/dl (7,8 mmol/l). Umrechnung: mmol/l × 18 ≈ mg/dl.",
+      "source": "skript"
     },
     {
-      "id": "l2-temp", "topic": "anatomie", "type": "single",
+      "id": "l2-temp",
+      "topic": "anatomie",
+      "type": "single",
       "question": "Wie hoch ist die normale Körperkerntemperatur?",
-      "options": ["34,0–35,0 °C", "36,5–37,5 °C", "38,0–39,0 °C", "39,5–40,5 °C"],
+      "options": [
+        "34,0–35,0 °C",
+        "36,0–37,5 °C",
+        "38,0–39,0 °C",
+        "39,5–40,5 °C"
+      ],
       "answer": 1,
-      "explanation": "36,5–37,5 °C. Unter 35 °C spricht man von Unterkühlung, über 38 °C von Fieber."
+      "explanation": "Laut Lehrgangsskript 36,0–37,5 °C. Unter 35 °C spricht man von Unterkühlung, über 38 °C von Fieber.",
+      "source": "skript"
     },
     {
-      "id": "l2-kreislauf", "topic": "anatomie", "type": "single",
+      "id": "l2-kreislauf",
+      "topic": "anatomie",
+      "type": "single",
       "question": "Wohin pumpt die linke Herzkammer das Blut?",
-      "options": ["Über die Hauptschlagader (Aorta) in den Körperkreislauf", "In die Lunge", "In den rechten Vorhof", "Direkt in die Leber"],
+      "options": [
+        "Über die Hauptschlagader (Aorta) in den Körperkreislauf",
+        "In die Lunge",
+        "In den rechten Vorhof",
+        "Direkt in die Leber"
+      ],
       "answer": 0,
       "explanation": "Linkes Herz → Körperkreislauf (sauerstoffreiches Blut). Rechtes Herz → Lungenkreislauf (sauerstoffarmes Blut zur Lunge)."
     },
     {
-      "id": "l2-alveolen", "topic": "anatomie", "type": "single",
+      "id": "l2-alveolen",
+      "topic": "anatomie",
+      "type": "single",
       "question": "Wo findet der Gasaustausch in der Lunge statt?",
-      "options": ["In den Lungenbläschen (Alveolen)", "In der Luftröhre", "Im Kehlkopf", "In den großen Bronchien"],
+      "options": [
+        "In den Lungenbläschen (Alveolen)",
+        "In der Luftröhre",
+        "Im Kehlkopf",
+        "In den großen Bronchien"
+      ],
       "answer": 0,
       "explanation": "In den Alveolen gelangt Sauerstoff ins Blut und Kohlendioxid aus dem Blut in die Atemluft."
     },
     {
-      "id": "l2-blutvolumen", "topic": "anatomie", "type": "single",
+      "id": "l2-blutvolumen",
+      "topic": "anatomie",
+      "type": "single",
       "question": "Wie viel Blut hat ein Erwachsener ungefähr?",
-      "options": ["1–2 Liter", "5–6 Liter", "8–10 Liter", "12 Liter"],
+      "options": [
+        "1–2 Liter",
+        "5–6 Liter",
+        "8–10 Liter",
+        "12 Liter"
+      ],
       "answer": 1,
       "explanation": "Etwa 7–8 % des Körpergewichts, also rund 5–6 Liter. Schon ein Verlust von ca. 1 Liter kann zum Schock führen."
     },
     {
-      "id": "l2-hirn", "topic": "anatomie", "type": "single",
+      "id": "l2-hirn",
+      "topic": "anatomie",
+      "type": "single",
       "question": "Nach welcher Zeit ohne Sauerstoff drohen bleibende Hirnschäden?",
-      "options": ["Nach ca. 3–5 Minuten", "Nach ca. 30 Minuten", "Nach ca. 1 Stunde", "Erst nach mehreren Stunden"],
+      "options": [
+        "Nach ca. 3–5 Minuten",
+        "Nach ca. 30 Minuten",
+        "Nach ca. 1 Stunde",
+        "Erst nach mehreren Stunden"
+      ],
       "answer": 0,
       "explanation": "Deshalb ist die sofortige Herzdruckmassage durch Ersthelfer und Sanitäter so entscheidend – der Rettungsdienst braucht oft länger."
     },
     {
-      "id": "l2-pulsorte", "topic": "anatomie", "type": "multi",
+      "id": "l2-pulsorte",
+      "topic": "anatomie",
+      "type": "multi",
       "question": "An welchen Stellen kannst du bei Erwachsenen den Puls gut tasten?",
-      "options": ["Handgelenk (A. radialis)", "Hals (A. carotis)", "Leiste (A. femoralis)", "Ellenbogenspitze", "Kniescheibe"],
-      "answer": [0, 1, 2],
+      "options": [
+        "Handgelenk (A. radialis)",
+        "Hals (A. carotis)",
+        "Leiste (A. femoralis)",
+        "Ellenbogenspitze",
+        "Kniescheibe"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
       "explanation": "Speichenarterie, Halsschlagader, Leistenarterie. Beim Säugling tastet man an der Innenseite des Oberarms (A. brachialis)."
     },
     {
-      "id": "l2-rekap", "topic": "beurteilung", "type": "single",
+      "id": "l2-rekap",
+      "topic": "beurteilung",
+      "type": "single",
       "question": "Wie lange dauert die normale Rekapillarisierungszeit?",
-      "options": ["Unter 2 Sekunden", "5–8 Sekunden", "Etwa 10 Sekunden", "Über 15 Sekunden"],
+      "options": [
+        "Unter 2 Sekunden",
+        "5–8 Sekunden",
+        "Etwa 10 Sekunden",
+        "Über 15 Sekunden"
+      ],
       "answer": 0,
       "explanation": "Kurz auf Nagelbett oder Stirn drücken: Die Farbe sollte in unter 2 Sekunden zurückkehren. Länger = Hinweis auf schlechte Durchblutung (Kälte kann verfälschen)."
     },
     {
-      "id": "l2-abcde-order", "topic": "beurteilung", "type": "order",
-      "question": "Bringe das ABCDE-Schema in die richtige Reihenfolge.",
-      "items": ["A – Atemwege", "B – Belüftung / Atmung", "C – Kreislauf (Circulation)", "D – Neurologie (Disability)", "E – Erweiterte Untersuchung / Umgebung (Exposure)"],
-      "explanation": "Die Reihenfolge folgt dem, was am schnellsten tötet: Ein verlegter Atemweg ist gefährlicher als ein gebrochenes Bein."
+      "id": "l2-abcde-order",
+      "topic": "beurteilung",
+      "type": "order",
+      "question": "Bringe das xABCDE-Schema in die richtige Reihenfolge.",
+      "items": [
+        "x – Exsanguination: lebensbedrohliche äußere Blutung stoppen",
+        "A – Airway: Atemwege",
+        "B – Breathing: Belüftung / Atmung",
+        "C – Circulation: Kreislauf",
+        "D – Disability: Neurologie",
+        "E – Exposure/Environment: Ganzkörperuntersuchung, Umgebung"
+      ],
+      "explanation": "Die Reihenfolge folgt den Prioritäten: Ohne Blut kein Sauerstofftransport, ohne Atemweg kein Gasaustausch, ohne Sauerstoff kein Kreislauf. Eine äußere Blutung lässt sich in Sekunden erkennen und stoppen – deshalb steht sie ganz vorn.",
+      "source": "skript"
     },
     {
-      "id": "l2-abcde-prinzip", "topic": "beurteilung", "type": "single",
+      "id": "l2-abcde-prinzip",
+      "topic": "beurteilung",
+      "type": "single",
       "question": "Du findest bei „B“ ein Problem. Was ist richtig?",
-      "options": ["Das Problem sofort behandeln, dann mit dem Schema weitermachen", "Erst das ganze Schema beenden, dann behandeln", "Bei C weitermachen und B später nachholen", "Nur dokumentieren, der Rettungsdienst behandelt"],
+      "options": [
+        "Das Problem sofort behandeln, dann mit dem Schema weitermachen",
+        "Erst das ganze Schema beenden, dann behandeln",
+        "Bei C weitermachen und B später nachholen",
+        "Nur dokumentieren, der Rettungsdienst behandelt"
+      ],
       "answer": 0,
-      "explanation": "„Treat first what kills first“: Probleme werden sofort behandelt. Nach jeder Maßnahme und bei Verschlechterung beginnt man wieder bei A."
+      "explanation": "„Treat first what kills first“: Probleme werden sofort behandelt. Nach Abschluss von E (und bei jeder Verschlechterung) beginnst du wieder bei A."
     },
     {
-      "id": "l2-sampler-a", "topic": "beurteilung", "type": "single",
-      "question": "Wofür steht das „A“ im SAMPLER-Schema?",
-      "options": ["Allergien", "Atmung", "Alter", "Alkohol"],
+      "id": "l2-sampler-a",
+      "topic": "beurteilung",
+      "type": "single",
+      "question": "Wofür steht das „A“ im SAMPLERS-Schema?",
+      "options": [
+        "Allergien",
+        "Atmung",
+        "Alter",
+        "Alkohol"
+      ],
       "answer": 0,
-      "explanation": "SAMPLER: Symptome, Allergien, Medikamente, Patientengeschichte, Letzte Mahlzeit/Ausscheidung, Ereignis, Risikofaktoren."
+      "explanation": "SAMPLERS: Symptome, Allergien, Medikamente, Patientengeschichte, Letzte Mahlzeit/Ausscheidung, Ereignis, Risikofaktoren, Schwangerschaft.",
+      "source": "skript"
     },
     {
-      "id": "l2-sampler-m", "topic": "beurteilung", "type": "single",
-      "question": "Welche Frage gehört zum „M“ im SAMPLER-Schema?",
-      "options": ["Welche Medikamente nehmen Sie ein?", "Wann haben Sie zuletzt gegessen?", "Was ist passiert?", "Wo genau tut es weh?"],
+      "id": "l2-sampler-m",
+      "topic": "beurteilung",
+      "type": "single",
+      "question": "Welche Frage gehört zum „M“ im SAMPLERS-Schema?",
+      "options": [
+        "Welche Medikamente nehmen Sie ein?",
+        "Wann haben Sie zuletzt gegessen?",
+        "Was ist passiert?",
+        "Wo genau tut es weh?"
+      ],
       "answer": 0,
       "explanation": "Medikamente geben wichtige Hinweise (z. B. Blutverdünner bei Sturz, Insulin bei Bewusstseinsstörung). Medikamentenplan oder Packungen dem Rettungsdienst mitgeben."
     },
     {
-      "id": "l2-wasb", "topic": "beurteilung", "type": "single",
+      "id": "l2-wasb",
+      "topic": "beurteilung",
+      "type": "single",
       "question": "Ein Patient öffnet die Augen nur bei einem Schmerzreiz. Wie stufst du ihn nach WASB ein?",
-      "options": ["W – wach", "A – reagiert auf Ansprache", "S – reagiert auf Schmerzreiz", "B – bewusstlos"],
+      "options": [
+        "W – wach",
+        "A – reagiert auf Ansprache",
+        "S – reagiert auf Schmerzreiz",
+        "B – bewusstlos"
+      ],
       "answer": 2,
       "explanation": "WASB: Wach – reagiert auf Ansprache – reagiert auf Schmerzreiz – bewusstlos. Ab „S“ sind die Schutzreflexe oft schon eingeschränkt."
     },
     {
-      "id": "l2-gcs", "topic": "beurteilung", "type": "single",
+      "id": "l2-gcs",
+      "topic": "beurteilung",
+      "type": "single",
       "question": "In welchem Punktebereich liegt die Glasgow Coma Scale (GCS)?",
-      "options": ["0–10", "1–12", "3–15", "5–20"],
+      "options": [
+        "0–10",
+        "1–12",
+        "3–15",
+        "5–20"
+      ],
       "answer": 2,
       "explanation": "3 (tief bewusstlos) bis 15 (voll orientiert). Bewertet werden Augenöffnen, verbale und motorische Reaktion. Bei 8 und weniger sind die Atemwege gefährdet."
     },
     {
-      "id": "l2-ersteindruck", "topic": "beurteilung", "type": "multi",
+      "id": "l2-ersteindruck",
+      "topic": "beurteilung",
+      "type": "multi",
       "question": "Was beurteilst du beim Ersteindruck in den ersten Sekunden?",
-      "options": ["Bewusstsein / Reaktion", "Atmung (Geräusche, Anstrengung)", "Hautfarbe", "Blutzuckerwert", "Impfstatus"],
-      "answer": [0, 1, 2],
+      "options": [
+        "Bewusstsein / Reaktion",
+        "Atmung (Geräusche, Anstrengung)",
+        "Hautfarbe",
+        "Blutzuckerwert",
+        "Impfstatus"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
       "explanation": "Der Ersteindruck („kritisch oder nicht kritisch?“) gelingt mit Augen und Ohren. Messwerte wie Blutzucker folgen später im ABCDE."
     },
     {
-      "id": "l2-desinf", "topic": "hygiene", "type": "single",
+      "id": "l2-desinf",
+      "topic": "hygiene",
+      "type": "single",
       "question": "Wie lange muss ein übliches Händedesinfektionsmittel einwirken?",
-      "options": ["5 Sekunden", "Etwa 30 Sekunden", "5 Minuten", "Es muss nicht einwirken"],
+      "options": [
+        "5 Sekunden",
+        "Etwa 30 Sekunden",
+        "5 Minuten",
+        "Es muss nicht einwirken"
+      ],
       "answer": 1,
       "explanation": "Meist 30 Sekunden – Herstellerangaben beachten. Die Hände müssen die ganze Zeit über feucht sein."
     },
     {
-      "id": "l2-nadelstich", "topic": "hygiene", "type": "multi",
+      "id": "l2-nadelstich",
+      "topic": "hygiene",
+      "type": "multi",
       "question": "Du verletzt dich an einer benutzten Lanzette. Was ist richtig?",
-      "options": ["Blutung fördern (bluten lassen)", "Gründlich desinfizieren", "Vorfall sofort melden und dokumentieren", "Zeitnah einen Arzt (D-Arzt) aufsuchen", "Weiterarbeiten und den Vorfall für sich behalten"],
-      "answer": [0, 1, 2, 3],
+      "options": [
+        "Blutung fördern (bluten lassen)",
+        "Gründlich desinfizieren",
+        "Vorfall sofort melden und dokumentieren",
+        "Zeitnah einen Arzt (D-Arzt) aufsuchen",
+        "Weiterarbeiten und den Vorfall für sich behalten"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
       "explanation": "Stich- und Schnittverletzungen sind Arbeitsunfälle – auch im Ehrenamt. Schnelles Handeln und Meldung sind wichtig, damit ggf. eine Prophylaxe begonnen werden kann."
     },
     {
-      "id": "l2-ffp2", "topic": "hygiene", "type": "single",
+      "id": "l2-ffp2",
+      "topic": "hygiene",
+      "type": "single",
       "question": "Patient mit Verdacht auf eine über die Luft übertragbare Infektion. Welche Maske schützt dich?",
-      "options": ["FFP2-Maske", "Einfache Stoffmaske", "Keine – Handschuhe reichen", "Beatmungsmaske"],
+      "options": [
+        "FFP2-Maske",
+        "Einfache Stoffmaske",
+        "Keine – Handschuhe reichen",
+        "Beatmungsmaske"
+      ],
       "answer": 0,
       "explanation": "Eine FFP2-Maske schützt den Träger. Je nach Lage zusätzlich Schutzbrille und Schutzkittel – nach euren Hygienevorgaben."
     },
     {
-      "id": "l2-spitz", "topic": "hygiene", "type": "single",
+      "id": "l2-spitz",
+      "topic": "hygiene",
+      "type": "single",
       "question": "Wohin gehören benutzte Lanzetten, z. B. nach dem Blutzuckermessen?",
-      "options": ["In einen durchstichsicheren Abwurfbehälter", "In den normalen Müllbeutel", "Zurück in die Verpackung", "In die Jackentasche bis zum Dienstende"],
+      "options": [
+        "In einen durchstichsicheren Abwurfbehälter",
+        "In den normalen Müllbeutel",
+        "Zurück in die Verpackung",
+        "In die Jackentasche bis zum Dienstende"
+      ],
       "answer": 0,
       "explanation": "Spitze und scharfe Gegenstände immer sofort in den durchstichsicheren Behälter – nie zurückstecken („Recapping“)."
     },
     {
-      "id": "l2-schweige", "topic": "recht", "type": "truefalse",
+      "id": "l2-schweige",
+      "topic": "recht",
+      "type": "truefalse",
       "question": "Der Veranstalter fragt nach der Diagnose eines Patienten. Du darfst sie ihm mitteilen, weil er für die Veranstaltung verantwortlich ist.",
       "answer": false,
       "explanation": "Du bist zur Verschwiegenheit verpflichtet – auch gegenüber Veranstalter, Presse, Freunden und in sozialen Medien. Weitergegeben wird nur, was für die Behandlung nötig ist (z. B. an den Rettungsdienst)."
     },
     {
-      "id": "l2-garant", "topic": "recht", "type": "single",
+      "id": "l2-garant",
+      "topic": "recht",
+      "type": "single",
       "question": "Was bedeutet es, dass du im Sanitätsdienst eine „Garantenstellung“ hast?",
-      "options": ["Durch die Übernahme des Dienstes hast du eine besondere Pflicht, Patienten zu helfen", "Du garantierst, dass jeder Patient überlebt", "Du darfst alle ärztlichen Maßnahmen durchführen", "Du haftest nie für Fehler"],
+      "options": [
+        "Durch die Übernahme des Dienstes hast du eine besondere Pflicht, Patienten zu helfen",
+        "Du garantierst, dass jeder Patient überlebt",
+        "Du darfst alle ärztlichen Maßnahmen durchführen",
+        "Du haftest nie für Fehler"
+      ],
       "answer": 0,
       "explanation": "Wer einen Sanitätsdienst übernimmt, muss im Rahmen seiner Ausbildung handeln. Unterlassen kann hier strenger bewertet werden als bei zufällig anwesenden Laien."
     },
     {
-      "id": "l2-medis", "topic": "recht", "type": "truefalse",
+      "id": "l2-medis",
+      "topic": "recht",
+      "type": "truefalse",
       "question": "Als Sanitäter darf ich einem Patienten bei Kopfschmerzen eine Schmerztablette aus dem Sanitätsrucksack geben.",
       "answer": false,
       "explanation": "Sanitäter verabreichen keine Medikamente. Ausnahmen gibt es nur nach eurer Regelung, z. B. Sauerstoff oder die Unterstützung bei patienteneigenen Notfallmedikamenten (Asthmaspray, Adrenalin-Autoinjektor)."
     },
     {
-      "id": "l2-ablehnung", "topic": "recht", "type": "multi",
+      "id": "l2-ablehnung",
+      "topic": "recht",
+      "type": "multi",
       "question": "Ein orientierter, einsichtsfähiger Patient lehnt Behandlung und Transport ab. Was tust du?",
-      "options": ["Über mögliche Folgen aufklären", "Die Ablehnung dokumentieren und möglichst unterschreiben lassen (mit Zeugen)", "Bei Zweifeln Rettungsdienst oder Notarzt hinzuziehen", "Den Patienten gegen seinen Willen festhalten", "Ihn kommentarlos gehen lassen"],
-      "answer": [0, 1, 2],
+      "options": [
+        "Über mögliche Folgen aufklären",
+        "Die Ablehnung dokumentieren und möglichst unterschreiben lassen (mit Zeugen)",
+        "Bei Zweifeln Rettungsdienst oder Notarzt hinzuziehen",
+        "Den Patienten gegen seinen Willen festhalten",
+        "Ihn kommentarlos gehen lassen"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
       "explanation": "Ein einwilligungsfähiger Erwachsener darf ablehnen. Deine Pflicht ist gute Aufklärung und Dokumentation. Bei Zweifeln an der Einsichtsfähigkeit (Alkohol, Kopfverletzung, Unterzuckerung) immer Rettungsdienst/Arzt hinzuziehen."
     },
     {
-      "id": "l2-323c", "topic": "recht", "type": "single",
+      "id": "l2-323c",
+      "topic": "recht",
+      "type": "single",
       "question": "Was regelt § 323c des Strafgesetzbuchs?",
-      "options": ["Unterlassene Hilfeleistung", "Die Schweigepflicht", "Den Datenschutz", "Das Verhalten im Straßenverkehr"],
+      "options": [
+        "Unterlassene Hilfeleistung",
+        "Die Schweigepflicht",
+        "Den Datenschutz",
+        "Das Verhalten im Straßenverkehr"
+      ],
       "answer": 0,
       "explanation": "Jeder ist verpflichtet, bei Unglücksfällen zumutbare Hilfe zu leisten. Für Sanitäter im Dienst kommt die Garantenstellung hinzu."
     },
     {
-      "id": "l2-doku", "topic": "recht", "type": "multi",
+      "id": "l2-doku",
+      "topic": "recht",
+      "type": "multi",
       "question": "Warum ist eine gute Einsatzdokumentation wichtig?",
-      "options": ["Sie sichert die Übergabe an den Rettungsdienst", "Sie dient deiner rechtlichen Absicherung", "Sie hilft bei der Qualitätssicherung und Auswertung", "Sie ist für die Presse bestimmt"],
-      "answer": [0, 1, 2],
+      "options": [
+        "Sie sichert die Übergabe an den Rettungsdienst",
+        "Sie dient deiner rechtlichen Absicherung",
+        "Sie hilft bei der Qualitätssicherung und Auswertung",
+        "Sie ist für die Presse bestimmt"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
       "explanation": "Was nicht dokumentiert ist, gilt als nicht gemacht. Patientenprotokolle sind vertraulich und werden nach euren Vorgaben aufbewahrt."
     },
     {
-      "id": "l2-sd-aufgabe", "topic": "sd", "type": "single",
+      "id": "l2-sd-aufgabe",
+      "topic": "sd",
+      "type": "single",
       "question": "Was ist die Kernaufgabe des Sanitätsdienstes bei einer Veranstaltung?",
-      "options": ["Erstversorgung bis zum Eintreffen des Rettungsdienstes und Versorgung leichter Verletzungen", "Den Rettungsdienst vollständig zu ersetzen", "Patienten selbst ins Krankenhaus zu fahren", "Diagnosen zu stellen und Medikamente zu verordnen"],
+      "options": [
+        "Erstversorgung bis zum Eintreffen des Rettungsdienstes und Versorgung leichter Verletzungen",
+        "Den Rettungsdienst vollständig zu ersetzen",
+        "Patienten selbst ins Krankenhaus zu fahren",
+        "Diagnosen zu stellen und Medikamente zu verordnen"
+      ],
       "answer": 0,
       "explanation": "Der Sanitätsdienst überbrückt die Zeit bis zum Rettungsdienst, versorgt Bagatellverletzungen und betreut Patienten. Er ersetzt weder Rettungsdienst noch Arzt."
     },
     {
-      "id": "l2-sd-rd", "topic": "sd", "type": "truefalse",
+      "id": "l2-sd-rd",
+      "topic": "sd",
+      "type": "truefalse",
       "question": "Wenn ich unsicher bin, ob ein Patient den Rettungsdienst braucht, fordere ich ihn lieber an.",
       "answer": true,
       "explanation": "Lieber zu früh als zu spät. Der Weg der Nachforderung (über Einsatzleitung, Sanitätswache oder direkt 112) wird vor dem Dienst festgelegt."
     },
     {
-      "id": "l2-sd-meldung", "topic": "sd", "type": "single",
+      "id": "l2-sd-meldung",
+      "topic": "sd",
+      "type": "single",
       "question": "Du wirst während eines Sanitätsdienstes zu einem Patienten gerufen. Was tust du, bevor du losgehst?",
-      "options": ["Kurz der Einsatzleitung bzw. Sanitätswache melden, wohin du gehst", "Nichts – sofort losrennen", "Erst das Protokoll ausfüllen", "Den Veranstalter um Erlaubnis fragen"],
+      "options": [
+        "Kurz der Einsatzleitung bzw. Sanitätswache melden, wohin du gehst",
+        "Nichts – sofort losrennen",
+        "Erst das Protokoll ausfüllen",
+        "Den Veranstalter um Erlaubnis fragen"
+      ],
       "answer": 0,
       "explanation": "Die Einsatzleitung muss wissen, wo ihre Kräfte sind – sonst kann sie nicht nachsteuern oder Unterstützung schicken. Das geht meist per Funk in Sekunden."
+    },
+    {
+      "id": "s-x",
+      "topic": "beurteilung",
+      "type": "single",
+      "source": "skript",
+      "question": "Wofür steht das „x“ im xABCDE-Schema?",
+      "options": [
+        "Exsanguination – lebensbedrohliche äußere Blutung zuerst stoppen",
+        "Extra – zusätzliche Untersuchung am Ende",
+        "X-Ray – Röntgenverdacht",
+        "Exposure – Patient entkleiden"
+      ],
+      "answer": 0,
+      "explanation": "Kritische Blutungen (z. B. arterielle Blutung, Amputation, Pfählungs-, Stich- oder Schusswunde) werden vor allem anderen gestoppt: Druck, Druckverband, Tourniquet. In manchen Schemata heißt es „c“ (critical bleeding)."
+    },
+    {
+      "id": "s-x-becken",
+      "topic": "beurteilung",
+      "type": "truefalse",
+      "source": "skript",
+      "question": "Die Beckenschlinge gehört zum „x“ (kritische Blutung) im xABCDE-Schema.",
+      "answer": false,
+      "explanation": "Unter x werden nur äußere, direkt zugängliche Blutungen gestoppt. Das Becken wird erst beim großen C untersucht und ggf. mit der Beckenschlinge versorgt – die Anlage dauert länger und Atemweg, Atmung und Kreislauf haben Vorrang."
+    },
+    {
+      "id": "s-samplers-s",
+      "topic": "beurteilung",
+      "type": "single",
+      "source": "skript",
+      "question": "Wofür steht das letzte „S“ in SAMPLERS?",
+      "options": [
+        "Schwangerschaft",
+        "Schmerzen",
+        "Sauerstoffsättigung",
+        "Schock"
+      ],
+      "answer": 0,
+      "explanation": "SAMPLERS: Symptome, Allergien, Medikamente, Patientengeschichte, Letzte Mahlzeit/Ausscheidung, Ereignis, Risikofaktoren, Schwangerschaft. Eine Schwangerschaft verändert z. B. Lagerung (Linksseitenlage) und Kreislaufwerte."
+    },
+    {
+      "id": "s-zops",
+      "topic": "neuro",
+      "type": "single",
+      "source": "skript",
+      "question": "Wofür steht ZOPS (früher ZORRO) bei der Prüfung der Orientierung?",
+      "options": [
+        "Zeit, Ort, Person, Situation",
+        "Zustand, Orientierung, Puls, Schmerz",
+        "Zunge, Ohren, Pupillen, Sprache",
+        "Zucker, Ohnmacht, Puls, Sauerstoff"
+      ],
+      "answer": 0,
+      "explanation": "Zeit (Tag/Monat/Jahr?), Ort (Wo sind wir?), Person (Wer sind Sie?), Situation (Was ist passiert?). Ist der Patient in einem Bereich nicht orientiert, liegt ein D-Problem vor."
+    },
+    {
+      "id": "s-zops-ort",
+      "topic": "neuro",
+      "type": "single",
+      "source": "skript",
+      "question": "Du fragst den Patienten: „Wissen Sie, wo wir gerade sind?“ Welchen Teil von ZOPS prüfst du?",
+      "options": [
+        "Ort",
+        "Zeit",
+        "Person",
+        "Situation"
+      ],
+      "answer": 0,
+      "explanation": "Ort: Weiß der Patient, wo er sich befindet? Beim Dorffest reicht z. B. „in Loppersum auf dem Festplatz“."
+    },
+    {
+      "id": "s-girl",
+      "topic": "neuro",
+      "type": "single",
+      "source": "skript",
+      "question": "Wofür steht GIRL bei der Kontrolle der Pupillen?",
+      "options": [
+        "Größe, Isokorie, Rund, Lichtreaktion",
+        "Gesicht, Iris, Reflex, Lider",
+        "Glanz, Innen, Rot, Lidschlag",
+        "Gleich, Intakt, Reaktion, Licht"
+      ],
+      "answer": 0,
+      "explanation": "Größe (eng/mittel/weit), Isokorie (beide gleich groß?), Rund (Form), Lichtreaktion (verengen sie sich bei Licht?). Ungleiche oder lichtstarre Pupillen sind ein Alarmzeichen, z. B. beim Schädel-Hirn-Trauma."
+    },
+    {
+      "id": "s-isokorie",
+      "topic": "neuro",
+      "type": "single",
+      "source": "skript",
+      "question": "Was bedeutet „Isokorie“?",
+      "options": [
+        "Beide Pupillen sind gleich groß",
+        "Beide Pupillen sind sehr eng",
+        "Die Pupillen reagieren nicht auf Licht",
+        "Eine Pupille ist entrundet"
+      ],
+      "answer": 0,
+      "explanation": "Iso = gleich. Das Gegenteil, die Anisokorie (ungleich große Pupillen), kann auf eine Hirnblutung hindeuten."
+    },
+    {
+      "id": "s-ssss",
+      "topic": "sd",
+      "type": "order",
+      "source": "skript",
+      "question": "SSSS-Schema beim Eintreffen am Notfallort: Bringe die Schritte in die richtige Reihenfolge.",
+      "items": [
+        "Scene – Einsatzstelle beurteilen: Was ist passiert?",
+        "Safety – Eigen- und Fremdschutz, PSA, Gefahren?",
+        "Situation – Wie viele Patienten?",
+        "Support – weitere Einsatzkräfte nachfordern"
+      ],
+      "explanation": "Erst den Überblick, dann die Sicherheit, dann die Zahl der Betroffenen – und frühzeitig Unterstützung nachfordern, wenn die eigenen Kräfte nicht reichen."
+    },
+    {
+      "id": "s-4s",
+      "topic": "sd",
+      "type": "multi",
+      "source": "skript",
+      "question": "Welche Punkte gehören zur 4S-Regel der psychischen Betreuung?",
+      "options": [
+        "Sage, dass du da bist und dass etwas geschieht",
+        "Suche vorsichtigen Körperkontakt",
+        "Schirme den Verletzten ab",
+        "Sprich und höre zu",
+        "Sei still, damit der Patient sich ausruhen kann"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "Die vier S helfen jedem Patienten: Sicherheit vermitteln, Nähe zeigen, vor Schaulustigen schützen, zuhören."
+    },
+    {
+      "id": "s-ansprache",
+      "topic": "sd",
+      "type": "single",
+      "source": "memo",
+      "question": "Wie sprichst du einen Patienten in der ersten Minute an?",
+      "options": [
+        "„Hallo! Wir sind vom DRK. Was ist passiert?“",
+        "„Name, Geburtsdatum, Krankenkasse?“",
+        "„Bleiben Sie ruhig, das ist bestimmt nichts.“",
+        "Gar nicht – erst messen, dann reden"
+      ],
+      "answer": 0,
+      "explanation": "Sich vorstellen schafft Vertrauen, die offene Frage liefert sofort Informationen über Bewusstsein, Atmung (kann er sprechen?) und Hergang."
+    },
+    {
+      "id": "s-erste-minute",
+      "topic": "beurteilung",
+      "type": "order",
+      "source": "memo",
+      "question": "Die erste Minute nach dem SAN-Memo: Bringe die Schritte in die richtige Reihenfolge.",
+      "items": [
+        "Sicherheit und Lage beurteilen",
+        "Bedrohliche Blutung? Sofort Blutstillung",
+        "Patient ansprechen: bewusstlos oder wach?",
+        "Schnell-Check: Verdacht auf A-, B-, C-, D- oder E-Problem?",
+        "Teambesprechung: Lage, Verdachtsdiagnose, Notarzt?"
+      ],
+      "explanation": "Innerhalb einer Minute weißt du so, ob der Patient kritisch ist. Danach folgt die ausführliche Untersuchung nach xABCDE."
+    },
+    {
+      "id": "s-lage",
+      "topic": "sd",
+      "type": "multi",
+      "source": "memo",
+      "question": "Was klärst du unter „Lage“ in der ersten Minute?",
+      "options": [
+        "Zahl der Betroffenen",
+        "Ist der Hergang erkennbar?",
+        "Umfeld: Gelände, Wetter, Licht, Uhrzeit",
+        "Die Krankenkasse des Patienten"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explanation": "Die Lage bestimmt, ob ihr allein klarkommt oder sofort Unterstützung braucht – z. B. nachts, bei Regen oder mehreren Verletzten."
+    },
+    {
+      "id": "s-10for10",
+      "topic": "kommunikation",
+      "type": "single",
+      "source": "skript",
+      "question": "Was ist ein „10-for-10“?",
+      "options": [
+        "Eine kurze Team-Pause von 10 Sekunden, um die nächsten 10 Minuten zu planen",
+        "10 Herzdruckmassagen für 10 Sekunden",
+        "10 Minuten Pause nach 10 Einsätzen",
+        "Eine Messung im Abstand von 10 Minuten"
+      ],
+      "answer": 0,
+      "explanation": "Das Team-Timeout klärt Lage, Verdachtsdiagnose und nächste Schritte (z. B. Notarzt?). Es verbessert die Kommunikation und reduziert Fehler durch falsche Informationen."
+    },
+    {
+      "id": "s-kreislauf-weg",
+      "topic": "anatomie",
+      "type": "order",
+      "source": "skript",
+      "question": "Bringe den Weg des Blutes durch den Körperkreislauf in die richtige Reihenfolge.",
+      "items": [
+        "Linke Herzkammer",
+        "Aortenklappe (Taschenklappe)",
+        "Aorta",
+        "Arterien und Arteriolen",
+        "Kapillaren – Gasaustausch in den Zellen",
+        "Venolen und Venen (Hohlvenen)",
+        "Rechter Vorhof"
+      ],
+      "explanation": "Danach geht es weiter über die Trikuspidalklappe in die rechte Kammer, durch die Pulmonalklappe in die Lungenarterien, zur Lunge (Gasaustausch) und über die Lungenvenen und die Mitralklappe zurück in die linke Kammer."
+    },
+    {
+      "id": "s-mitral",
+      "topic": "anatomie",
+      "type": "single",
+      "source": "skript",
+      "question": "Welche Herzklappe liegt zwischen linkem Vorhof und linker Kammer?",
+      "options": [
+        "Mitralklappe (Segelklappe)",
+        "Aortenklappe",
+        "Pulmonalklappe",
+        "Trikuspidalklappe"
+      ],
+      "answer": 0,
+      "explanation": "Zwischen Vorhöfen und Kammern liegen Segelklappen (links Mitral-, rechts Trikuspidalklappe), am Ausgang der Kammern Taschenklappen (Aorten- und Pulmonalklappe)."
+    },
+    {
+      "id": "s-arterie",
+      "topic": "anatomie",
+      "type": "truefalse",
+      "source": "skript",
+      "question": "Arterien führen das Blut immer vom Herzen weg – auch wenn es sauerstoffarm ist, wie in der Lungenarterie.",
+      "answer": true,
+      "explanation": "Arterien: vom Herzen weg. Venen: zum Herzen hin. Ob das Blut sauerstoffreich oder -arm ist, spielt für die Bezeichnung keine Rolle."
+    },
+    {
+      "id": "s-psa",
+      "topic": "hygiene",
+      "type": "multi",
+      "source": "skript",
+      "question": "Was gehört laut Lehrgang zur persönlichen Schutzausrüstung (PSA)?",
+      "options": [
+        "Helm mit Nackenschutz, ggf. Visier",
+        "Schutzbrille",
+        "Handschuhe mind. EN 388",
+        "Einsatzstiefel S3 mit Stahlkappe, mind. knöchelhoch",
+        "Turnschuhe"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "Dazu Einsatzjacke und Einsatzhose. Die PSA schützt dich z. B. bei Verkehrsunfällen vor Glassplittern, scharfen Kanten und Verkehr."
+    },
+    {
+      "id": "s-bz-recht",
+      "topic": "recht",
+      "type": "single",
+      "source": "skript",
+      "question": "Warum brauchst du vor dem Blutzuckermessen die Einwilligung des Patienten?",
+      "options": [
+        "Der Stich ist rechtlich eine Körperverletzung (§ 223 StGB) – erst die Einwilligung (§ 228 StGB) rechtfertigt ihn",
+        "Weil das Messgerät sonst nicht startet",
+        "Weil der Patient die Teststreifen bezahlen muss",
+        "Eine Einwilligung ist nie nötig"
+      ],
+      "answer": 0,
+      "explanation": "Jeder Eingriff in die körperliche Unversehrtheit braucht eine Einwilligung. Bei Bewusstlosen handelst du im mutmaßlichen Willen des Patienten."
+    },
+    {
+      "id": "s-bz-ablauf",
+      "topic": "material",
+      "type": "order",
+      "source": "skript",
+      "question": "Bringe die Blutzuckermessung in die richtige Reihenfolge.",
+      "items": [
+        "Einwilligung einholen",
+        "Punktionsstelle desinfizieren, abwischen, erneut desinfizieren und einwirken lassen",
+        "Seitlich an der Fingerkuppe oder am Ohrläppchen mit Einmallanzette einstechen",
+        "Ersten Blutstropfen mit Tupfer abwischen",
+        "Blut auf den Messstreifen aufbringen"
+      ],
+      "explanation": "Der erste Tropfen wird verworfen, weil er durch Desinfektionsmittel oder Gewebsflüssigkeit verfälscht sein kann. Lanzette sofort in den Abwurfbehälter."
+    },
+    {
+      "id": "s-bz-ort",
+      "topic": "material",
+      "type": "single",
+      "source": "skript",
+      "question": "Wo stichst du zur Blutzuckermessung ein?",
+      "options": [
+        "Seitlich an der Fingerkuppe oder am Ohrläppchen",
+        "Mitten auf der Fingerkuppe",
+        "Am Handrücken",
+        "In der Armbeuge"
+      ],
+      "answer": 0,
+      "explanation": "Seitlich an der Fingerkuppe ist es weniger schmerzhaft als mittig. Bei sehr kalten Händen ist das Ohrläppchen eine gute Alternative."
+    },
+    {
+      "id": "s-bz-mmol",
+      "topic": "anatomie",
+      "type": "single",
+      "source": "skript",
+      "question": "Das Messgerät des Patienten zeigt 5,0 mmol/l an. Wie bewertest du den Wert?",
+      "options": [
+        "Normal (entspricht ca. 90 mg/dl)",
+        "Unterzuckerung",
+        "Starke Überzuckerung",
+        "Messfehler – mmol/l gibt es nicht"
+      ],
+      "answer": 0,
+      "explanation": "mmol/l × 18 ≈ mg/dl. Normal nüchtern: 3,3–5,6 mmol/l (60–100 mg/dl), nicht nüchtern bis 7,8 mmol/l (140 mg/dl)."
+    },
+    {
+      "id": "s-tachy",
+      "topic": "anatomie",
+      "type": "single",
+      "source": "skript",
+      "question": "Was bedeutet die Vorsilbe „Tachy-“, z. B. in Tachykardie?",
+      "options": [
+        "Schnell, beschleunigt",
+        "Langsam, verzögert",
+        "Zu viel, darüber",
+        "Zu wenig, darunter"
+      ],
+      "answer": 0,
+      "explanation": "Tachy = schnell, Brady = langsam, Hyper = über/zu viel, Hypo = unter/zu wenig. Beispiel: Hypotonie = zu niedriger Blutdruck."
+    },
+    {
+      "id": "s-hypo",
+      "topic": "anatomie",
+      "type": "single",
+      "source": "skript",
+      "question": "Was ist eine Hypotonie?",
+      "options": [
+        "Zu niedriger Blutdruck",
+        "Zu hoher Blutdruck",
+        "Zu schneller Puls",
+        "Zu niedriger Blutzucker"
+      ],
+      "answer": 0,
+      "explanation": "Hypo = unter, zu wenig. Zu niedriger Blutzucker heißt Hypoglykämie, zu hoher Blutdruck Hypertonie."
+    },
+    {
+      "id": "s-cave",
+      "topic": "kommunikation",
+      "type": "single",
+      "source": "skript",
+      "question": "Was bedeutet „CAVE“ in medizinischen Unterlagen?",
+      "options": [
+        "Achtung / Vorsicht",
+        "Kontrolle",
+        "Notfall",
+        "Keine Angaben"
+      ],
+      "answer": 0,
+      "explanation": "Beispiel: „Sauerstoff 15 l/min – CAVE: COPD“ heißt: Vorsicht bei COPD-Patienten."
     }
   ]
 }
