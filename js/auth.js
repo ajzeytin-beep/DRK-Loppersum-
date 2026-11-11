@@ -66,9 +66,10 @@ function store(data) {
   return session;
 }
 
-export async function signUp(email, password, name, course) {
+// extra: zusätzliche Angaben für das Konto, z. B. { app: "verwaltung" } für die Vereinsverwaltung
+export async function signUp(email, password, name, course, extra = {}) {
   const data = await authFetch("signup", {
-    body: { email: email.trim(), password, data: { name: name.trim(), course: (course || "").trim().toUpperCase() } },
+    body: { email: email.trim(), password, data: { name: name.trim(), course: (course || "").trim().toUpperCase(), ...extra } },
   });
   // Ist die E-Mail-Bestätigung eingeschaltet, kommt noch keine Sitzung zurück
   if (data.access_token) { store(data); return { session }; }
@@ -87,8 +88,8 @@ export async function signOut() {
   if (token) authFetch("logout", { token }).catch(() => {});
 }
 
-export async function requestPasswordReset(email) {
-  const redirect = CONFIG.appUrl || `${location.origin}${location.pathname}`;
+export async function requestPasswordReset(email, redirectTo) {
+  const redirect = redirectTo || CONFIG.appUrl || `${location.origin}${location.pathname}`;
   await authFetch(`recover?redirect_to=${encodeURIComponent(redirect)}`, { body: { email: email.trim() } });
 }
 
