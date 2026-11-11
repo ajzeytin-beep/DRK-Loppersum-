@@ -24,65 +24,6 @@ Nach dem ersten Aufruf funktioniert sie auch **offline**.
 - **Konten mit E-Mail und Passwort:** Selbstregistrierung, Freigabe durch Ausbilder, Lernstand auf allen Geräten.
 - **Ausbilder-Bereich:** Freigabe neuer Konten, automatische Übersicht über den Lernfortschritt aller Teilnehmenden, schwächste Themen, häufigste Fehler, Heatmap und CSV-Export.
 
-## Vereinsverwaltung (Kassenbuch und Mitglieder)
-
-Unter **`https://ajzeytin-beep.github.io/DRK-Loppersum-/verwaltung/`** gibt es eine eigene App für Kassenwart und Vorsitz. Sie lässt sich wie der Sani-Trainer auf dem Startbildschirm installieren (Name „DRK Kasse“).
-
-**Kassenbuch**
-
-- Zwei getrennte Bereiche:
-  - **Getränkekasse:** z. B. Getränkepauschale der Mitglieder, Getränkeeinkauf.
-  - **Verein:** Rechnungen, Spenden und andere Einnahmen/Ausgaben des Vereins.
-- **Konten frei anlegen:** Barkassen und Bankkonten, die IBAN kann später eingetragen werden. Konten ohne Buchungen lassen sich löschen, sonst deaktivieren. Pro Konto gibt es einen Anfangsbestand je Bereich.
-- **Belegnummer automatisch und fortlaufend pro Jahr:** `00001-26`, `00002-26` … ab Januar wieder `00001-27`.
-- Einnahme, Ausgabe oder **Umbuchung** (z. B. Bargeld zur Bank). Laufender Saldo, Summen und Bestände werden automatisch berechnet.
-- **Beleg fotografieren:**
-  - Die App liest Betrag, Datum, Händler und Rechnungsnummer aus dem Foto und füllt die Felder vor (gelb markiert).
-  - Vor dem Speichern muss bestätigt werden, dass alles mit dem Beleg verglichen wurde.
-  - Die Texterkennung läuft komplett auf dem Gerät, das Foto geht an keinen fremden Dienst. Gespeichert wird es verkleinert im Supabase-Speicher.
-  - PDFs werden als Beleg gespeichert, aber nicht ausgelesen.
-- **Storno statt Löschen:** Buchungen lassen sich nicht ändern oder löschen. Ein Storno legt eine Gegenbuchung mit neuer Nummer an, so bleibt alles für die Kassenprüfung nachvollziehbar.
-- Filter nach Jahr, Bereich, Konto, Art und Suchtext. Export als CSV für Excel.
-- **Jahresabschluss:** Bestände je Konto und Bereich, Einnahmen und Ausgaben nach Kategorie, alle Buchungen, Unterschriftenfelder. Drucken oder als PDF speichern.
-
-**Mitglieder**
-
-- Felder: Name, Adresse, Geburtstag, Eintrittsdatum, Austrittsdatum, Getränkepauschale pro Jahr, Telefon, E-Mail, Bemerkung.
-- Getränkepauschale pro Mitglied wahlweise **pro Monat** oder **pro Jahr**. Der Standard für neue Mitglieder wird unter „Konten“ eingestellt.
-- Für jedes Jahr ist zu sehen, was bezahlt und was offen ist. Bei monatlicher Pauschale wird ab dem Eintrittsmonat und bis zum Austritt gerechnet, z. B. „bezahlt bis Oktober“ oder „offen 10,00 € (2 Mon.)“.
-- Mit „kassieren“ wird die Pauschale direkt in der Getränkekasse gebucht. Betrag und Monate sind vorausgefüllt.
-- In der Übersicht stehen Geburtstage und Jubiläen (alle 5 Jahre) der nächsten 30 Tage.
-- **Import** aus Excel (.xlsx) oder CSV, mit Vorschau und Erkennung doppelter Einträge. Eine Vorlage gibt es zum Herunterladen.
-- Export als CSV.
-
-**Zugänge und Rollen**
-
-| Rolle | Darf |
-|---|---|
-| Admin | alles, dazu Zugänge freigeben, ändern und entfernen |
-| Kassenwart, Vorsitz | buchen, Mitglieder und Konten bearbeiten |
-| Kassenprüfer | alles sehen, nichts ändern |
-
-- Neue Personen öffnen den Link, tippen auf **„Zugang beantragen“** und registrieren sich mit ihrer eigenen E-Mail-Adresse.
-- Der Admin gibt sie unter **Zugänge** frei.
-- **Neuer Kassenwart gewählt:** Neue Person freigeben und den alten Zugang entfernen. Die Buchungen des alten Kassenwarts bleiben mit seinem Namen erhalten.
-- Wer schon ein Konto im Sani-Trainer hat, meldet sich damit an und wird automatisch als Anfrage eingetragen.
-
-**Einrichten**
-
-1. `supabase/update-5.sql` und danach `supabase/update-6.sql` im Supabase **SQL Editor** ausführen. Das legt die Tabellen, die Rechte und den Speicher für Belege (`vw-belege`) an. Update 6 ergänzt die Getränkepauschale pro Monat.
-2. Unter `/verwaltung/` registrieren, dann **einmalig** im SQL Editor dich selbst zum Admin machen:
-
-   ```sql
-   update public.vw_users set role = 'admin', approved_at = now() where email = 'deine@email.de';
-   ```
-
-3. Unter **Konten** die Barkasse(n) und das Bankkonto mit Anfangsbestand eintragen. Den Standardbetrag der Getränkepauschale setzen.
-4. Mitglieder anlegen oder importieren.
-
-> Die Daten liegen in derselben Supabase-Datenbank wie der Sani-Trainer, sind aber über eigene Rollen geschützt. Teilnehmende und Ausbilder sehen nichts davon.
-> Adressen und Geburtstage sind personenbezogene Daten. Ausgetretene Mitglieder sollten nach Ablauf der Aufbewahrungsfristen gelöscht werden.
-
 ## Inhalte bearbeiten
 
 Alle Fragen liegen als JSON im Ordner `data/`. Zum Ändern braucht es keine Programmierkenntnisse.
@@ -178,8 +119,6 @@ Nach der Anmeldung siehst du sofort den Stand deines Kurses. Die Ansicht aktuali
    3. `supabase/update-2.sql`
    4. `supabase/update-3.sql`
    5. `supabase/update-4.sql`
-   6. `supabase/update-5.sql` (Vereinsverwaltung)
-   7. `supabase/update-6.sql` (Getränkepauschale pro Monat oder Jahr)
 
    Wer schon eingerichtet ist, führt nur die fehlenden Updates aus.
 3. Einen Kurs anlegen (eine PIN ist seit Update 2 nicht mehr nötig):
@@ -214,6 +153,8 @@ Nach der Anmeldung siehst du sofort den Stand deines Kurses. Die Ansicht aktuali
   delete from public.learners where id not in (select id from public.profiles);
   ```
 
+**Buchhaltung des Ortsvereins:** Dieselbe Supabase-Datenbank wird auch von der Buchhaltung genutzt, einer eigenen App im Repository [Buchhaltung-Loppersum](https://github.com/ajzeytin-beep/Buchhaltung-Loppersum). Ihre Tabellen beginnen mit `vw_` und sind über eigene Rollen geschützt. Bitte nicht löschen.
+
 **Datenschutz:**
 
 - Gespeichert werden Name, E-Mail, die beantworteten Fragen mit „richtig/falsch“ und die Prüfungsergebnisse.
@@ -230,5 +171,4 @@ Nach der Anmeldung siehst du sofort den Stand deines Kurses. Die Ansicht aktuali
 
 Reines HTML/CSS/JavaScript ohne Build-Schritt.
 Konten über Supabase Auth. Der Lernstand liegt im `localStorage` des Geräts und wird mit Supabase abgeglichen. Ein Service Worker sorgt für die Offline-Nutzung.
-In der Vereinsverwaltung sind [tesseract.js](https://github.com/naptha/tesseract.js) (Apache-2.0) für die Belegerkennung und [SheetJS](https://sheetjs.com) (Apache-2.0) für den Excel-Import unter `verwaltung/vendor/` eingebunden.
 Für QR-Codes ist die Bibliothek [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (MIT-Lizenz, Kazuhiko Arase) unter `js/vendor/` eingebunden.
