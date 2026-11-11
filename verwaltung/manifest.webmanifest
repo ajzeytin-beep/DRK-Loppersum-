@@ -1,0 +1,15 @@
+{
+  "name": "Vereinsverwaltung · DRK OV Loppersum",
+  "short_name": "DRK Kasse",
+  "description": "Kassenbuch und Mitgliederliste",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a0a0b",
+  "theme_color": "#0a0a0b",
+  "icons": [
+    { "src": "../assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "../assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
