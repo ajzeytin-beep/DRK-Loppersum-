@@ -135,6 +135,59 @@ export const years = () => {
   return [...ys].sort((a, b) => b - a);
 };
 
+/* ---------------- Getränkepauschale: pro Monat oder pro Jahr ---------------- */
+
+export const PERIODS = { monat: "pro Monat", jahr: "pro Jahr" };
+export const MONTHS = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+// Ist die Datenbank schon auf Stand von update-6.sql?
+export const periodsEnabled = () => "drinks_period" in (data.settings || {});
+export const periodOf = (m) => (m?.drinks_period === "monat" ? "monat" : "jahr");
+
+// Monate (1–12), für die im Jahr eine Pauschale fällig ist: ab Eintritt, bis Austritt, im laufenden Jahr bis heute
+function dueMonths(m, year) {
+  const now = new Date();
+  if (m.entry_date && yearOf(m.entry_date) > year) return null;
+  if (m.exit_date && yearOf(m.exit_date) < year) return null;
+  let first = m.entry_date && yearOf(m.entry_date) === year ? Number(m.entry_date.slice(5, 7)) : 1;
+  let last = year < now.getFullYear() ? 12 : year > now.getFullYear() ? 0 : now.getMonth() + 1;
+  if (m.exit_date && yearOf(m.exit_date) === year) last = Math.min(last, Number(m.exit_date.slice(5, 7)));
+  return { first, last };
+}
+
+// Stand der Pauschale eines Mitglieds in einem Jahr
+export function drinksStatus(m, year) {
+  const fee = m.drinks_fee_cents || 0;
+  const paid = drinksPaid(m.id, year);
+  if (!fee) return { fee: 0, paid, due: 0, open: 0 };
+  const period = periodOf(m);
+  const r = dueMonths(m, year);
+  if (period === "jahr") {
+    const due = r ? fee : 0;
+    return { fee, period, paid, due, open: Math.max(0, due - paid) };
+  }
+  const months = r ? Math.max(0, r.last - r.first + 1) : 0;
+  const due = months * fee;
+  const first = r ? r.first : 1;
+  const paidMonths = Math.floor(paid / fee);
+  const paidUntil = paidMonths > 0 ? Math.min(12, first + paidMonths - 1) : null; // letzter bezahlter Monat
+  return { fee, period, paid, due, open: Math.max(0, due - paid), first, paidUntil, nextMonth: Math.min(12, first + paidMonths) };
+}
+
+// Vorschlag zum Kassieren: offene Monate (mindestens einer) bzw. die Jahrespauschale
+// amount: abweichender Betrag → Monate werden daraus berechnet
+export function drinksSuggestion(m, year, amount = null) {
+  const s = drinksStatus(m, year);
+  if (!s.fee) return null;
+  if (s.period === "jahr") return { amount: amount ?? (Math.max(s.open, s.fee - Math.min(s.paid, s.fee)) || s.fee), label: `${year}` };
+  const count = Math.max(1, Math.round((amount ?? s.open) / s.fee));
+  const from = s.nextMonth;
+  const to = Math.min(12, from + count - 1);
+  const label = from === to ? `${MONTHS[from - 1]} ${year}` : `${MONTHS[from - 1]}–${MONTHS[to - 1]} ${year}`;
+  return { amount: amount ?? (to - from + 1) * s.fee, label };
+}
+
+export const feeLabel = (m) => (m?.drinks_fee_cents ? `${money(m.drinks_fee_cents)} ${PERIODS[periodOf(m)]}` : "–");
+
 // Gezahlte Getränkepauschale eines Mitglieds in einem Jahr
 export function drinksPaid(memberId, year) {
   return data.bookings

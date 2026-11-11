@@ -4,7 +4,7 @@ import * as auth from "../../js/auth.js";
 import { icon } from "../../js/icons.js";
 import * as api from "./api.js";
 import { ctx, data } from "./api.js";
-import { esc, money, dateDE, balance, totals, yearOf, AREAS, ROLES, ACCOUNT_KINDS, memberName, age, busy, toast, drinksPaid } from "./util.js";
+import { esc, money, dateDE, balance, totals, yearOf, AREAS, ROLES, ACCOUNT_KINDS, memberName, age, busy, toast, drinksStatus } from "./util.js";
 import * as kasse from "./kasse.js";
 import * as mitglieder from "./mitglieder.js";
 import * as abschluss from "./abschluss.js";
@@ -138,7 +138,7 @@ function renderOverview(el) {
 
   const members = data.members.filter((m) => !m.exit_date);
   const withFee = members.filter((m) => m.drinks_fee_cents > 0);
-  const open = withFee.filter((m) => drinksPaid(m.id, year) < m.drinks_fee_cents);
+  const open = withFee.filter((m) => drinksStatus(m, year).open > 0);
 
   el.innerHTML = `
     <div class="page-head">

@@ -3,7 +3,7 @@ import { CONFIG } from "../../js/config.js";
 import { icon } from "../../js/icons.js";
 import * as api from "./api.js";
 import { ctx, data } from "./api.js";
-import { esc, money, moneyInput, parseMoney, dateDE, balance, ACCOUNT_KINDS, AREAS, ROLES, dialog, confirmDialog, toast, busy } from "./util.js";
+import { esc, money, moneyInput, parseMoney, dateDE, balance, periodsEnabled, PERIODS, ACCOUNT_KINDS, AREAS, ROLES, dialog, confirmDialog, toast, busy } from "./util.js";
 import { route } from "./main.js";
 
 /* ---------------- Konten ---------------- */
@@ -34,8 +34,12 @@ export function renderAccounts(el) {
     </div>
     ${ctx.canWrite ? `<form class="card form narrow" id="settings">
       <h2>Getränkepauschale</h2>
-      <label>Standardbetrag pro Jahr in € <span class="muted small">(Vorschlag für neue Mitglieder und den Import)</span>
-        <input name="fee" inputmode="decimal" value="${esc(moneyInput(data.settings.drinks_fee_cents))}" placeholder="0,00"></label>
+      <p class="muted small">Standard für neue Mitglieder und den Import. Bei jedem Mitglied lässt sich Betrag und Zeitraum einzeln ändern.</p>
+      <div class="fee-row">
+        <label>Standardbetrag in €<input name="fee" inputmode="decimal" value="${esc(moneyInput(data.settings.drinks_fee_cents))}" placeholder="0,00"></label>
+        ${periodsEnabled() ? `<label>Zeitraum<select name="period">${Object.entries(PERIODS).map(([k, l]) => `<option value="${k}" ${(data.settings.drinks_period || "jahr") === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>`
+          : `<p class="form-error small">Für „pro Monat“ bitte einmal supabase/update-6.sql in Supabase ausführen. Bis dahin gilt: pro Jahr.</p>`}
+      </div>
       <button class="btn btn-primary">Speichern</button>
     </form>` : ""}`;
 
@@ -54,7 +58,7 @@ export function renderAccounts(el) {
     e.preventDefault();
     const fee = e.target.fee.value.trim() ? parseMoney(e.target.fee.value) : 0;
     if (fee == null || fee < 0) return toast("Bitte einen gültigen Betrag eingeben.", "error");
-    const ok = await busy(e.submitter, async () => { await api.update("vw_settings", 1, { drinks_fee_cents: fee, updated_at: new Date().toISOString() }); return true; });
+    const ok = await busy(e.submitter, async () => { await api.update("vw_settings", 1, { drinks_fee_cents: fee, ...(e.target.period ? { drinks_period: e.target.period.value } : {}), updated_at: new Date().toISOString() }); return true; });
     if (!ok) return;
     await api.reload();
     toast("Gespeichert");
