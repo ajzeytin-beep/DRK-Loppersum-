@@ -5,7 +5,7 @@ import { ctx, data } from "./api.js";
 import * as ocr from "./ocr.js";
 import {
   esc, money, moneyPlain, moneyInput, parseMoney, dateDE, today, yearOf, years, effect, balance, totals, nextNumber,
-  accountName, memberName, memberById, AREAS, KINDS, CATEGORIES, downloadCsv, dialog, promptDialog, toast, busy,
+  accountName, memberName, memberById, drinksSuggestion, AREAS, KINDS, CATEGORIES, downloadCsv, dialog, promptDialog, toast, busy,
 } from "./util.js";
 import { route } from "./main.js";
 
@@ -274,10 +274,11 @@ export function renderForm(el, { params }) {
   const m = mId ? memberById(mId) : null;
   if (m) {
     const y = Number(params.get("pauschale")) || new Date().getFullYear();
+    const sug = drinksSuggestion(m, y);
     Object.assign(pre, {
       kind: "einnahme", area: "getraenke", category: "Getränkepauschale", member: m.id,
-      amount: moneyInput(m.drinks_fee_cents || data.settings.drinks_fee_cents || null),
-      purpose: `Getränkepauschale ${y} – ${memberName(m)}`,
+      amount: moneyInput(sug?.amount || data.settings.drinks_fee_cents || null),
+      purpose: `Getränkepauschale ${sug?.label || y} – ${memberName(m)}`,
     });
     const bar = active.find((a) => a.kind === "bar");
     if (bar && !active.some((a) => a.id === last && a.kind === "bar")) pre.account = bar.id;
@@ -350,6 +351,17 @@ export function renderForm(el, { params }) {
     updateKind();
   }));
   f.account.onchange = updateKind;
+  // Pauschale kassieren: Monate im Verwendungszweck passen sich dem Betrag an, solange der Text nicht geändert wurde
+  if (m) {
+    const y = Number(params.get("pauschale")) || new Date().getFullYear();
+    let auto = f.purpose.value;
+    f.amount.addEventListener("input", () => {
+      const cents = parseMoney(f.amount.value);
+      if (f.purpose.value !== auto || !cents) return;
+      const sug = drinksSuggestion(m, y, cents);
+      if (sug) f.purpose.value = auto = `Getränkepauschale ${sug.label} – ${memberName(m)}`;
+    });
+  }
   f.date.onchange = () => {
     el.querySelector(".page-head strong").textContent = nextNumber(yearOf(f.date.value || today()));
   };

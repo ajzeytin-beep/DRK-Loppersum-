@@ -14,6 +14,7 @@ const COLUMNS = {
   birthday: ["geburtstag", "geburtsdatum", "geb", "geboren", "geb.datum", "geb. am"],
   entry_date: ["eintritt", "eintrittsdatum", "mitglied seit", "eingetreten", "beitritt", "beitrittsdatum"],
   exit_date: ["austritt", "austrittsdatum", "ausgetreten"],
+  period: ["zeitraum", "pauschale pro", "intervall", "turnus", "zahlweise"],
   drinks: ["getränkepauschale", "getraenkepauschale", "pauschale", "getränke", "getraenke"],
   phone: ["telefon", "tel", "handy", "mobil", "telefonnummer"],
   email: ["e-mail", "email", "mail"],
@@ -80,7 +81,15 @@ async function loadXlsx() {
 }
 
 // Liefert { rows: [Mitglied …], skipped, columns: [erkannte Felder] }
-export async function readMembersFile(file, defaultFee = 0) {
+function periodValue(v, fallback) {
+  const s = String(v ?? "").trim().toLowerCase();
+  if (/monat|mtl|monthly/.test(s)) return "monat";
+  if (/jahr|jährl|jaehrl|year/.test(s)) return "jahr";
+  return fallback;
+}
+
+// defaultPeriod = null: Datenbank kennt noch keinen Zeitraum (vor update-6.sql)
+export async function readMembersFile(file, defaultFee = 0, defaultPeriod = null) {
   const XLSX = await loadXlsx();
   const buf = await file.arrayBuffer();
   let wb;
@@ -117,6 +126,7 @@ export async function readMembersFile(file, defaultFee = 0) {
       entry_date: parseDate(get(r, "entry_date")),
       exit_date: parseDate(get(r, "exit_date")),
       drinks_fee_cents: drinksValue(get(r, "drinks"), defaultFee),
+      ...(defaultPeriod ? { drinks_period: periodValue(get(r, "period"), defaultPeriod) } : {}),
       phone: txt("phone"),
       email: txt("email"),
       note: txt("note"),
@@ -133,8 +143,9 @@ function detectSeparator(text) {
 
 export function downloadTemplate() {
   downloadCsv("Vorlage-Mitglieder.csv", [
-    ["Vorname", "Nachname", "Straße", "PLZ", "Ort", "Geburtstag", "Eintrittsdatum", "Getränkepauschale", "Telefon", "E-Mail", "Bemerkung"],
-    ["Max", "Mustermann", "Hauptstraße 1", "26736", "Krummhörn", "01.02.1980", "15.03.2010", "60,00", "", "", ""],
-    ["Erika", "Musterfrau", "Am Deich 7", "26736", "Krummhörn", "24.12.1975", "01.01.2001", "nein", "", "", ""],
+    ["Vorname", "Nachname", "Straße", "PLZ", "Ort", "Geburtstag", "Eintrittsdatum", "Getränkepauschale", "Zeitraum", "Telefon", "E-Mail", "Bemerkung"],
+    ["Max", "Mustermann", "Hauptstraße 1", "26736", "Krummhörn", "01.02.1980", "15.03.2010", "60,00", "Jahr", "", "", ""],
+    ["Gesa", "Janssen", "Kirchweg 4", "26736", "Krummhörn", "11.06.1992", "01.09.2019", "5,00", "Monat", "", "", ""],
+    ["Erika", "Musterfrau", "Am Deich 7", "26736", "Krummhörn", "24.12.1975", "01.01.2001", "nein", "", "", "", ""],
   ]);
 }

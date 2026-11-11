@@ -48,7 +48,9 @@ Unter **`https://ajzeytin-beep.github.io/DRK-Loppersum-/verwaltung/`** gibt es e
 **Mitglieder**
 
 - Felder: Name, Adresse, Geburtstag, Eintrittsdatum, Austrittsdatum, Getränkepauschale pro Jahr, Telefon, E-Mail, Bemerkung.
-- Für jedes Jahr ist zu sehen, ob die Getränkepauschale bezahlt ist. Mit „kassieren“ wird sie direkt in der Getränkekasse gebucht.
+- Getränkepauschale pro Mitglied wahlweise **pro Monat** oder **pro Jahr**. Der Standard für neue Mitglieder wird unter „Konten“ eingestellt.
+- Für jedes Jahr ist zu sehen, was bezahlt und was offen ist. Bei monatlicher Pauschale wird ab dem Eintrittsmonat und bis zum Austritt gerechnet, z. B. „bezahlt bis Oktober“ oder „offen 10,00 € (2 Mon.)“.
+- Mit „kassieren“ wird die Pauschale direkt in der Getränkekasse gebucht. Betrag und Monate sind vorausgefüllt.
 - In der Übersicht stehen Geburtstage und Jubiläen (alle 5 Jahre) der nächsten 30 Tage.
 - **Import** aus Excel (.xlsx) oder CSV, mit Vorschau und Erkennung doppelter Einträge. Eine Vorlage gibt es zum Herunterladen.
 - Export als CSV.
@@ -68,7 +70,7 @@ Unter **`https://ajzeytin-beep.github.io/DRK-Loppersum-/verwaltung/`** gibt es e
 
 **Einrichten**
 
-1. `supabase/update-5.sql` im Supabase **SQL Editor** ausführen. Das legt die Tabellen, die Rechte und den Speicher für Belege (`vw-belege`) an.
+1. `supabase/update-5.sql` und danach `supabase/update-6.sql` im Supabase **SQL Editor** ausführen. Das legt die Tabellen, die Rechte und den Speicher für Belege (`vw-belege`) an. Update 6 ergänzt die Getränkepauschale pro Monat.
 2. Unter `/verwaltung/` registrieren, dann **einmalig** im SQL Editor dich selbst zum Admin machen:
 
    ```sql
@@ -177,6 +179,7 @@ Nach der Anmeldung siehst du sofort den Stand deines Kurses. Die Ansicht aktuali
    4. `supabase/update-3.sql`
    5. `supabase/update-4.sql`
    6. `supabase/update-5.sql` (Vereinsverwaltung)
+   7. `supabase/update-6.sql` (Getränkepauschale pro Monat oder Jahr)
 
    Wer schon eingerichtet ist, führt nur die fehlenden Updates aus.
 3. Einen Kurs anlegen (eine PIN ist seit Update 2 nicht mehr nötig):

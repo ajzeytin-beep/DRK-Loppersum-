@@ -244,3 +244,4 @@ dialog.modal::backdrop { background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(
 .vw .grid-2 > *, .vw .acc-grid > *, .vw .kpis > * { min-width: 0; }
 .vw .photo-actions .btn + .btn, .vw .form-actions .btn + .btn, .vw .head-actions .btn + .btn, .vw .center-row .btn + .btn { margin-left: 0; }
 @media (max-width: 640px) { .photo-actions .btn { flex: 1 1 100%; } }
+.fee-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 150px); gap: 0.75rem; align-items: end; }
