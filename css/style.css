@@ -505,7 +505,8 @@ input.bad { border-color: var(--red) !important; background: var(--red-soft) !im
 .count-badge { display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 99px; background: var(--amber); color: #111; font-size: 0.8rem; font-weight: 800; }
 .pending-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
 .pending-list li { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 0.8rem; border-radius: 12px; background: var(--surface-3); flex-wrap: wrap; }
-.pending-list .pp-text { flex: 1; min-width: 180px; }
+.pending-list .pp-text { flex: 1; min-width: 0; flex-basis: 180px; }
+.pp-text span, .pp-text strong { overflow-wrap: anywhere; }
 .pending-actions { display: flex; gap: 0.4rem; }
 .pending-actions .btn + .btn { margin-left: 0; }
 .row-actions { text-align: right; white-space: nowrap; }

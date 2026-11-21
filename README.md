@@ -120,7 +120,7 @@ Nach Änderungen in `sw.js` die Versionsnummer (`sani-trainer-v1` → `v2`) erh�
 ## Logos
 
 Das Abzeichen des OV Loppersum liegt unter `assets/logo-ov.png`. Daraus sind auch die App-Symbole erzeugt (`assets/icon-192.png`, `assets/icon-512.png`).
-Ein zusätzliches DRK-Logo kann als `assets/logo-drk.png` abgelegt werden und erscheint dann automatisch daneben.
+Ein zusätzliches DRK-Logo lässt sich bei Bedarf neben dem Abzeichen einbauen (`index.html`, Bereich „brand“).
 Für das Rotkreuz-Zeichen gelten die Regeln zum Schutzzeichen und die CD-Vorgaben des DRK.
 
 ## Lokal starten

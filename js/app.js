@@ -31,7 +31,7 @@ const bar = (value, cls = "") => `<div class="bar ${cls}"><span style="width:${M
 const rateClass = (r) => (r == null ? "" : r >= 0.8 ? "good" : r >= 0.6 ? "mid" : "bad");
 
 const logos = () =>
-  `<img src="assets/logo-drk.png" alt="DRK" class="logo" onerror="this.remove()"><img src="assets/logo-ov.png" alt="DRK OV Loppersum" class="logo" onerror="this.remove()">`;
+  `<img src="assets/logo-ov.png" alt="DRK OV Loppersum" class="logo" onerror="this.remove()">`;
 
 function clearTimer() {
   if (timer) { clearInterval(timer); timer = null; }
@@ -838,9 +838,9 @@ function cardsView() {
 
 // Konto beim Server prüfen. Gibt false zurück, wenn die Anmeldung nicht mehr gilt
 // (Konto gelöscht/gesperrt, Sitzung ungültig) – dann wird sauber abgemeldet.
-async function validateAccount() {
+async function validateAccount(opts) {
   try {
-    await sync.refreshAccount();
+    await sync.refreshAccount(opts);
     if (store.getState().profile?.role === "rejected") throw new Error("Dein Konto ist gesperrt.");
     return true;
   } catch (e) {
@@ -882,7 +882,7 @@ async function init() {
   document.addEventListener("visibilitychange", async () => {
     if (document.hidden || !auth.getSession()) return;
     const before = store.getState().profile?.role;
-    const valid = await validateAccount();
+    const valid = await validateAccount({ withHistory: false });
     if (!valid) { location.hash = "#/start"; return; }
     if (store.getState().profile?.role !== before) route();
   });

@@ -22,7 +22,7 @@
           "explanation": "Gräben in Ostfriesland sind oft tiefer und rutschiger, als sie aussehen. Nur sicher retten – ggf. mit Hilfe weiterer Personen."
         },
         {
-          "situation": "Der Mann reagiert nur auf Schmerzreiz und atmet normal (16/min). Seine Kleidung ist durchnässt, die Haut kalt. Starker Alkoholgeruch.",
+          "situation": "Der Mann reagiert nur auf Schmerzreiz und atmet normal (16/min). Seine Kleidung ist durchnässt, die Haut kalt. Starker Alkoholgeruch. Laut seinen Freunden ist er hineingerutscht, beim Bodycheck findet ihr keine Hinweise auf Verletzungen.",
           "topic": "vergiftung",
           "type": "multi",
           "question": "Welche Maßnahmen sind jetzt richtig?",
@@ -38,7 +38,7 @@
             1,
             2
           ],
-          "explanation": "Reaktion nur auf Schmerzreiz bedeutet: Schutzreflexe gefährdet. Alkohol, Kälte und Nässe sind zusammen eine lebensgefährliche Kombination."
+          "explanation": "Reaktion nur auf Schmerzreiz bedeutet: Schutzreflexe gefährdet. Alkohol, Kälte und Nässe sind zusammen eine lebensgefährliche Kombination. Weil es keine Hinweise auf ein Trauma gibt, ist die stabile Seitenlage hier richtig."
         },
         {
           "situation": "Du misst den Blutzucker: 48 mg/dl.",

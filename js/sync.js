@@ -63,7 +63,8 @@ let flushing = false;
 export async function flush() {
   const st = store.getState();
   const p = st.profile;
-  if (!backendEnabled() || !p || p.role !== "learner" || flushing || !navigator.onLine) return { skipped: true };
+  if (flushing) return { skipped: true, busy: true };
+  if (!backendEnabled() || !p || p.role !== "learner" || !navigator.onLine) return { skipped: true };
   flushing = true;
   try {
     while (st.syncedCount < st.history.length) {
@@ -89,7 +90,11 @@ export async function flush() {
 
 // Profil vom Server holen und den Lernstand mit dem Server-Verlauf abgleichen
 // (so geht es auf einem neuen Gerät dort weiter, wo man aufgehört hat).
-export async function refreshAccount() {
+// withHistory=false: nur Profil/Rolle prüfen (schnell). Der Verlauf wird trotzdem abgeglichen,
+// wenn jemand gerade erst freigegeben wurde.
+let lastHistorySync = 0;
+export async function refreshAccount({ withHistory = true } = {}) {
+  const prevRole = store.getState().profile?.role;
   const prof = await myProfile();
   const profile = {
     id: prof.id,
@@ -100,10 +105,16 @@ export async function refreshAccount() {
     courseName: prof.course_name || null,
   };
   store.useAccount(profile);
-  if (prof.role === "learner") {
+  if (prof.role === "learner" && (withHistory || prevRole !== "learner" || Date.now() - lastHistorySync > 60000)) {
+    lastHistorySync = Date.now();
     try {
-      const h = await myHistory();
-      store.mergeServerHistory(h.attempts || [], h.exams || []);
+      // Erst ausstehende Antworten hochladen, dann abgleichen – nie gleichzeitig,
+      // sonst könnten Antworten doppelt gezählt werden oder verloren gehen.
+      const f = await flush();
+      if (!f.busy && !f.error) {
+        const h = await myHistory();
+        if (!flushing) store.mergeServerHistory(h.attempts || [], h.exams || []);
+      }
     } catch { /* später erneut */ }
   }
   return profile;

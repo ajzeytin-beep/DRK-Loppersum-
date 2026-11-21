@@ -144,6 +144,7 @@ export function renderInstructor(view) {
   clearInterval(refreshTimer);
   const me = store.getState().profile;
   const code = me?.courseCode;
+  if (lastStats && lastStats.course?.code !== code) lastStats = null; // andere Person/Kurs auf diesem Gerät
 
   view.innerHTML = `
     <div class="page-head stats-head">
