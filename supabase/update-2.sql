@@ -2,6 +2,10 @@
 -- Einmal im Supabase „SQL Editor“ ausführen (neue Abfrage → einfügen → Run).
 -- Voraussetzung: schema.sql und update-1.sql wurden bereits ausgeführt. Bestehende Daten bleiben erhalten.
 --
+-- ACHTUNG: Nur EINMAL ausführen. Die Vereinsverwaltung (Repository Buchhaltung-Loppersum) nutzt dieselbe
+-- Datenbank und hat die Funktion handle_new_user erweitert. Ein erneutes Ausführen dieses Skripts würde
+-- diese Erweiterung überschreiben – Registrierungen der Verwaltung landeten dann im Sani-Trainer.
+--
 -- Rollen:  pending    = registriert, wartet auf Freigabe durch Ausbilder
 --          learner    = freigegeben, Fortschritt wird übertragen
 --          instructor = Ausbilder (sieht und verwaltet den eigenen Kurs)
